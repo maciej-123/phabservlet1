@@ -1,0 +1,17 @@
+language: java
+before_install:
+  - chmod +x gradlew
+script:
+  - ./gradlew build --info
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+deploy:
+  provider: heroku
+  api_key: 7cf56211-b65d-41cd-b7b1-152f3aafb03f
+  app: phabservlet1
+  skip_cleanup: true
