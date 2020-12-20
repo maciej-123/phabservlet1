@@ -37,7 +37,6 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
-
         ///just use /druglist in url http://localhost:8020/druglist
 
         //export sql file to heroku
@@ -73,6 +72,8 @@ public class phabservlet1 extends HttpServlet {
                         "INSERT INTO public.test_database (one, two, three) VALUES (2, 'c', 'd');\n" +
                         "INSERT INTO public.test_database (one, two, three) VALUES (3, 'e', 'f');");
 
+            resp.getWriter().write("createTestDatabase called");
+
         }
         catch (Exception e){
             System.err.println(e.getMessage());
@@ -95,6 +96,8 @@ public class phabservlet1 extends HttpServlet {
                 resp.getWriter().write(rset.getInt("two"));
                 resp.getWriter().write(rset.getInt("three"));
             }
+
+            resp.getWriter().write("returnTestDatabase called");
         }
         catch(Exception e)
         {
