@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 
-@WebServlet(urlPatterns={"/druglist","/drugstock","/create_test_database","/return_test_database"},loadOnStartup = 1)
+@WebServlet(urlPatterns={"/text_database","/create_test_database","/return_test_database"},loadOnStartup = 1)
 public class phabservlet1 extends HttpServlet {
 
 
@@ -29,26 +29,11 @@ public class phabservlet1 extends HttpServlet {
         }
 
         String ending = req.getServletPath();
-        if(ending.equals("/druglist")) {
-            resp.getWriter().write("<b>List of Drugs Database</b>");
-
-
-            //ResultSet result = statement.executeQuery(sql);
-
-//            String sqlfile = "postgres_public_test_database.sql";
-//
-//            convertFiletoString FtoS = new convertFiletoString(sqlfile);
-//            resp.getWriter().write(FtoS.getStringOutput());
-
-
-              resp.getWriter().write(" TEST ");
-
+        if(ending.equals("/text_database")) {
+            //Database to contain simple text file form database
+            textDatabase t = new textDatabase(resp);
         }
 
-        if(ending.equals("/drugstock")) {
-            resp.getWriter().write("<b>Drug Stock</b>");
-
-        }
 
         if(ending.equals("/create_test_database")) {
             makeTestDatabase(resp);
