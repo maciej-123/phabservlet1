@@ -31,6 +31,7 @@ public class phabservlet1 extends HttpServlet {
 
 
 
+              makeTestDatabase();
 
               resp.getWriter().write(" TEST ");
 
@@ -43,6 +44,15 @@ public class phabservlet1 extends HttpServlet {
 
 
 
+
+
+        ///just use /druglist in url http://localhost:8020/druglist
+
+        //export sql file to heroku
+
+    }
+
+    private void makeTestDatabase() {
         Connection c=null;
         Statement s=null;
         ResultSet rset=null;
@@ -52,14 +62,15 @@ public class phabservlet1 extends HttpServlet {
             //select table from INFORMATION_SCHEMA.TABLES - lis of all the tables
             String strSelect = "SELECT * \n" +
                     "                 FROM INFORMATION_SCHEMA.TABLES \n" +
-                    "                 WHERE  TABLE_NAME = test_database\n";
+                    "                 WHERE  TABLE_NAME = test_database2\n";
 
 
 
             rset = s.executeQuery(strSelect);
             if (!rset.next()){
+
                 System.out.println("Creating table");
-                s.execute("create table test_database\n" +
+                s.execute("create table test_database2\n" +
                         "(\n" +
                         "    one   serial       not null\n" +
                         "        constraint test_database_pkey\n" +
@@ -71,9 +82,10 @@ public class phabservlet1 extends HttpServlet {
                         "alter table test_database\n" +
                         "    owner to postgres;\n" +
                         "\n" +
-                        "INSERT INTO public.test_database (one, two, three) VALUES (1, '2', '3');\n" +
-                        "INSERT INTO public.test_database (one, two, three) VALUES (4, '5', '6');\n" +
-                        "INSERT INTO public.test_database (one, two, three) VALUES (7, '8', '9');");
+                        "INSERT INTO public.test_database (one, two, three) VALUES (1, 'a', 'b');\n" +
+                        "INSERT INTO public.test_database (one, two, three) VALUES (2, 'c', 'd');\n" +
+                        "INSERT INTO public.test_database (one, two, three) VALUES (3, 'e', 'f');");
+
             }
             else {
                 /*strSelect = "ALTER TABLE "+shapeName+"s ADD COLUMN id INT";
@@ -84,14 +96,6 @@ public class phabservlet1 extends HttpServlet {
         catch (Exception e){
             System.err.println(e.getMessage());
         }
-
-
-
-
-        ///just use /druglist in url http://localhost:8020/druglist
-
-        //export sql file to heroku
-
     }
 
     @Override
@@ -101,6 +105,8 @@ public class phabservlet1 extends HttpServlet {
 
         resp.getWriter().write("Thank you client! "+reqBody);
     }
+
+
 
 
 }
