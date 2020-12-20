@@ -55,8 +55,9 @@ public class phabservlet1 extends HttpServlet {
                     "                 FROM INFORMATION_SCHEMA.TABLES \n" +
                     "                 WHERE  TABLE_NAME = test_database\n";
 
-            System.out.println("Creating table");
-            s.execute("create table test_database\n" +
+            rset = s.executeQuery(strSelect);
+            if (!rset.next()) {
+                s.execute("create table test_database\n" +
                         "(\n" +
                         "    one   serial       not null\n" +
                         "        constraint test_database_pkey\n" +
@@ -71,6 +72,7 @@ public class phabservlet1 extends HttpServlet {
                         "INSERT INTO public.test_database (one, two, three) VALUES (1, 'a', 'b');\n" +
                         "INSERT INTO public.test_database (one, two, three) VALUES (2, 'c', 'd');\n" +
                         "INSERT INTO public.test_database (one, two, three) VALUES (3, 'e', 'f');");
+            }
 
             resp.getWriter().write("createTestDatabase called");
 
@@ -87,10 +89,10 @@ public class phabservlet1 extends HttpServlet {
             Statement s = c.createStatement();
             String strSelect = "SELECT * \n" +
                     "                 FROM INFORMATION_SCHEMA.TABLES \n" +
-                    "                 WHERE  TABLE_NAME = test_database\n";
+                    "                 WHERE  TABLE_NAME = test_database\n" +
+                    "                 SELECT * FROM test_database";
 
-            String sqlStr = "SELECT * FROM test_database;";
-            ResultSet rset = s.executeQuery(sqlStr);
+            ResultSet rset = s.executeQuery(strSelect);
             while (rset.next()) {
                 resp.getWriter().write(rset.getInt("one"));
                 resp.getWriter().write(rset.getInt("two"));
