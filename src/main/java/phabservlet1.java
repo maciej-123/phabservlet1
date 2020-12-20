@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 
-@WebServlet(urlPatterns={"/druglist","/drugstock"},loadOnStartup = 1)
+@WebServlet(urlPatterns={"/druglist","/drugstock","/create_test_database","/return_test_database"},loadOnStartup = 1)
 public class phabservlet1 extends HttpServlet {
 
     @Override
@@ -30,9 +30,6 @@ public class phabservlet1 extends HttpServlet {
 //            resp.getWriter().write(FtoS.getStringOutput());
 
 
-
-              makeTestDatabase();
-
               resp.getWriter().write(" TEST ");
 
         }
@@ -41,6 +38,17 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("<b>Drug Stock</b>");
             resp.getWriter().write(" TEST ");
         }
+
+        if(ending.equals("/create_test_database")) {
+            makeTestDatabase();
+        }
+
+        if(ending.equals("/return_test_database")) {
+            returnTestDatabase();
+        }
+
+
+
 
 
 
@@ -97,6 +105,32 @@ public class phabservlet1 extends HttpServlet {
             System.err.println(e.getMessage());
         }
     }
+
+    private void returnTestDatabase()
+    {
+        try {
+            Connection c= DriverManager.getConnection("JDBC_DATABASE_URL");
+            Statement s = c.createStatement();
+
+            String strSelect = "SELECT * \n" +
+                    "                 FROM INFORMATION_SCHEMA.TABLES \n" +
+                    "                 WHERE  TABLE_NAME = test_database\n";
+
+            String sqlStr = "SELECT * FROM test_database;";
+            ResultSet rset = s.executeQuery(sqlStr);
+            while (rset.next()) {
+                System.out.println(rset.getInt("one"));
+                System.out.println(rset.getInt("two"));
+                System.out.println(rset.getInt("three"));
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
+
+    }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
