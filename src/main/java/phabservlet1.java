@@ -55,7 +55,7 @@ public class phabservlet1 extends HttpServlet {
         }
 
         if(ending.equals("/return_test_database")) {
-            returnTestDatabase();
+            returnTestDatabase(resp);
         }
 
 
@@ -107,7 +107,7 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void returnTestDatabase()
+    private void returnTestDatabase(HttpServletResponse resp)
     {
         try {
             Statement s = c.createStatement();
@@ -118,9 +118,9 @@ public class phabservlet1 extends HttpServlet {
             String sqlStr = "SELECT * FROM test_database2;";
             ResultSet rset = s.executeQuery(sqlStr);
             while (rset.next()) {
-                System.out.println(rset.getInt("one"));
-                System.out.println(rset.getInt("two"));
-                System.out.println(rset.getInt("three"));
+                resp.getWriter().write(rset.getInt("one"));
+                resp.getWriter().write(rset.getInt("two"));
+                resp.getWriter().write(rset.getInt("three"));
             }
         }
         catch(Exception e)
