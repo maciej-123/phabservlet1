@@ -63,7 +63,7 @@ public class textDatabase {
                     "#Elastoplast,plasters,20 plasters,3,2,30,0,@30\n" +
                     "#TCP,Liquid,200ml,4,3.2,20,0,@20");
 
-            resp.getWriter().write("<b>###Paddington Branch End###</b>\n");
+            //resp.getWriter().write("<b>###Paddington Branch End###</b>\n");
         }
         catch(Exception e)
         {
