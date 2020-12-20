@@ -47,11 +47,11 @@ public class phabservlet1 extends HttpServlet {
 
         if(ending.equals("/drugstock")) {
             resp.getWriter().write("<b>Drug Stock</b>");
-            resp.getWriter().write(" TEST ");
+
         }
 
         if(ending.equals("/create_test_database")) {
-            makeTestDatabase();
+            makeTestDatabase(resp);
         }
 
         if(ending.equals("/return_test_database")) {
@@ -71,20 +71,21 @@ public class phabservlet1 extends HttpServlet {
 
     }
 
-    private void makeTestDatabase() {
+    private void makeTestDatabase(HttpServletResponse resp) {
         Connection c=null;
         Statement s=null;
         ResultSet rset=null;
         try {
+            resp.getWriter().write(" TEST ");
             s=c.createStatement();
             //select table from INFORMATION_SCHEMA.TABLES - lis of all the tables
             String strSelect = "SELECT * \n" +
                     "                 FROM INFORMATION_SCHEMA.TABLES \n" +
-                    "                 WHERE  TABLE_NAME = test_database2\n";
+                    "                 WHERE  TABLE_NAME = test_database\n";
 
 
             System.out.println("Creating table");
-            s.execute("create table test_database2\n" +
+            s.execute("create table test_database\n" +
                         "(\n" +
                         "    one   serial       not null\n" +
                         "        constraint test_database_pkey\n" +
@@ -115,7 +116,7 @@ public class phabservlet1 extends HttpServlet {
                     "                 FROM INFORMATION_SCHEMA.TABLES \n" +
                     "                 WHERE  TABLE_NAME = test_database\n";
 
-            String sqlStr = "SELECT * FROM test_database2;";
+            String sqlStr = "SELECT * FROM test_database;";
             ResultSet rset = s.executeQuery(sqlStr);
             while (rset.next()) {
                 resp.getWriter().write(rset.getInt("one"));
