@@ -20,7 +20,7 @@ public class phabservlet1 extends HttpServlet {
 
         resp.setContentType("test");
 
-        try { c = DriverManager.getConnection("JDBC_DATABASE_URL"); } catch (Exception e) {}
+        try { c = DriverManager.getConnection("JDBC_DATABASE_URL"); } catch (Exception e) {System.out.println(e.getMessage());}
 
         String ending = req.getServletPath();
         if(ending.equals("/text_database")) {
@@ -52,7 +52,7 @@ public class phabservlet1 extends HttpServlet {
     }
 
     private void createTestDatabase(HttpServletResponse resp) {
-        Connection c=null;
+
         Statement s=null;
         ResultSet rset=null;
         try {
