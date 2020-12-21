@@ -20,12 +20,8 @@ public class phabservlet1 extends HttpServlet {
 
         resp.setContentType("test");
 
+        try { Class.forName("org.postgresql.Driver"); } catch (Exception e) {resp.getWriter().write(e.getMessage()); }
         try { c = DriverManager.getConnection("JDBC_DATABASE_URL"); } catch (Exception e) {resp.getWriter().write(e.getMessage());}
-        try {
-            // Registers the driver
-            Class.forName("org.postgresql.Driver");
-        } catch (Exception e) {resp.getWriter().write(e.getMessage());
-        }
 
         String ending = req.getServletPath();
         if(ending.equals("/text_database")) {
