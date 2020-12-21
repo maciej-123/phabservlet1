@@ -55,20 +55,28 @@ public class phabservlet1 extends HttpServlet {
         resp.getWriter().write("Thank you client! "+reqBody);
     }
 
+    private String strSelect;
     private void createTestDatabase(HttpServletResponse resp) throws IOException{
 
         try {
             resp.getWriter().write("CreateTestDatabase");
             Statement s=c.createStatement();
             //select table from INFORMATION_SCHEMA.TABLES - lis of all the tables
-            String strSelect = "SELECT * \n" +
-                    "                 FROM INFORMATION_SCHEMA.TABLES \n" +
-                    "                 WHERE  TABLE_NAME = test_database\n";
 
-            resp.getWriter().write(" #1 ");
+            try {
+               strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test_database";
+            }
+            catch(Exception e)
+            {
+                resp.getWriter().write(e.getMessage());
+            }
+
 
             ResultSet rset = s.executeQuery(strSelect);
+            resp.getWriter().write(" #2 ");
             if (!rset.next()) {
+
+                resp.getWriter().write(" #3 ");
 
                 s.execute("create table test_database\n" +
                         "(\n" +
