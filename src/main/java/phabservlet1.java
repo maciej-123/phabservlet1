@@ -64,6 +64,9 @@ public class phabservlet1 extends HttpServlet {
             String strSelect = "SELECT * \n" +
                     "                 FROM INFORMATION_SCHEMA.TABLES \n" +
                     "                 WHERE  TABLE_NAME = test_database\n";
+
+            resp.getWriter().write(" #1 ");
+
             ResultSet rset = s.executeQuery(strSelect);
             if (!rset.next()) {
 
@@ -78,10 +81,11 @@ public class phabservlet1 extends HttpServlet {
                         "\n" +
                         "alter table test_database\n" +
                         "    owner to postgres;\n" +
-                        "\n" +
-                        "INSERT INTO public.test_database (one, two, three) VALUES (1, 'a', 'b');\n" +
-                        "INSERT INTO public.test_database (one, two, three) VALUES (2, 'c', 'd');\n" +
-                        "INSERT INTO public.test_database (one, two, three) VALUES (3, 'e', 'f');");
+                        "\n" );
+
+                s.execute("INSERT INTO public.test_database (one, two, three) VALUES (1, 'a', 'b');\n");
+                s.execute("INSERT INTO public.test_database (one, two, three) VALUES (2, 'c', 'd');\n");
+                s.execute("INSERT INTO public.test_database (one, two, three) VALUES (3, 'e', 'f');");
             }
             else
             {
