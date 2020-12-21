@@ -20,7 +20,7 @@ public class phabservlet1 extends HttpServlet {
 
         resp.setContentType("test");
 
-        try { c = DriverManager.getConnection("JDBC_DATABASE_URL"); } catch (Exception e) {System.out.println(e.getMessage());}
+        try { c = DriverManager.getConnection("JDBC_DATABASE_URL"); } catch (Exception e) {resp.setContentType(e.getMessage());}
 
         String ending = req.getServletPath();
         if(ending.equals("/text_database")) {
@@ -53,16 +53,14 @@ public class phabservlet1 extends HttpServlet {
 
     private void createTestDatabase(HttpServletResponse resp) {
 
-        Statement s=null;
-        ResultSet rset=null;
         try {
             resp.getWriter().write("CreateTestDatabase");
-            s=c.createStatement();
+            Statement s=c.createStatement();
             //select table from INFORMATION_SCHEMA.TABLES - lis of all the tables
             String strSelect = "SELECT * \n" +
                     "                 FROM INFORMATION_SCHEMA.TABLES \n" +
                     "                 WHERE  TABLE_NAME = test_database\n";
-            rset = s.executeQuery(strSelect);
+            ResultSet rset = s.executeQuery(strSelect);
             if (!rset.next()) {
 
                 s.execute("create table test_database\n" +
@@ -90,7 +88,7 @@ public class phabservlet1 extends HttpServlet {
 
         }
         catch (Exception e){
-            System.err.println(e.getMessage());
+            resp.setContentType(e.getMessage());
         }
     }
 
@@ -115,7 +113,7 @@ public class phabservlet1 extends HttpServlet {
         }
         catch(Exception e)
         {
-
+            resp.setContentType(e.getMessage());
         }
 
     }
