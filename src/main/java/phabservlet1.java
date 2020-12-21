@@ -43,6 +43,14 @@ public class phabservlet1 extends HttpServlet {
 
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String reqBody=req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        resp.setContentType("text/html");
+
+        resp.getWriter().write("Thank you client! "+reqBody);
+    }
+
     private void createTestDatabase(HttpServletResponse resp) {
         Connection c=null;
         Statement s=null;
@@ -54,9 +62,9 @@ public class phabservlet1 extends HttpServlet {
             String strSelect = "SELECT * \n" +
                     "                 FROM INFORMATION_SCHEMA.TABLES \n" +
                     "                 WHERE  TABLE_NAME = test_database\n";
-
             rset = s.executeQuery(strSelect);
             if (!rset.next()) {
+
                 s.execute("create table test_database\n" +
                         "(\n" +
                         "    one   serial       not null\n" +
@@ -73,8 +81,12 @@ public class phabservlet1 extends HttpServlet {
                         "INSERT INTO public.test_database (one, two, three) VALUES (2, 'c', 'd');\n" +
                         "INSERT INTO public.test_database (one, two, three) VALUES (3, 'e', 'f');");
             }
+            else
+            {
+                resp.getWriter().write("already created");
+            }
 
-            resp.getWriter().write("createTestDatabase called");
+            resp.getWriter().write("CreateTestDatabase called");
 
         }
         catch (Exception e){
@@ -109,13 +121,9 @@ public class phabservlet1 extends HttpServlet {
     }
 
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String reqBody=req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        resp.setContentType("text/html");
 
-        resp.getWriter().write("Thank you client! "+reqBody);
-    }
+
+
 
 
 }
