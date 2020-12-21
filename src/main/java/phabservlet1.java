@@ -20,7 +20,7 @@ public class phabservlet1 extends HttpServlet {
 
         resp.setContentType("test");
 
-        try { c = DriverManager.getConnection("JDBC_DATABASE_URL"); } catch (Exception e) {resp.setContentType(e.getMessage());}
+        try { c = DriverManager.getConnection("JDBC_DATABASE_URL"); } catch (Exception e) {resp.getWriter().write(e.getMessage());}
 
         String ending = req.getServletPath();
         if(ending.equals("/text_database")) {
@@ -51,7 +51,7 @@ public class phabservlet1 extends HttpServlet {
         resp.getWriter().write("Thank you client! "+reqBody);
     }
 
-    private void createTestDatabase(HttpServletResponse resp) {
+    private void createTestDatabase(HttpServletResponse resp) throws IOException{
 
         try {
             resp.getWriter().write("CreateTestDatabase");
@@ -88,11 +88,12 @@ public class phabservlet1 extends HttpServlet {
 
         }
         catch (Exception e){
-            resp.setContentType(e.getMessage());
+
+            resp.getWriter().write(e.getMessage());
         }
     }
 
-    private void returnTestDatabase(HttpServletResponse resp)
+    private void returnTestDatabase(HttpServletResponse resp) throws IOException
     {
         try {
             resp.getWriter().write("ReturnTestDatabase");
@@ -113,7 +114,7 @@ public class phabservlet1 extends HttpServlet {
         }
         catch(Exception e)
         {
-            resp.setContentType(e.getMessage());
+            resp.getWriter().write(e.getMessage());
         }
 
     }
