@@ -92,14 +92,14 @@ public class phabservlet1 extends HttpServlet {
                 //create test table
                 s.execute("CREATE TABLE StockDBPaddington(\n" +
 
-                        "Manufacturer varchar(50))," +
-                        "Name varchar(100))," +
-                        "Quantity varchar(50))," +
+                        "Manufacturer varchar(50)," +
+                        "Name varchar(100)," +
+                        "Quantity varchar(50)," +
                         "SalesPrice smallmoney NOT NULL," +
                         "PurchasePrice smallmoney NOT NULL," +
                         "FullStock smallint NOT NULL," +
                         "LimitOne boolean," +
-                        "CurrentStock smallint NOT NULL"
+                        "CurrentStock smallint NOT NULL)"
                 );
 
 
