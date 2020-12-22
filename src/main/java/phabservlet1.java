@@ -14,6 +14,7 @@ import javax.servlet.http.*;
         {
                 "/text_database",
                 "/create_phab_paddington",
+                "/fill_phab_paddington",
                 "/create_test_database",
                 "/return_test_database",
                 "/alter_test_database"
@@ -49,6 +50,11 @@ public class phabservlet1 extends HttpServlet {
         if(ending.equals("/create_phab_paddington")) {
             createPHABPaddington(resp);
         }
+
+        if(ending.equals("/fill_phab_paddington")) {
+            fillPHABPaddington(resp);
+        }
+
 
 
         //Test database functions
@@ -113,7 +119,7 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void fillTestDatabase(HttpServletResponse resp) throws IOException
+    private void fillPHABPaddington(HttpServletResponse resp) throws IOException
     {
         try {
             resp.getWriter().write("Filling In PHAB Paddington Database");
