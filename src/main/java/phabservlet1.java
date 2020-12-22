@@ -66,7 +66,7 @@ public class phabservlet1 extends HttpServlet {
 
             //strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test";
 
-
+            strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
 
 
             ResultSet rset = s.executeQuery(strSelect);
