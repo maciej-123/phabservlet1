@@ -13,7 +13,7 @@ import javax.servlet.http.*;
 @WebServlet(urlPatterns=
         {
                 "/text_database",
-                "/create_phab_paddington_database",
+                "/create_phab_paddington",
                 "/create_test_database",
                 "/return_test_database",
                 "/alter_test_database"
