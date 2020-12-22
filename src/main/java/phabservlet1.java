@@ -122,14 +122,15 @@ public class phabservlet1 extends HttpServlet {
     private void fillPHABPaddington(HttpServletResponse resp) throws IOException
     {
         try {
-            resp.getWriter().write("Filling In PHAB Paddington Database");
+            resp.getWriter().write("Filling In PHAB Paddington Database\n");
             Statement s=c.createStatement();
 
             //ResultSet rset = s.executeQuery(strSelect);
 
-            s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('Test','###','###',11.11,22.22,10,1,10)");
+            String test = "###test###";
+            s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES (test,test,test,11.11,22.22,10,1,10)");
 
-            resp.getWriter().write("alterTestDatabase called");
+            resp.getWriter().write("\nalterTestDatabase called\n");
             if(s!=null){s.close();}
 
         }
