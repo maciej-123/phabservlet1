@@ -138,10 +138,10 @@ public class phabservlet1 extends HttpServlet {
 
 
             ResultSet rset = s.executeQuery(strSelect);
-            while (rset.next()) {
+
                 resp.getWriter().write(rset.getInt(1));
                 resp.getWriter().write(rset.getInt(2));
-            }
+
 
             resp.getWriter().write("returnTestDatabase called");
             if(rset!=null){rset.close();}
