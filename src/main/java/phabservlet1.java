@@ -136,17 +136,21 @@ public class phabservlet1 extends HttpServlet {
             //String strSelect = "SELECT *  FROM INFORMATION_SCHEMA.TABLES";
             String strSelect = "SELECT * FROM label";
 
-            String transfer = new String();
+            String transfer1 = new String();
+            String transfer2 = new String();
+
             resp.getWriter().write(" #1 ");
             ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
-            while (rset.next()) {
 
-                transfer= rset.getString("name");
+            while (rset.next()) {
+                transfer1 += String.valueOf(rset.getInt("id"));
+                transfer2 += rset.getString("name");
             }
 //
             resp.getWriter().write(" #3 ");
-            resp.getWriter().write(transfer);
+            resp.getWriter().write(transfer1);
+            resp.getWriter().write(transfer2);
 
             resp.getWriter().write("returnTestDatabase called");
             if(rset!=null){rset.close();}
