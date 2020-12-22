@@ -74,7 +74,7 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
 
             //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
-            strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = label";
+            strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
 
             ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
@@ -125,10 +125,7 @@ public class phabservlet1 extends HttpServlet {
         try {
             resp.getWriter().write("ReturnTestDatabase");
             Statement s = c.createStatement();
-            String strSelect = "SELECT * \n" +
-                    "                 FROM INFORMATION_SCHEMA.TABLES \n" +
-                    "                 WHERE  TABLE_NAME = label\n" +
-                    "                 SELECT * FROM label";
+            String strSelect = "SELECT *  FROM INFORMATION_SCHEMA.TABLES WHERE  TABLE_NAME = label SELECT * FROM label";
 
             ResultSet rset = s.executeQuery(strSelect);
             while (rset.next()) {
