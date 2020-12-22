@@ -124,7 +124,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("ReturnTestDatabase");
             Statement s = c.createStatement();
             //String strSelect = "SELECT *  FROM INFORMATION_SCHEMA.TABLES";
-            String strSelect = "SELECT * FROM TABLE_NAME = label";
+            String strSelect = "SELECT * FROM label";
 
 
             ResultSet rset = s.executeQuery(strSelect);
