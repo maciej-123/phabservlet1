@@ -65,8 +65,8 @@ public class phabservlet1 extends HttpServlet {
 
 
             //strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test";
-
-            strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+            strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = label";
+            //strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
 
 
             ResultSet rset = s.executeQuery(strSelect);
@@ -75,13 +75,16 @@ public class phabservlet1 extends HttpServlet {
 
                 resp.getWriter().write(" #3 ");
 
-                s.execute("CREATE TABLE label(\n" +
+//                s.execute("CREATE TABLE label(\n" +
+//
+//                        "id int PRIMARY KEY NOT NULL,"+
+//                        "name varchar(45))"
+//                );
 
-                        "id int PRIMARY KEY NOT NULL,"+
-                        "name varchar(45))"
-                );
 
 
+            s.execute("INSERT INTO public.label (id,name) VALUES (1,'2');\n");
+            s.execute("INSERT INTO public.label (id,name) VALUES (3,'4');\n");
 
 //                s.execute("create table test\n" +
 //                        "(\n" +
@@ -118,14 +121,13 @@ public class phabservlet1 extends HttpServlet {
             Statement s = c.createStatement();
             String strSelect = "SELECT * \n" +
                     "                 FROM INFORMATION_SCHEMA.TABLES \n" +
-                    "                 WHERE  TABLE_NAME = test_database\n" +
-                    "                 SELECT * FROM test_database";
+                    "                 WHERE  TABLE_NAME = label\n" +
+                    "                 SELECT * FROM label";
 
             ResultSet rset = s.executeQuery(strSelect);
             while (rset.next()) {
-                resp.getWriter().write(rset.getInt("one"));
-                resp.getWriter().write(rset.getInt("two"));
-                resp.getWriter().write(rset.getInt("three"));
+                resp.getWriter().write(rset.getInt("id"));
+                resp.getWriter().write(rset.getInt("name"));
             }
 
             resp.getWriter().write("returnTestDatabase called");
