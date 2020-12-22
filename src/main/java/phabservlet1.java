@@ -10,7 +10,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 
-@WebServlet(urlPatterns={"/text_database","/create_test_database","/return_test_database","/alter_test_database"},loadOnStartup = 1)
+@WebServlet(urlPatterns=
+        {
+                "/text_database",
+                "/create_phab_paddington_database",
+                "/create_test_database",
+                "/return_test_database",
+                "/alter_test_database"
+        },loadOnStartup = 1)
+
 public class phabservlet1 extends HttpServlet {
 
     private Connection c;
@@ -37,14 +45,19 @@ public class phabservlet1 extends HttpServlet {
             textDatabase t = new textDatabase(resp);
         }
 
+
+        if(ending.equals("/create_phab_paddington")) {
+            createPHABPaddington(resp);
+        }
+
+
+        //Test database functions
         if(ending.equals("/create_test_database")) {
             createTestDatabase(resp);
         }
-
         if(ending.equals("/return_test_database")) {
             returnTestDatabase(resp);
         }
-
         if(ending.equals("/alter_test_database")) {
             alterTestDatabase(resp);
         }
@@ -63,6 +76,47 @@ public class phabservlet1 extends HttpServlet {
 
         resp.getWriter().write("Thank you client! "+reqBody);
     }
+
+
+    private void createPHABPaddington(HttpServletResponse resp) throws IOException
+    {
+        try{
+            resp.getWriter().write("Creating PHAB Database for Paddington\n");
+            Statement s=c.createStatement();
+
+            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
+            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            if (!rset.next()) {
+                //create test table
+                s.execute("CREATE TABLE StockDBPaddington(\n" +
+
+                        "Manufacturer varchar(50))," +
+                        "Name varchar(100))," +
+                        "Quantity varchar(50))," +
+                        "SalesPrice smallmoney NOT NULL," +
+                        "PurchasePrice smallmoney NOT NULL," +
+                        "FullStock smallint NOT NULL," +
+                        "LimitOne boolean," +
+                        "CurrentStock smallint NOT NULL"
+                );
+            }
+            else
+            {
+                resp.getWriter().write(" Paddington database already created \n");
+            }
+
+            resp.getWriter().write("Function Call Finished");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
 
 
 
