@@ -64,7 +64,7 @@ public class phabservlet1 extends HttpServlet {
             //select table from INFORMATION_SCHEMA.TABLES - lis of all the tables
 
             try {
-               strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test_database;";
+               strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test;";
             }
             catch(Exception e)
             {
