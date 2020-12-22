@@ -63,32 +63,42 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
             //select table from INFORMATION_SCHEMA.TABLES - lis of all the tables
 
-
+            try {
+               strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test_database;";
+            }
+            catch(Exception e)
+            {
+                resp.getWriter().write(e.getMessage());
+            }
 
 
             ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
-
+            if (!rset.next()) {
 
                 resp.getWriter().write(" #3 ");
 
-                s.execute("create table test_database\n" +
+                s.execute("create table test\n" +
                         "(\n" +
                         "    one   serial       not null\n" +
-                        "        constraint test_database_pkey\n" +
+                        "        constraint test_pkey\n" +
                         "            primary key,\n" +
                         "    two   varchar(128) not null,\n" +
                         "    three varchar(128) not null\n" +
                         ");\n" +
                         "\n" +
-                        "alter table test_database\n" +
+                        "alter table test\n" +
                         "    owner to postgres;\n" +
                         "\n" );
 
-                s.execute("INSERT INTO public.test_database (one, two, three) VALUES (1, 'a', 'b');\n");
-                s.execute("INSERT INTO public.test_database (one, two, three) VALUES (2, 'c', 'd');\n");
-                s.execute("INSERT INTO public.test_database (one, two, three) VALUES (3, 'e', 'f');");
-
+                s.execute("INSERT INTO public.test (one, two, three) VALUES (1, 'a', 'b');\n");
+                s.execute("INSERT INTO public.test (one, two, three) VALUES (2, 'c', 'd');\n");
+                s.execute("INSERT INTO public.test (one, two, three) VALUES (3, 'e', 'f');");
+            }
+            else
+            {
+                resp.getWriter().write("already created");
+            }
 
             resp.getWriter().write("CreateTestDatabase called");
 
