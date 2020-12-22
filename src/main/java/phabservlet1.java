@@ -142,7 +142,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write(" #2 ");
             while (rset.next()) {
 
-                transfer= rset.getString("name")
+                transfer= rset.getString("name");
             }
 
             resp.getWriter().write(" #3 ");
