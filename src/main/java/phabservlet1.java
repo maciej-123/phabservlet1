@@ -63,42 +63,44 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
             //select table from INFORMATION_SCHEMA.TABLES - lis of all the tables
 
-            try {
-               strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test;";
-            }
-            catch(Exception e)
-            {
-                resp.getWriter().write(e.getMessage());
-            }
+
+            //strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test";
+
+
 
 
             ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
-            if (!rset.next()) {
+
 
                 resp.getWriter().write(" #3 ");
 
-                s.execute("create table test\n" +
-                        "(\n" +
-                        "    one   serial       not null\n" +
-                        "        constraint test_pkey\n" +
-                        "            primary key,\n" +
-                        "    two   varchar(128) not null,\n" +
-                        "    three varchar(128) not null\n" +
-                        ");\n" +
-                        "\n" +
-                        "alter table test\n" +
-                        "    owner to postgres;\n" +
-                        "\n" );
+                s.execute("CREATE TABLE label(\n" +
 
-                s.execute("INSERT INTO public.test (one, two, three) VALUES (1, 'a', 'b');\n");
-                s.execute("INSERT INTO public.test (one, two, three) VALUES (2, 'c', 'd');\n");
-                s.execute("INSERT INTO public.test (one, two, three) VALUES (3, 'e', 'f');");
-            }
-            else
-            {
-                resp.getWriter().write("already created");
-            }
+                        "id int PRIMARY KEY NOT NULL,"+
+                        "name varchar(45))"
+                );
+
+
+
+//                s.execute("create table test\n" +
+//                        "(\n" +
+//                        "    one   serial       not null\n" +
+//                        "        constraint test_pkey\n" +
+//                        "            primary key,\n" +
+//                        "    two   varchar(128) not null,\n" +
+//                        "    three varchar(128) not null\n" +
+//                        ");\n" +
+//                        "\n" +
+//                        "alter table test\n" +
+//                        "    owner to postgres;\n" +
+//                        "\n" );
+//
+//
+//                s.execute("INSERT INTO public.test (one, two, three) VALUES (1, 'a', 'b');\n");
+//                s.execute("INSERT INTO public.test (one, two, three) VALUES (2, 'c', 'd');\n");
+//                s.execute("INSERT INTO public.test (one, two, three) VALUES (3, 'e', 'f');");
+
 
             resp.getWriter().write("CreateTestDatabase called");
 
