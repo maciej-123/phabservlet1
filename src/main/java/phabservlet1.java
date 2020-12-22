@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 
-@WebServlet(urlPatterns={"/text_database","/create_test_database","/return_test_database"},loadOnStartup = 1)
+@WebServlet(urlPatterns={"/text_database","/create_test_database","/return_test_database","/alter_test_database"},loadOnStartup = 1)
 public class phabservlet1 extends HttpServlet {
 
     private Connection c;
@@ -18,17 +18,22 @@ public class phabservlet1 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        resp.setContentType("test");
 
+        //select driver
         try { Class.forName("org.postgresql.Driver"); } catch (Exception e) {resp.getWriter().write(e.getMessage()); }
+        //connect to database
         try {
             String dbUrl = System.getenv("JDBC_DATABASE_URL");
             c = DriverManager.getConnection(dbUrl);
-        } catch (Exception e) {resp.getWriter().write(e.getMessage());}
+        }
+        catch (Exception e) {resp.getWriter().write(e.getMessage());}
 
+
+        //
         String ending = req.getServletPath();
+
         if(ending.equals("/text_database")) {
-            //Database to contain simple text file form database
+            //Create simple text file form database
             textDatabase t = new textDatabase(resp);
         }
 
@@ -38,6 +43,10 @@ public class phabservlet1 extends HttpServlet {
 
         if(ending.equals("/return_test_database")) {
             returnTestDatabase(resp);
+        }
+
+        if(ending.equals("/alter_test_database")) {
+            alterTestDatabase(resp);
         }
 
 
@@ -55,57 +64,54 @@ public class phabservlet1 extends HttpServlet {
         resp.getWriter().write("Thank you client! "+reqBody);
     }
 
+
+
     private String strSelect;
     private void createTestDatabase(HttpServletResponse resp) throws IOException{
 
         try {
             resp.getWriter().write("CreateTestDatabase");
             Statement s=c.createStatement();
-            //select table from INFORMATION_SCHEMA.TABLES - lis of all the tables
 
-
-            //strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test";
+            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
             strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = label";
-            //strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            resp.getWriter().write(" #2 ");
+
+            //create test table
+            s.execute("CREATE TABLE label(\n" +
+
+                    "id int PRIMARY KEY NOT NULL,"+
+                    "name varchar(45))"
+            );
+
+            resp.getWriter().write("CreateTestDatabase called");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void alterTestDatabase(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("AlterTestDatabase");
+            Statement s=c.createStatement();
+            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
+            strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = label";
 
 
             ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
 
 
-                resp.getWriter().write(" #3 ");
+            s.execute("INSERT INTO public.label (id,name) VALUES (1,'2')");
+            s.execute("INSERT INTO public.label (id,name) VALUES (3,'4')");
 
-//                s.execute("CREATE TABLE label(\n" +
-//
-//                        "id int PRIMARY KEY NOT NULL,"+
-//                        "name varchar(45))"
-//                );
-
-
-
-            s.execute("INSERT INTO public.label (id,name) VALUES (1,'2');\n");
-            s.execute("INSERT INTO public.label (id,name) VALUES (3,'4');\n");
-
-//                s.execute("create table test\n" +
-//                        "(\n" +
-//                        "    one   serial       not null\n" +
-//                        "        constraint test_pkey\n" +
-//                        "            primary key,\n" +
-//                        "    two   varchar(128) not null,\n" +
-//                        "    three varchar(128) not null\n" +
-//                        ");\n" +
-//                        "\n" +
-//                        "alter table test\n" +
-//                        "    owner to postgres;\n" +
-//                        "\n" );
-//
-//
-//                s.execute("INSERT INTO public.test (one, two, three) VALUES (1, 'a', 'b');\n");
-//                s.execute("INSERT INTO public.test (one, two, three) VALUES (2, 'c', 'd');\n");
-//                s.execute("INSERT INTO public.test (one, two, three) VALUES (3, 'e', 'f');");
-
-
-            resp.getWriter().write("CreateTestDatabase called");
+            resp.getWriter().write("alterTestDatabase called");
 
         }
         catch (Exception e){
