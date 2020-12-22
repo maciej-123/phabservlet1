@@ -79,15 +79,22 @@ public class phabservlet1 extends HttpServlet {
             ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
 
-            //create test table
-            s.execute("CREATE TABLE label(\n" +
+            if (!rset.next()) {
+                //create test table
+                s.execute("CREATE TABLE label(\n" +
 
-                    "id int PRIMARY KEY NOT NULL,"+
-                    "name varchar(45))"
-            );
+                        "id int PRIMARY KEY NOT NULL," +
+                        "name varchar(45))"
+                );
+            }
+            else
+            {
+                resp.getWriter().write(" Already Created ");
+            }
 
             resp.getWriter().write("CreateTestDatabase called");
-
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
         }
         catch (Exception e){
 
@@ -110,12 +117,15 @@ public class phabservlet1 extends HttpServlet {
             s.execute("INSERT INTO public.label (id,name) VALUES (3,'4')");
 
             resp.getWriter().write("alterTestDatabase called");
+            if(s!=null){s.close();}
 
         }
         catch (Exception e){
 
             resp.getWriter().write(e.getMessage());
         }
+
+
     }
 
     private void returnTestDatabase(HttpServletResponse resp) throws IOException
@@ -129,11 +139,13 @@ public class phabservlet1 extends HttpServlet {
 
             ResultSet rset = s.executeQuery(strSelect);
             while (rset.next()) {
-                resp.getWriter().write(rset.getInt("id"));
-                resp.getWriter().write(rset.getInt("name"));
+                resp.getWriter().write(rset.getInt(1));
+                resp.getWriter().write(rset.getInt(2));
             }
 
             resp.getWriter().write("returnTestDatabase called");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
         }
         catch(Exception e)
         {
