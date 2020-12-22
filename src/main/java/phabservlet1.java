@@ -15,6 +15,7 @@ import javax.servlet.http.*;
                 "/text_database",
                 "/create_phab_paddington",
                 "/fill_phab_paddington",
+                "/return_phab_paddington",
                 "/create_test_database",
                 "/return_test_database",
                 "/alter_test_database"
@@ -53,6 +54,10 @@ public class phabservlet1 extends HttpServlet {
 
         if(ending.equals("/fill_phab_paddington")) {
             fillPHABPaddington(resp);
+        }
+
+        if(ending.equals("/return_phab_paddington")) {
+            returnPHABPaddington(resp);
         }
 
 
@@ -140,6 +145,39 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
+    private void returnPHABPaddington(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("ReturnTestDatabase");
+            Statement s = c.createStatement();
+            //String strSelect = "SELECT *  FROM INFORMATION_SCHEMA.TABLES";
+            String strSelect = "SELECT * FROM StockDBPaddington";
+
+            String transfer1 = new String();
+            String transfer2 = new String();
+
+            resp.getWriter().write(" #1 ");
+            ResultSet rset = s.executeQuery(strSelect);
+            resp.getWriter().write(" #2 ");
+
+            while (rset.next()) {
+                transfer1 += rset.getString("Manufacturer");
+                transfer2 += rset.getString("Name");
+            }
+//
+            resp.getWriter().write(" #3 ");
+            resp.getWriter().write(transfer1);
+            resp.getWriter().write(transfer2);
+
+            resp.getWriter().write("returnTestDatabase called");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch(Exception e)
+        {
+            resp.getWriter().write(e.getMessage());
+        }
+    }
 
     private void createTestDatabase(HttpServletResponse resp) throws IOException
     {
