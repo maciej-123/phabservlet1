@@ -63,18 +63,12 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
             //select table from INFORMATION_SCHEMA.TABLES - lis of all the tables
 
-            try {
-               strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = test_database";
-            }
-            catch(Exception e)
-            {
-                resp.getWriter().write(e.getMessage());
-            }
+
 
 
             ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
-            if (!rset.next()) {
+
 
                 resp.getWriter().write(" #3 ");
 
@@ -94,11 +88,7 @@ public class phabservlet1 extends HttpServlet {
                 s.execute("INSERT INTO public.test_database (one, two, three) VALUES (1, 'a', 'b');\n");
                 s.execute("INSERT INTO public.test_database (one, two, three) VALUES (2, 'c', 'd');\n");
                 s.execute("INSERT INTO public.test_database (one, two, three) VALUES (3, 'e', 'f');");
-            }
-            else
-            {
-                resp.getWriter().write("already created");
-            }
+
 
             resp.getWriter().write("CreateTestDatabase called");
 
