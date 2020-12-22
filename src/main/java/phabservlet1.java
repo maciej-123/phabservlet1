@@ -95,10 +95,10 @@ public class phabservlet1 extends HttpServlet {
                         "Manufacturer varchar(50)," +
                         "Name varchar(100)," +
                         "Quantity varchar(50)," +
-                        "SalesPrice smallmoney NOT NULL," +
-                        "PurchasePrice smallmoney NOT NULL," +
+                        "SalesPrice float NOT NULL," +
+                        "PurchasePrice float NOT NULL," +
                         "FullStock smallint NOT NULL," +
-                        "LimitOne boolean," +
+                        "LimitOne int," +
                         "CurrentStock smallint NOT NULL)"
                 );
 
