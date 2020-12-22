@@ -101,10 +101,10 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("AlterTestDatabase");
             Statement s=c.createStatement();
             //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
-            strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = label";
+            //strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = label";
 
 
-            ResultSet rset = s.executeQuery(strSelect);
+            //ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
 
 
@@ -125,7 +125,7 @@ public class phabservlet1 extends HttpServlet {
         try {
             resp.getWriter().write("ReturnTestDatabase");
             Statement s = c.createStatement();
-            String strSelect = "SELECT *  FROM INFORMATION_SCHEMA.TABLES WHERE  TABLE_NAME = label SELECT * FROM label";
+            String strSelect = "SELECT *  FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = label";
 
             ResultSet rset = s.executeQuery(strSelect);
             while (rset.next()) {
