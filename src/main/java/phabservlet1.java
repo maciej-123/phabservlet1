@@ -88,7 +88,7 @@ public class phabservlet1 extends HttpServlet {
             String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
 
             ResultSet rset = s.executeQuery(strSelect);
-            if (!rset.next()) {
+
                 //create test table
                 s.execute("CREATE TABLE StockDBPaddington(\n" +
 
@@ -101,11 +101,7 @@ public class phabservlet1 extends HttpServlet {
                         "LimitOne boolean," +
                         "CurrentStock smallint NOT NULL"
                 );
-            }
-            else
-            {
-                resp.getWriter().write(" Paddington database already created \n");
-            }
+
 
             resp.getWriter().write("Function Call Finished");
             if(rset!=null){rset.close();}
