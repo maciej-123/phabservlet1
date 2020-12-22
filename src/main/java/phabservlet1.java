@@ -128,7 +128,7 @@ public class phabservlet1 extends HttpServlet {
             //ResultSet rset = s.executeQuery(strSelect);
 
             String test = "###test###";
-            s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES (test,test,test,11.11,22.22,10,1,10)");
+            s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ("+test+","+test+","+test+",11.11,22.22,10,1,10)");
 
             resp.getWriter().write("\nalterTestDatabase called\n");
             if(s!=null){s.close();}
