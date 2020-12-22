@@ -113,7 +113,25 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
+    private void fillTestDatabase(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("Filling In PHAB Paddington Database");
+            Statement s=c.createStatement();
 
+            //ResultSet rset = s.executeQuery(strSelect);
+
+            s.execute("INSERT INTO public.label (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('Test','###','###',11.11,22.22,10,1,10)");
+
+            resp.getWriter().write("alterTestDatabase called");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
 
 
     private void createTestDatabase(HttpServletResponse resp) throws IOException
