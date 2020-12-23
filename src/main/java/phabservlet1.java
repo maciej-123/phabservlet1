@@ -85,8 +85,32 @@ public class phabservlet1 extends HttpServlet {
 
         if(urlPattern.equals("/decreaseStock")) {
 
-            resp.getWriter().write(SearchManufacturer);
-            resp.getWriter().write(SearchName);
+
+//            resp.getWriter().write(SearchManufacturer);
+//            resp.getWriter().write(SearchName);
+
+
+         try {
+             resp.getWriter().write("Test Edit\n");
+             Statement s = c.createStatement();
+
+             //fill database with test row
+             s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Name = SearchName;");
+
+             resp.getWriter().write("\nTestEditCalled\n");
+             if (s != null) {
+                 s.close();
+             }
+
+
+         }
+         catch(Exception e)
+         {
+             resp.getWriter().write(e.getMessage());
+         }
+
+
+
         }
 
 
