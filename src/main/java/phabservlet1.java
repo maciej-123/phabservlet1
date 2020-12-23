@@ -92,14 +92,13 @@ public class phabservlet1 extends HttpServlet {
 
             try {
 
-                resp.getWriter().write("Deleting Test Rows Paddington\n");
+                resp.getWriter().write("Editing Rows Paddington\n");
                 Statement s=c.createStatement();
 
-                s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='test'");
-                s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='Test'");
-                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 14 WHERE Manufacturer = 'Vicks'");
 
-                resp.getWriter().write("\nalterTestDatabase called");
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 1000 WHERE Name = 'tabs'");
+
+                resp.getWriter().write("\nDecrease Stock Called");
                 if(s!=null){s.close();}
 
             }
