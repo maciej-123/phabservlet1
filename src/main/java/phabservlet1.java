@@ -118,21 +118,10 @@ public class phabservlet1 extends HttpServlet {
         {
             resp.getWriter().write("\nDecreasingStock\n");
 
-
-//            resp.getWriter().write("\n");
-//            resp.getWriter().write(length);
-//            resp.getWriter().write("\n");
-//            resp.getWriter().write(message);
-//            resp.getWriter().write("\n");
-            resp.getWriter().write("Hi"+reqBody);
             resp.getWriter().write("\n");
-            resp.getWriter().write("1"+message.substring(1,4));
+            resp.getWriter().write(message.substring(0,message.indexOf('@')));
             resp.getWriter().write("\n");
-            resp.getWriter().write("2"+reqBody.substring(1,4));
-            resp.getWriter().write("\n");
-            resp.getWriter().write("3"+message.substring(0,message.indexOf('@')));
-            resp.getWriter().write("\n");
-            resp.getWriter().write("4"+message.substring(message.indexOf('@')+1,length));
+            resp.getWriter().write(message.substring(message.indexOf('@')+1,length));
 
 
         }
