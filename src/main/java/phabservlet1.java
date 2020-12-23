@@ -99,8 +99,6 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write(SearchName);
             resp.getWriter().write("\n");
 
-            SearchName = "tabs";
-
 
 
             String padded_Manufacturer = String.format("%-11s", SearchManufacturer);
@@ -108,7 +106,6 @@ public class phabservlet1 extends HttpServlet {
 
 
             try {
-
                 resp.getWriter().write("Editing Rows Paddington\n");
                 Statement s=c.createStatement();
 
@@ -207,12 +204,6 @@ public class phabservlet1 extends HttpServlet {
 
 
 
-    private void decreaseStock(HttpServletResponse resp) throws IOException
-    {
-
-
-    }
-
 
 
     private void createPHABPaddington(HttpServletResponse resp) throws IOException
@@ -275,7 +266,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("Filling In PHAB Paddington Database\n");
             Statement s=c.createStatement();
 
-            boolean lockCreate = true;
+            boolean lockCreate = false;
             //fill database with test row
 
             if(lockCreate == true)
@@ -417,7 +408,7 @@ public class phabservlet1 extends HttpServlet {
     {
         try {
 
-            boolean deleteLock = true;
+            boolean deleteLock = false;
 
             resp.getWriter().write("Deleting Test Rows Paddington\n");
 
