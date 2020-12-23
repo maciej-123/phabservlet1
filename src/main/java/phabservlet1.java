@@ -1,9 +1,6 @@
 import java.io.*;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.stream.Collectors;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -160,12 +157,24 @@ public class phabservlet1 extends HttpServlet {
             ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
 
+            ResultSetMetaData rsmd = rset.getMetaData();
+            int colNum = rsmd.getColumnCount();
+            resp.getWriter().write( "\n");
             while (rset.next()) {
                 transfer1 += rset.getString("Manufacturer");
                 transfer2 += rset.getString("Name");
+
+
+                //https://stackoverflow.com/questions/15444982/how-to-display-or-print-the-contents-of-a-database-table-as-is
+                //code for printing out table
+                for(int n = 0; n < colNum; n++)
+                {
+                    resp.getWriter().write(rset.getString(n) + " ");
+                }
+                resp.getWriter().write( "\n");
             }
 //
-            resp.getWriter().write(" #3 ");
+            resp.getWriter().write(" #3 \n\n");
             resp.getWriter().write(transfer1);
             resp.getWriter().write(transfer2);
 
