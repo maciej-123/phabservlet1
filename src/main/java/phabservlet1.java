@@ -130,7 +130,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("#1");
             try {
                 resp.getWriter().write("Filling In PHAB Paddington Database\n");
-                Statement s=c.createStatement();
+                //Statement s=c.createStatement();
 //
 //                //fill database with test row
 //                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
