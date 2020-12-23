@@ -92,10 +92,12 @@ public class phabservlet1 extends HttpServlet {
 
         if(urlPattern.equals("/_decreaseStock")) {
 
-            resp.getWriter().write("TEST");
+            resp.getWriter().write("TEST\n");
 
             resp.getWriter().write(SearchManufacturer);
+            resp.getWriter().write("\n");
             resp.getWriter().write(SearchName);
+            resp.getWriter().write("\n");
 
             SearchName = "tabs";
 
@@ -113,8 +115,8 @@ public class phabservlet1 extends HttpServlet {
 //                SearchManufacturer += " ";
 //            }
 //
-//            resp.getWriter().write(SearchManufacturer.length());
-//            resp.getWriter().write(SearchName.length());
+            resp.getWriter().write(SearchManufacturer.length());
+            resp.getWriter().write(SearchName.length());
 
 
         }
