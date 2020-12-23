@@ -104,22 +104,22 @@ public class phabservlet1 extends HttpServlet {
             int NameLength = SearchName.length();
             int LengthManufacturer = SearchName.length();
 
-//            //append spaces
-//            for(int n = 0; n <= 20 - NameLength; n++)
-//            {
-//                SearchName += " ";
-//            }
+            //append spaces
+            for(int n = 0; n <= 20 - NameLength; n++)
+            {
+                SearchName += " ";
+            }
+
+            for(int n = 0; n<=11 - LengthManufacturer; n++)
+            {
+                SearchManufacturer += " ";
+            }
+
+//            NameLength = SearchName.length();
+//            LengthManufacturer = SearchManufacturer.length();
 //
-//            for(int n = 0; n<=11 - LengthManufacturer; n++)
-//            {
-//                SearchManufacturer += " ";
-//            }
-
-            NameLength = SearchName.length();
-            LengthManufacturer = SearchManufacturer.length();
-
-            resp.getWriter().write(NameLength);
-            resp.getWriter().write(LengthManufacturer);
+//            resp.getWriter().write(NameLength);
+//            resp.getWriter().write(LengthManufacturer);
 
 
         }
