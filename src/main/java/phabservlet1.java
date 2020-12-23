@@ -102,13 +102,16 @@ public class phabservlet1 extends HttpServlet {
 
 
 
-
             try {
                 resp.getWriter().write("Editing Rows Paddington\n");
                 Statement s=c.createStatement();
 
+                String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
 
-                //s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 500 WHERE Name = 'tabs                ';");
+                ResultSet rset = s.executeQuery(strSelect);
+                resp.getWriter().write(rset.getString("CurrentStock"));
+
+
 
                 s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 7000 WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';");
 
@@ -532,11 +535,4 @@ public class phabservlet1 extends HttpServlet {
         }
 //
     }
-
-
-
-
-
-
-
 }
