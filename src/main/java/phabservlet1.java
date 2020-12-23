@@ -110,7 +110,7 @@ public class phabservlet1 extends HttpServlet {
 
                 //s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 500 WHERE Name = 'tabs                ';");
 
-                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 400 WHERE Name = "+SearchName+";");
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 1000 WHERE Name = 'vaporub';");
 
                 resp.getWriter().write("\nDecrease Stock Called");
                 if(s!=null){s.close();}
@@ -310,7 +310,7 @@ public class phabservlet1 extends HttpServlet {
 
                 //Digestion
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','blackcurrant','12 sachets',8,7.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte',lemon','12 sachets',8,7.3,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','lemon','12 sachets',8,7.3,20,0,20)");
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','chewable','24 tablets',4.2,3.5,25,0,25)");
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('senokot','max','10 tablets',3,2.7,10,0,10)");
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','advance','300ml',10,8.1,10,0,10)");
