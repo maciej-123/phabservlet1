@@ -145,40 +145,39 @@ public class phabservlet1 extends HttpServlet {
     private void returnPHABPaddington(HttpServletResponse resp) throws IOException
     {
         try {
-            resp.getWriter().write("ReturnTestDatabase");
-            Statement s = c.createStatement();
-            //String strSelect = "SELECT *  FROM INFORMATION_SCHEMA.TABLES";
+            resp.getWriter().write("PHAB Stock Database Paddington Branch\n\n");
+
+            resp.getWriter().write("Manufacturer|Name|Quantity|SalesPrice|PurchasePrice|FullStock|LimitOne|CurrentStock\n");
+
+            //select Paddington database
             String strSelect = "SELECT * FROM StockDBPaddington";
 
-            String transfer1 = new String();
-            String transfer2 = new String();
-
+            //execute selection command
+            Statement s = c.createStatement();
             resp.getWriter().write(" #1 ");
             ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
 
+            //get number of columns
             ResultSetMetaData rsmd = rset.getMetaData();
             int colNum = rsmd.getColumnCount();
+
             resp.getWriter().write( "\n");
             while (rset.next()) {
-                transfer1 += rset.getString("Manufacturer");
-                transfer2 += rset.getString("Name");
-
-
                 //https://stackoverflow.com/questions/15444982/how-to-display-or-print-the-contents-of-a-database-table-as-is
-                //code for printing out table
+                //print entire table
                 for(int n = 1; n <= colNum; n++)
                 {
                     resp.getWriter().write(rset.getString(n) + " ");
                 }
                 resp.getWriter().write( "\n");
             }
-//
-            resp.getWriter().write(" #3 \n\n");
-            resp.getWriter().write(transfer1);
-            resp.getWriter().write(transfer2);
 
-            resp.getWriter().write("returnTestDatabase called");
+            resp.getWriter().write(" #3");
+
+            resp.getWriter().write("\n\nPrint Table Complete");
+
+            //close connection
             if(rset!=null){rset.close();}
             if(s!=null){s.close();}
         }
