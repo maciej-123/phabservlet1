@@ -94,6 +94,7 @@ public class phabservlet1 extends HttpServlet {
              resp.getWriter().write("Test Edit\n");
              Statement s = c.createStatement();
 
+             SearchName = "Vaporub";
              //fill database with test row
              s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Name = " + SearchName + ";");
 
