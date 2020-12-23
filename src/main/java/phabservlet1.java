@@ -103,9 +103,22 @@ public class phabservlet1 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String reqBody=req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        resp.setContentType("text/html");
 
+        resp.setContentType("text/html");
         resp.getWriter().write("Thank you client! "+reqBody);
+
+        if(reqBody == "decreaseStock")
+        {
+            resp.getWriter().write("\nDecreasingStock\n");
+
+        }
+
+        if(reqBody == "replenishStock")
+        {
+            resp.getWriter().write("\nSetting Stock to Max\n");
+        }
+
+
     }
 
 
