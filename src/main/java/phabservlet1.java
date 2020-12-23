@@ -108,9 +108,11 @@ public class phabservlet1 extends HttpServlet {
 
                 String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
 
-                ResultSet rset = s.executeQuery(strSelect);
-                resp.getWriter().write(rset.getString("CurrentStock"));
 
+                ResultSet rset = s.executeQuery(strSelect);
+                while(rset.next()) {
+                    resp.getWriter().write(rset.getString("CurrentStock"));
+                }
 
 
                 s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 7000 WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';");
