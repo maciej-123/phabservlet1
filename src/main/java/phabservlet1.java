@@ -18,6 +18,9 @@ import javax.servlet.http.*;
                 "/delete_phab_paddington",
                 "/return_phab_paddington",
 
+                "/decreaseStock",
+                "/replenishStock",
+
                 "/create_test_database",
                 "/return_test_database",
                 "/alter_test_database"
@@ -42,40 +45,40 @@ public class phabservlet1 extends HttpServlet {
 
 
         //get current URL pattern
-        String ending = req.getServletPath();
+        String urlPattern = req.getServletPath();
 
         //return a simple text database
-        if(ending.equals("/text_database")) {
+        if(urlPattern.equals("/text_database")) {
             textDatabase t = new textDatabase(resp);
         }
 
 
         //Paddington Databases
         //create PHAB Paddington Database
-        if(ending.equals("/create_phab_paddington")) {
+        if(urlPattern.equals("/create_phab_paddington")) {
             createPHABPaddington(resp);
         }
 
         //fill with test variable
-        if(ending.equals("/testfill_phab_paddington")) {
+        if(urlPattern.equals("/testfill_phab_paddington")) {
             testFillPHABPaddington(resp);
         }
 
-        if(ending.equals("/fill_phab_paddington")) {
+        if(urlPattern.equals("/fill_phab_paddington")) {
             fillPHABPaddington(resp);
         }
 
 
 
-        if(ending.equals("/testdelete_phab_paddington")) {
+        if(urlPattern.equals("/testdelete_phab_paddington")) {
             delTestPHABPaddington(resp);
         }
 
-        if(ending.equals("/return_phab_paddington")) {
+        if(urlPattern.equals("/return_phab_paddington")) {
             returnPHABPaddington(resp);
         }
 
-        if(ending.equals("/delete_phab_paddington")) {
+        if(urlPattern.equals("/delete_phab_paddington")) {
             delAllPHABPaddington(resp);
         }
 
@@ -83,13 +86,13 @@ public class phabservlet1 extends HttpServlet {
 
 
         //Test database functions
-        if(ending.equals("/create_test_database")) {
+        if(urlPattern.equals("/create_test_database")) {
             createTestDatabase(resp);
         }
-        if(ending.equals("/return_test_database")) {
+        if(urlPattern.equals("/return_test_database")) {
             returnTestDatabase(resp);
         }
-        if(ending.equals("/alter_test_database")) {
+        if(urlPattern.equals("/alter_test_database")) {
             alterTestDatabase(resp);
         }
 
@@ -107,13 +110,15 @@ public class phabservlet1 extends HttpServlet {
         resp.setContentType("text/html");
         resp.getWriter().write("Thank you client! "+reqBody);
 
-        if(reqBody == "decreaseStock")
+
+        String urlPattern = req.getServletPath();
+        if(urlPattern.equals("/decreaseStock"))
         {
             resp.getWriter().write("\nDecreasingStock\n");
 
         }
 
-        if(reqBody == "replenishStock")
+        if(urlPattern.equals("/replenishStock"))
         {
             resp.getWriter().write("\nSetting Stock to Max\n");
         }
@@ -261,7 +266,7 @@ public class phabservlet1 extends HttpServlet {
         try {
             resp.getWriter().write("PHAB Stock Database Paddington Branch\n\n");
 
-            resp.getWriter().write("Manufacturer|Name|Quantity|SalesPrice|PurchasePrice|FullStock|LimitOne|CurrentStock\n");
+            resp.getWriter().write("Manufacturer\t|Name\t|Quantity\t|SalesPrice|PurchasePrice|FullStock|LimitOne|CurrentStock\n");
 
             //select Paddington database
             String strSelect = "SELECT * FROM StockDBPaddington";
