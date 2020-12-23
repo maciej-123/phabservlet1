@@ -110,12 +110,18 @@ public class phabservlet1 extends HttpServlet {
 
 
                 ResultSet rset = s.executeQuery(strSelect);
+                int cs = -1;
                 while(rset.next()) {
-                    resp.getWriter().write(rset.getString("CurrentStock"));
+                    resp.getWriter().write(rset.getInt("CurrentStock"));
+                    cs = rset.getInt("CurrentStock");
                 }
 
+                cs--;
 
-                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 7000 WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';");
+                if(cs >= 0) {
+                    s.execute("UPDATE public.StockDBPaddington SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
+                }
+
 
                 resp.getWriter().write("\nDecrease Stock Called");
                 if(s!=null){s.close();}
