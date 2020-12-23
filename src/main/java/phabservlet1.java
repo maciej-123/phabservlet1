@@ -86,8 +86,27 @@ public class phabservlet1 extends HttpServlet {
         if(urlPattern.equals("/decreaseStock")) {
 
 
-//            resp.getWriter().write(SearchManufacturer);
-//            resp.getWriter().write(SearchName);
+            resp.getWriter().write(SearchManufacturer);
+            resp.getWriter().write(SearchName);
+
+            SearchName = "tabs";
+
+            int NameLength = SearchName.length();
+            int LengthManufacturer = SearchName.length();
+
+            //append spaces
+            for(int n = 1; n <= 20 - NameLength; n++)
+            {
+                SearchName += " ";
+            }
+
+            for(int n = 1; n<11 - LengthManufacturer; n++)
+            {
+                SearchManufacturer += " ";
+            }
+
+            resp.getWriter().write(SearchManufacturer.length());
+            resp.getWriter().write(SearchName.length());
 
 
             try {
@@ -96,10 +115,17 @@ public class phabservlet1 extends HttpServlet {
                 Statement s=c.createStatement();
 
 
-                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 500 WHERE Name = 'tabs                ';");
+
+                //s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 500 WHERE Name = 'tabs                ';");
+
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 400 WHERE Name = "+SearchName+";");
 
                 resp.getWriter().write("\nDecrease Stock Called");
                 if(s!=null){s.close();}
+
+                SearchName = "";
+                SearchManufacturer = "";
+
 
             }
             catch (Exception e){
