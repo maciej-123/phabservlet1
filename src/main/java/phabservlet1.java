@@ -105,7 +105,7 @@ public class phabservlet1 extends HttpServlet {
             int LengthManufacturer = SearchName.length();
 
             //append spaces
-            for(int n = 0; n <= 20 - NameLength; n++)
+            for(int n = 0; n <= 20 - NameLength-1; n++)
             {
                 SearchName += " ";
             }
