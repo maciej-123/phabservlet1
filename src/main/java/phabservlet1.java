@@ -91,6 +91,7 @@ public class phabservlet1 extends HttpServlet {
         }
 
         if(urlPattern.equals("/_decreaseStock")) {
+
             resp.getWriter().write("TEST");
 
             resp.getWriter().write(SearchManufacturer);
@@ -102,18 +103,19 @@ public class phabservlet1 extends HttpServlet {
             int LengthManufacturer = SearchName.length();
 
             //append spaces
-            for(int n = 0; n <= 20 - NameLength; n++)
-            {
-                SearchName += " ";
-            }
-
-            for(int n = 0; n<=11 - LengthManufacturer; n++)
-            {
-                SearchManufacturer += " ";
-            }
+//            for(int n = 0; n <= 20 - NameLength; n++)
+//            {
+//                SearchName += " ";
+//            }
+//
+//            for(int n = 0; n<=11 - LengthManufacturer; n++)
+//            {
+//                SearchManufacturer += " ";
+//            }
 
             resp.getWriter().write(SearchManufacturer.length());
             resp.getWriter().write(SearchName.length());
+
 
         }
 
@@ -152,7 +154,7 @@ public class phabservlet1 extends HttpServlet {
 
 
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/decreaseStock"))
+        if(urlPattern.equals("/_decreaseStock"))
         {
             resp.getWriter().write("\nDecreasingStock\n");
 
@@ -171,13 +173,6 @@ public class phabservlet1 extends HttpServlet {
                 SearchManufacturer = manufacturer;
                 SearchName = name;
 
-                //Statement s=c.createStatement();
-//
-//                //fill database with test row
-//                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
-//
-//                resp.getWriter().write("\nalterTestDatabase called\n");
-//                if(s!=null){s.close();}
 
             }
             catch (Exception e){
