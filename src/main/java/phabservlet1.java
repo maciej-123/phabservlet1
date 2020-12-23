@@ -170,7 +170,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("Filling In PHAB Paddington Database\n");
             Statement s=c.createStatement();
 
-            boolean lockCreate = false;
+            boolean lockCreate = true;
             //fill database with test row
 
             if(lockCreate == true)
@@ -312,13 +312,24 @@ public class phabservlet1 extends HttpServlet {
     {
         try {
 
+            boolean deleteLock = true;
+
             resp.getWriter().write("Deleting Test Rows Paddington\n");
-            Statement s=c.createStatement();
 
-            s.execute("DELETE FROM public.StockDBPaddington WHERE FullStock > 0 ");
+            if(deleteLock == true)
+            {
+                resp.getWriter().write("Delete Function Locked, Check Code!\n");
+            }
+            else {
+                Statement s = c.createStatement();
 
-            resp.getWriter().write("\nalterTestDatabase called");
-            if(s!=null){s.close();}
+                s.execute("DELETE FROM public.StockDBPaddington WHERE FullStock > 0 ");
+
+                resp.getWriter().write("\nalterTestDatabase called");
+                if (s != null) {
+                    s.close();
+                }
+            }
 
         }
         catch (Exception e){
