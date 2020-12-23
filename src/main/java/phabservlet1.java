@@ -118,10 +118,29 @@ public class phabservlet1 extends HttpServlet {
         {
             resp.getWriter().write("\nDecreasingStock\n");
 
+            String manufacturer = message.substring(0,message.indexOf('@'));
+            String name = message.substring(message.indexOf('@')+1,length);
+
             resp.getWriter().write("\n");
-            resp.getWriter().write(message.substring(0,message.indexOf('@')));
+            resp.getWriter().write(manufacturer);
             resp.getWriter().write("\n");
-            resp.getWriter().write(message.substring(message.indexOf('@')+1,length));
+            resp.getWriter().write(name);
+
+            try {
+                resp.getWriter().write("Filling In PHAB Paddington Database\n");
+                Statement s=c.createStatement();
+
+                //fill database with test row
+                s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Manufacturer = manufacturer, Name = name,;");
+
+                resp.getWriter().write("\nalterTestDatabase called\n");
+                if(s!=null){s.close();}
+
+            }
+            catch (Exception e){
+
+                resp.getWriter().write(e.getMessage());
+            }
 
 
         }
