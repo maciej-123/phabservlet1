@@ -110,10 +110,13 @@ public class phabservlet1 extends HttpServlet {
 
 
                 ResultSet rset = s.executeQuery(strSelect);
+                String transferStr;
                 int cs = -1;
                 while(rset.next()) {
-                    resp.getWriter().write(rset.getInt("CurrentStock"));
-                    cs = rset.getInt("CurrentStock");
+                    resp.getWriter().write(rset.getString("CurrentStock"));
+                    transferStr=rset.getString("CurrentStock");
+                    cs = Integer.valueOf(transferStr);
+
                 }
 
                 cs--;
