@@ -110,7 +110,7 @@ public class phabservlet1 extends HttpServlet {
 
                 //s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 500 WHERE Name = 'tabs                ';");
 
-                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 7000 WHERE Manufacturer = '"+SearchManufacturer+"' ,Name = '"+SearchName+"';");
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 7000 WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';");
 
                 resp.getWriter().write("\nDecrease Stock Called");
                 if(s!=null){s.close();}
