@@ -83,6 +83,13 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
+        if(urlPattern.equals("/decreaseStock")) {
+
+            resp.getWriter().write(SearchManufacturer);
+            resp.getWriter().write(SearchName);
+        }
+
+
 
 
         //Test database functions
@@ -97,11 +104,17 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
+
+
         ///just use /druglist in url http://localhost:8020/druglist
 
         //export sql file to heroku
 
     }
+
+    private String SearchManufacturer;
+    private String SearchName;
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -129,7 +142,11 @@ public class phabservlet1 extends HttpServlet {
 
             resp.getWriter().write("#1");
             try {
-                resp.getWriter().write("Filling In PHAB Paddington Database\n");
+                resp.getWriter().write("\nAltering Part\n");
+
+                SearchManufacturer = manufacturer;
+                SearchName = name;
+
                 //Statement s=c.createStatement();
 //
 //                //fill database with test row
