@@ -115,6 +115,8 @@ public class phabservlet1 extends HttpServlet {
                 SearchManufacturer += " ";
             }
 
+            SearchName = "tabs                ";
+
 //            NameLength = SearchName.length();
 //            LengthManufacturer = SearchManufacturer.length();
 //
