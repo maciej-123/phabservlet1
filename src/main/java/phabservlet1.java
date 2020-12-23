@@ -110,11 +110,19 @@ public class phabservlet1 extends HttpServlet {
         resp.setContentType("text/html");
         resp.getWriter().write("Thank you client! "+reqBody);
 
+        String message = reqBody;
+        int length = message.length();
 
         String urlPattern = req.getServletPath();
         if(urlPattern.equals("/decreaseStock"))
         {
             resp.getWriter().write("\nDecreasingStock\n");
+
+            resp.getWriter().write("\n");
+            resp.getWriter().write(message.substring(0,message.indexOf('@')));
+            resp.getWriter().write("\n");
+            resp.getWriter().write(message.substring(message.indexOf('@')+1,length));
+
 
         }
 
