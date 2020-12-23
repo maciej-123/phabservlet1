@@ -104,24 +104,9 @@ public class phabservlet1 extends HttpServlet {
             int NameLength = SearchName.length();
             int LengthManufacturer = SearchName.length();
 
-            //append spaces
-            for(int n = 0; n <= 20 - NameLength-1; n++)
-            {
-                SearchName += " ";
-            }
-
-            for(int n = 0; n<=11 - LengthManufacturer; n++)
-            {
-                SearchManufacturer += " ";
-            }
 
             SearchName = "tabs                ";
 
-//            NameLength = SearchName.length();
-//            LengthManufacturer = SearchManufacturer.length();
-//
-//            resp.getWriter().write(NameLength);
-//            resp.getWriter().write(LengthManufacturer);
 
 
             try {
@@ -133,7 +118,7 @@ public class phabservlet1 extends HttpServlet {
 
                 //s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 500 WHERE Name = 'tabs                ';");
 
-                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 400 WHERE Name = "+SearchName+";");
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 400 WHERE Name = 'tabs                ';");
 
                 resp.getWriter().write("\nDecrease Stock Called");
                 if(s!=null){s.close();}
