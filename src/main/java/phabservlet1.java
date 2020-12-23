@@ -114,9 +114,12 @@ public class phabservlet1 extends HttpServlet {
 //            {
 //                SearchManufacturer += " ";
 //            }
-//
-            resp.getWriter().write(SearchManufacturer.length());
-            resp.getWriter().write(SearchName.length());
+
+            NameLength = SearchName.length();
+            LengthManufacturer = SearchManufacturer.length();
+
+            resp.getWriter().write(NameLength);
+            resp.getWriter().write(LengthManufacturer);
 
 
         }
