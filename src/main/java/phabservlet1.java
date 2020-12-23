@@ -122,6 +122,31 @@ public class phabservlet1 extends HttpServlet {
 //            resp.getWriter().write(LengthManufacturer);
 
 
+            try {
+
+                resp.getWriter().write("Editing Rows Paddington\n");
+                Statement s=c.createStatement();
+
+
+
+                //s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 500 WHERE Name = 'tabs                ';");
+
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 400 WHERE Name = "+SearchName+";");
+
+                resp.getWriter().write("\nDecrease Stock Called");
+                if(s!=null){s.close();}
+
+                SearchName = "";
+                SearchManufacturer = "";
+
+
+            }
+            catch (Exception e){
+
+                resp.getWriter().write(e.getMessage());
+            }
+
+
         }
 
 
