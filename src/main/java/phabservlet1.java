@@ -167,7 +167,7 @@ public class phabservlet1 extends HttpServlet {
 
                 //https://stackoverflow.com/questions/15444982/how-to-display-or-print-the-contents-of-a-database-table-as-is
                 //code for printing out table
-                for(int n = 1; n < colNum; n++)
+                for(int n = 1; n <= colNum; n++)
                 {
                     resp.getWriter().write(rset.getString(n) + " ");
                 }
