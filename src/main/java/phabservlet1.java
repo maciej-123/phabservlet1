@@ -127,13 +127,13 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write(name);
 
             try {
-                resp.getWriter().write("Filling In PHAB Paddington Database\n");
+                resp.getWriter().write("Test Edit\n");
                 Statement s=c.createStatement();
 
                 //fill database with test row
-                s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Manufacturer = manufacturer, Name = name;");
+                s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Manufacturer = 'Vicks'");
 
-                resp.getWriter().write("\nalterTestDatabase called\n");
+                resp.getWriter().write("\nTestEditCalled\n");
                 if(s!=null){s.close();}
 
             }
