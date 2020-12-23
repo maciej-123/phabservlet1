@@ -90,29 +90,23 @@ public class phabservlet1 extends HttpServlet {
 //            resp.getWriter().write(SearchName);
 
 
-         try {
-             resp.getWriter().write("Test Edit\n");
-             Statement s = c.createStatement();
+            try {
 
+                resp.getWriter().write("Deleting Test Rows Paddington\n");
+                Statement s=c.createStatement();
 
-             //fill database with test row
-             //s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Name = " + SearchName + ";");
+                s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='test'");
+                s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='Test'");
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 14 WHERE Manufacturer = 'Vicks'");
 
-             s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 14 WHERE Name = tabs");
+                resp.getWriter().write("\nalterTestDatabase called");
+                if(s!=null){s.close();}
 
+            }
+            catch (Exception e){
 
-
-             resp.getWriter().write("\nTestEditCalled\n");
-             if (s != null) {
-                 s.close();
-             }
-
-
-         }
-         catch(Exception e)
-         {
-             resp.getWriter().write(e.getMessage());
-         }
+                resp.getWriter().write(e.getMessage());
+            }
 
 
 
