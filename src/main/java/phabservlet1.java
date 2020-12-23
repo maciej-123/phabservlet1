@@ -95,15 +95,15 @@ public class phabservlet1 extends HttpServlet {
             int LengthManufacturer = SearchName.length();
 
             //append spaces
-            for(int n = 1; n <= 20 - NameLength; n++)
-            {
-                SearchName += " ";
-            }
-
-            for(int n = 1; n<11 - LengthManufacturer; n++)
-            {
-                SearchManufacturer += " ";
-            }
+//            for(int n = 1; n <= 20 - NameLength; n++)
+//            {
+//                SearchName += " ";
+//            }
+//
+//            for(int n = 1; n<11 - LengthManufacturer; n++)
+//            {
+//                SearchManufacturer += " ";
+//            }
 
             resp.getWriter().write(SearchManufacturer.length());
             resp.getWriter().write(SearchName.length());
@@ -123,8 +123,8 @@ public class phabservlet1 extends HttpServlet {
                 resp.getWriter().write("\nDecrease Stock Called");
                 if(s!=null){s.close();}
 
-                SearchName = "";
-                SearchManufacturer = "";
+//                SearchName = "";
+//                SearchManufacturer = "";
 
 
             }
