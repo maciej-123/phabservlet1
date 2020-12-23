@@ -101,12 +101,10 @@ public class phabservlet1 extends HttpServlet {
 
             SearchName = "tabs";
 
-            int NameLength = SearchName.length();
-            int LengthManufacturer = SearchName.length();
 
 
-            SearchName = "tabs                ";
-
+            String padded_Manufacturer = String.format("%-11s", SearchManufacturer);
+            String padded_Name = String.format("%-20s", SearchName);
 
 
             try {
@@ -115,18 +113,15 @@ public class phabservlet1 extends HttpServlet {
                 Statement s=c.createStatement();
 
 
-
                 //s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 500 WHERE Name = 'tabs                ';");
 
-                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 400 WHERE Name = 'tabs                ';");
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 400 WHERE Name ="+SearchName+";");
 
                 resp.getWriter().write("\nDecrease Stock Called");
                 if(s!=null){s.close();}
 
                 SearchName = "";
                 SearchManufacturer = "";
-
-
             }
             catch (Exception e){
 
