@@ -98,7 +98,7 @@ public class phabservlet1 extends HttpServlet {
              //fill database with test row
              //s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Name = " + SearchName + ";");
 
-             s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Name = tabs");
+             s.execute("UPDATE public.StockDBPaddington SET CurrentStock = 14 WHERE Name = tabs");
 
 
 
