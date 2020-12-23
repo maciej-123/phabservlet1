@@ -126,7 +126,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("\n");
             resp.getWriter().write(name);
 
-            decreaseStock(resp);
+            //decreaseStock(resp);
 
         }
 
