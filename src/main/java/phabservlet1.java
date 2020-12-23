@@ -85,61 +85,24 @@ public class phabservlet1 extends HttpServlet {
 
 
 
-
         if(urlPattern.equals("/create_test_database")) {
             createTestDatabase(resp);
         }
 
         if(urlPattern.equals("/_decreaseStock")) {
 
-            resp.getWriter().write("TEST\n");
-
-            resp.getWriter().write(SearchManufacturer);
-            resp.getWriter().write("\n");
-            resp.getWriter().write(SearchName);
-            resp.getWriter().write("\n");
-
-
-
-
-            try {
-                resp.getWriter().write("Editing Rows Paddington\n");
-                Statement s=c.createStatement();
-
-                String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
-
-
-                ResultSet rset = s.executeQuery(strSelect);
-                String transferStr;
-                int cs = -1;
-                while(rset.next()) {
-                    resp.getWriter().write(rset.getString("CurrentStock"));
-                    transferStr=rset.getString("CurrentStock");
-                    cs = Integer.valueOf(transferStr);
-
-                }
-
-                cs--;
-
-                if(cs >= 0) {
-                    s.execute("UPDATE public.StockDBPaddington SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
-                }
-
-
-                resp.getWriter().write("\nDecrease Stock Called");
-                if(s!=null){s.close();}
-
-                SearchName = "";
-                SearchManufacturer = "";
-            }
-            catch (Exception e){
-
-                resp.getWriter().write(e.getMessage());
-            }
-
-
+            decreaseStock(resp);
         }
 
+
+
+        if(urlPattern.equals("/replenishStock"))
+        {
+            resp.getWriter().write("\nSetting Stock to Max\n");
+            delAllPHABPaddington(resp);
+            fillPHABPaddington(resp);
+
+        }
 
 
 
@@ -206,17 +169,59 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
-        if(urlPattern.equals("/replenishStock"))
-        {
-            resp.getWriter().write("\nSetting Stock to Max\n");
-        }
 
 
     }
 
 
 
+    private void decreaseStock(HttpServletResponse resp) throws IOException
+    {
+        resp.getWriter().write("TEST\n");
 
+        resp.getWriter().write(SearchManufacturer);
+        resp.getWriter().write("\n");
+        resp.getWriter().write(SearchName);
+        resp.getWriter().write("\n");
+
+
+        try {
+            resp.getWriter().write("Editing Rows Paddington\n");
+            Statement s=c.createStatement();
+
+            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+
+
+            ResultSet rset = s.executeQuery(strSelect);
+            String transferStr;
+            int cs = -1;
+            while(rset.next()) {
+                resp.getWriter().write(rset.getString("CurrentStock"));
+                transferStr=rset.getString("CurrentStock");
+                cs = Integer.valueOf(transferStr);
+
+            }
+
+            cs--;
+
+            if(cs >= 0) {
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
+            }
+
+
+            resp.getWriter().write("\nDecrease Stock Called");
+            if(s!=null){s.close();}
+
+            SearchName = "";
+            SearchManufacturer = "";
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+
+    }
 
     private void createPHABPaddington(HttpServletResponse resp) throws IOException
     {
