@@ -126,7 +126,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("\n");
             resp.getWriter().write(name);
 
-            //decreaseStock(resp);
+            decreaseStock(resp);
 
         }
 
@@ -144,13 +144,13 @@ public class phabservlet1 extends HttpServlet {
     {
         resp.getWriter().write("#1");
         try {
-            resp.getWriter().write("Test Edit\n");
+            resp.getWriter().write("Filling In PHAB Paddington Database\n");
             Statement s=c.createStatement();
 
             //fill database with test row
-            //s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Name = 'Vaporub';");
+            s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
 
-            resp.getWriter().write("\nTestEditCalled\n");
+            resp.getWriter().write("\nalterTestDatabase called\n");
             if(s!=null){s.close();}
 
         }
