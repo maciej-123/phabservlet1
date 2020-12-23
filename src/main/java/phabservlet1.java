@@ -126,22 +126,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("\n");
             resp.getWriter().write(name);
 
-            try {
-                resp.getWriter().write("Test Edit\n");
-                Statement s=c.createStatement();
-
-                //fill database with test row
-                s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Manufacturer = 'Vicks'");
-
-                resp.getWriter().write("\nTestEditCalled\n");
-                if(s!=null){s.close();}
-
-            }
-            catch (Exception e){
-
-                resp.getWriter().write(e.getMessage());
-            }
-
+            decreaseStock(resp);
 
         }
 
@@ -150,6 +135,30 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("\nSetting Stock to Max\n");
         }
 
+
+    }
+
+
+
+    private void decreaseStock(HttpServletResponse resp) throws IOException
+    {
+        resp.getWriter().write("#1");
+        try {
+            resp.getWriter().write("Test Edit\n");
+            Statement s=c.createStatement();
+
+            //fill database with test row
+            s.execute("UPDATE StockDBPaddington SET CurrentStock = 14 WHERE Name = 'Vaporub';");
+
+            resp.getWriter().write("\nTestEditCalled\n");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+        resp.getWriter().write("#2");
 
     }
 
