@@ -15,6 +15,7 @@ import javax.servlet.http.*;
                 "/testfill_phab_paddington",
                 "/fill_phab_paddington",
                 "/testdelete_phab_paddington",
+                "/delete_phab_paddington",
                 "/return_phab_paddington",
 
                 "/create_test_database",
@@ -72,6 +73,10 @@ public class phabservlet1 extends HttpServlet {
 
         if(ending.equals("/return_phab_paddington")) {
             returnPHABPaddington(resp);
+        }
+
+        if(ending.equals("/delete_phab_paddington")) {
+            delAllPHABPaddington(resp);
         }
 
 
@@ -205,7 +210,7 @@ public class phabservlet1 extends HttpServlet {
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('Cuprofen   ','Max strength        ','96 caps    ',11,9,20,1,20)");
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('Solpadeine ','Headache            ','16 caps    ',2,1.6,20,1,20)");
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('Anadin     ','Extra               ','16 caps    ',2.3,2,30,1,30)");
-                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('Anadin     ','Triple action       ','12 caps    ',2,1.9,30,1,30");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('Anadin     ','Triple action       ','12 caps    ',2,1.9,30,1,30)");
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('Anadin     ','Original            ','16 caps    ',1.8,1.5,30,1,30)");
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('Disprin    ','Soluble             ','32 tablets ',3.6,2.8,20,1,20)");
 
@@ -264,7 +269,7 @@ public class phabservlet1 extends HttpServlet {
                 //print entire table
                 for(int n = 1; n <= colNum; n++)
                 {
-                    resp.getWriter().write(rset.getString(n) + " ");
+                    resp.getWriter().write(rset.getString(n) + "\t");
                 }
                 resp.getWriter().write( "\n");
             }
@@ -292,6 +297,25 @@ public class phabservlet1 extends HttpServlet {
 
             s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='test'");
             s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='Test'");
+
+            resp.getWriter().write("\nalterTestDatabase called");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void delAllPHABPaddington(HttpServletResponse resp) throws IOException
+    {
+        try {
+
+            resp.getWriter().write("Deleting Test Rows Paddington\n");
+            Statement s=c.createStatement();
+
+            s.execute("DELETE FROM public.StockDBPaddington WHERE FullStock > 0 ");
 
             resp.getWriter().write("\nalterTestDatabase called");
             if(s!=null){s.close();}
