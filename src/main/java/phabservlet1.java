@@ -82,41 +82,39 @@ public class phabservlet1 extends HttpServlet {
             delAllPHABPaddington(resp);
         }
 
-
-
-
-
         if(urlPattern.equals("/create_test_database")) {
             createTestDatabase(resp);
         }
 
+
+
         if(urlPattern.equals("/_decreaseStock")) {
 
+            String sMf = SearchManufacturer;
+            String sN = SearchName;
             resp.getWriter().write("TEST");
 
-            resp.getWriter().write(SearchManufacturer);
-            resp.getWriter().write(SearchName);
+            resp.getWriter().write(sMf);
+            resp.getWriter().write(sN);
 
-            SearchName = "tabs";
+            sN = "tabs";
 
-            int NameLength = SearchName.length();
-            int LengthManufacturer = SearchName.length();
+            int NameLength = sMf.length();
+            int LengthManufacturer = sN.length();
 
             //append spaces
-//            for(int n = 0; n <= 20 - NameLength; n++)
-//            {
-//                SearchName += " ";
-//            }
-//
-//            for(int n = 0; n<=11 - LengthManufacturer; n++)
-//            {
-//                SearchManufacturer += " ";
-//            }
+            for(int n = 0; n <= 20 - NameLength; n++)
+            {
+                sN += " ";
+            }
 
-            resp.getWriter().write(SearchManufacturer.length());
-            resp.getWriter().write(SearchName.length());
+            for(int n = 0; n<=11 - LengthManufacturer; n++)
+            {
+                sMf += " ";
+            }
 
-
+            resp.getWriter().write(sMf.length());
+            resp.getWriter().write(sN.length());
         }
 
 
