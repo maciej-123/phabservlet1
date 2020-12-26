@@ -9,18 +9,21 @@ import javax.servlet.http.*;
 
 @WebServlet(urlPatterns=
         {
-                "/text_database",
+                "/text_database",//text from database
 
+                //paddington -for editing the main database we have - testfill and testdelete are dummy functions
                 "/create_phab_paddington",
                 "/testfill_phab_paddington",
-                "/fill_phab_paddington",
+                "/fill_phab_paddington", //DO NOT CALL ALONE
                 "/testdelete_phab_paddington",
-                "/delete_phab_paddington",
+                "/delete_phab_paddington", //DO NOT CALL ALONE
                 "/return_phab_paddington",
 
-                "/_decreaseStock",
+                "/_decreaseStock", //underscore important
                 "/replenishStock",
 
+
+                //not important - `this is just to create a test database
                 "/create_test_database",
                 "/return_test_database",
                 "/alter_test_database"
@@ -89,6 +92,8 @@ public class phabservlet1 extends HttpServlet {
             createTestDatabase(resp);
         }
 
+
+        //get request for decreasing stock MUST called after the post request
         if(urlPattern.equals("/_decreaseStock")) {
 
             decreaseStock(resp);
@@ -118,6 +123,10 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
+        ///NEED TO ADD
+        //post request for warning - will check if blow 20% for everydrug - will be run after doing any other post requests
+        //add to identical databases for 2 other branches
+        //have an automatic revenue and profit function for all branches. - remember to edit selling price
 
 
     }
@@ -142,6 +151,8 @@ public class phabservlet1 extends HttpServlet {
         {
             resp.getWriter().write("\nDecreasingStock\n");
 
+
+            //recieves data in the form of Manufacturer@Name
             String manufacturer = message.substring(0,message.indexOf('@'));
             String name = message.substring(message.indexOf('@')+1,length);
 
@@ -154,6 +165,7 @@ public class phabservlet1 extends HttpServlet {
             try {
                 resp.getWriter().write("\nAltering Part\n");
 
+                //put into global variables
                 SearchManufacturer = manufacturer;
                 SearchName = name;
 
@@ -177,7 +189,7 @@ public class phabservlet1 extends HttpServlet {
 
     private void decreaseStock(HttpServletResponse resp) throws IOException
     {
-        resp.getWriter().write("TEST\n");
+        resp.getWriter().write("Decreasing Stock\n");
 
         resp.getWriter().write(SearchManufacturer);
         resp.getWriter().write("\n");
@@ -189,12 +201,15 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("Editing Rows Paddington\n");
             Statement s=c.createStatement();
 
+            //first find current storck
             String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
 
 
             ResultSet rset = s.executeQuery(strSelect);
             String transferStr;
+            //default error value - s.execute will not be called with -1
             int cs = -1;
+
             while(rset.next()) {
                 resp.getWriter().write(rset.getString("CurrentStock"));
                 transferStr=rset.getString("CurrentStock");
@@ -202,8 +217,10 @@ public class phabservlet1 extends HttpServlet {
 
             }
 
+            //subract 1 from the current value
             cs--;
 
+            //to prevent decrementing below zero
             if(cs >= 0) {
                 s.execute("UPDATE public.StockDBPaddington SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
             }
@@ -212,6 +229,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("\nDecrease Stock Called");
             if(s!=null){s.close();}
 
+            //reset to null
             SearchName = "";
             SearchManufacturer = "";
         }
