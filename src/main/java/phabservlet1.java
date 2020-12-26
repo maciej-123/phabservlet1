@@ -19,8 +19,19 @@ import javax.servlet.http.*;
                 "/delete_phab_paddington", //DO NOT CALL ALONE
                 "/return_phab_paddington",
 
-                "/_decreaseStock", //underscore important
-                "/replenishStock",
+                "/_decreaseStockPaddington", //underscore important
+                "/replenishStockPaddington",
+
+                //green park
+                "/create_phab_greenpark",
+                "/testfill_phab_greenpark",
+                "/fill_phab_greenpark", //DO NOT CALL ALONE
+                "/testdelete_phab_greenpark",
+                "/delete_phab_greenpark", //DO NOT CALL ALONE
+                "/return_phab_greenpark",
+
+                "/_decreaseStockGreenPark", //underscore important
+                "/replenishStockGreenPark",
 
 
                 //not important - `this is just to create a test database
@@ -56,7 +67,7 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
-        //Paddington Databases
+        //Paddington Databases------------------------------------------------------------------------------------------
         //create PHAB Paddington Database
         if(urlPattern.equals("/create_phab_paddington")) {
             createPHABPaddington(resp);
@@ -94,21 +105,67 @@ public class phabservlet1 extends HttpServlet {
 
 
         //get request for decreasing stock MUST called after the post request
-        if(urlPattern.equals("/_decreaseStock")) {
+        if(urlPattern.equals("/_decreaseStockPaddington")) {
 
-            decreaseStock(resp);
+            decreaseStockPaddington(resp);
         }
 
 
-
-        if(urlPattern.equals("/replenishStock"))
+        if(urlPattern.equals("/replenishStockPaddington"))
         {
             resp.getWriter().write("\nSetting Stock to Max\n");
             delAllPHABPaddington(resp);
             fillPHABPaddington(resp);
 
         }
+        //End of Paddington related functions---------------------------------------------------------------------------
 
+        //Green Park Database-------------------------------------------------------------------------------------------
+        //create PHAB Paddington Database
+        if(urlPattern.equals("/create_phab_greenpark")) {
+            createPHABGreenPark(resp);
+        }
+
+        //fill with test variable
+        if(urlPattern.equals("/testfill_phab_greenpark")) {
+            testFillPHABGreenPark(resp);
+        }
+
+        if(urlPattern.equals("/fill_phab_greenpark")) {
+            fillPHABGreenPark(resp);
+        }
+
+
+
+        if(urlPattern.equals("/testdelete_phab_greenpark")) {
+            delTestPHABGreenPark(resp);
+        }
+
+        if(urlPattern.equals("/return_phab_greenpark")) {
+            returnPHABGreenPark(resp);
+        }
+
+        if(urlPattern.equals("/delete_phab_greenpark")) {
+            delAllPHABGreenPark(resp);
+        }
+
+
+        //get request for decreasing stock MUST called after the post request
+        if(urlPattern.equals("/_decreaseStockGreenPark")) {
+
+            decreaseStockGreenPark(resp);
+        }
+
+        //I have not included the create test database here
+        if(urlPattern.equals("/replenishStock"))
+        {
+            resp.getWriter().write("\nSetting Stock to Max\n");
+            delAllPHABGreenPark(resp);
+            fillPHABGreenPark(resp);
+
+        }
+
+        //End of Green Park related functions---------------------------------------------------------------------------
 
 
         //Test database functions
@@ -147,9 +204,9 @@ public class phabservlet1 extends HttpServlet {
 
 
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/_decreaseStock"))
+        if(urlPattern.equals("/_decreaseStockPaddington"))
         {
-            resp.getWriter().write("\nDecreasingStock\n");
+            resp.getWriter().write("\nDecreasingStockPaddington\n");
 
 
             //recieves data in the form of Manufacturer@Name
@@ -186,8 +243,8 @@ public class phabservlet1 extends HttpServlet {
     }
 
 
-
-    private void decreaseStock(HttpServletResponse resp) throws IOException
+    //Paddington--------------------------------------------------------------------------------------------------------
+    private void decreaseStockPaddington(HttpServletResponse resp) throws IOException
     {
         resp.getWriter().write("Decreasing Stock\n");
 
@@ -468,6 +525,293 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write(e.getMessage());
         }
     }
+    //------------------------------------------------------------------------------------------------------------------
+
+
+    //Green Park--------------------------------------------------------------------------------------------------------
+    private void decreaseStockGreenPark(HttpServletResponse resp) throws IOException
+    {
+        resp.getWriter().write("Decreasing Stock\n");
+
+        resp.getWriter().write(SearchManufacturer);
+        resp.getWriter().write("\n");
+        resp.getWriter().write(SearchName);
+        resp.getWriter().write("\n");
+
+
+        try {
+            resp.getWriter().write("Editing Rows Green Park\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT * FROM StockDBGreenPark WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+
+
+            ResultSet rset = s.executeQuery(strSelect);
+            String transferStr;
+            //default error value - s.execute will not be called with -1
+            int cs = -1;
+
+            while(rset.next()) {
+                resp.getWriter().write(rset.getString("CurrentStock"));
+                transferStr=rset.getString("CurrentStock");
+                cs = Integer.valueOf(transferStr);
+
+            }
+
+            //subract 1 from the current value
+            cs--;
+
+            //to prevent decrementing below zero
+            if(cs >= 0) {
+                s.execute("UPDATE public.StockDBGreenPark SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
+            }
+
+
+            resp.getWriter().write("\nDecrease Stock Called");
+            if(s!=null){s.close();}
+
+            //reset to null
+            SearchName = "";
+            SearchManufacturer = "";
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+
+    }
+
+    private void createPHABGreenPark(HttpServletResponse resp) throws IOException
+    {
+        try{
+            resp.getWriter().write("Creating PHAB Database for Green Park\n");
+            Statement s=c.createStatement();
+
+            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
+            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+
+            ResultSet rset = s.executeQuery(strSelect);
+
+            //create test table
+            s.execute("CREATE TABLE StockDBGreenPark(\n" +
+
+                    "Manufacturer varchar(50)," +
+                    "Name varchar(100)," +
+                    "Quantity varchar(50)," +
+                    "SalesPrice float NOT NULL," +
+                    "PurchasePrice float NOT NULL," +
+                    "FullStock smallint NOT NULL," +
+                    "LimitOne int," +
+                    "CurrentStock smallint NOT NULL)"
+            );
+
+
+            resp.getWriter().write("Function Call Finished");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void testFillPHABGreenPark(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("Filling In PHAB Green Park Database\n");
+            Statement s=c.createStatement();
+
+            //fill database with test row
+            s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
+
+            resp.getWriter().write("\nalterTestDatabase called\n");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void fillPHABGreenPark(HttpServletResponse resp) throws IOException //2x paddington
+    {
+        try {
+            resp.getWriter().write("Filling In PHAB Green Park Database\n");
+            Statement s=c.createStatement();
+
+            boolean lockCreate = false;
+            //fill database with test row
+
+            if(lockCreate == true)
+            {
+                resp.getWriter().write("Creation Locked, Please Edit code\n");
+            }
+            else {
+                //Cold and Flu
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',9,3.7,15,0,15)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',13.6,5,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',17,7,30,0,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',18,7.5,30,0,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','max','16 caps',8.4,3.7,25,0,25)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','standard','10 sachets',9,3.5,25,0,25)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','day and night','16 caps',9,3.2,30,1,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','max','16 caps',8.4,3.2,30,1,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','mucus relief','16 caps',9.6,3.2,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','4 flu','24 caps',12,4.9,20,0,20)");
+
+                //Skincare
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('e45','psoriasis cream','50ml',40,16,15,0,15)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eurax','skin cream','100g',11.4,4.2,15,0,15)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','skin relief cream','50ml',18,7,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','face scrub','100ml',15,6,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','psoriasis cream','150ml',60,25,10,0,10)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','repair and Restore','100g',24,10,10,0,10)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','30g',24,9.7,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','100g',50,22.2,5,0,5)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','moisturising cream','50ml',20,7.6,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','exfoliating cleanser','180ml',24,10.1,20,0,20)");
+
+                //Headaches and Pain Relief
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','meltlets','16 caps',8,3.7,40,0,40)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','express','16 caps',8,3.5,30,0,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','max strength','32 caps',14,6.2,25,0,25)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','standard','16 caps',8,3.2,30,0,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cuprofen','max strength','96 caps',22,9,20,1,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('solpadeine','headache','16 caps',4,1.6,20,1,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','extra','16 caps',4.6,2,30,1,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','triple action','12 caps',4,1.9,30,1,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','original','16 caps',3.6,1.5,30,1,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cisprin','soluble','32 tablets',7.2,2.8,20,1,20)");
+
+                //Digestion
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','blackcurrant','12 sachets',16,7.3,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','lemon','12 sachets',16,7.3,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','chewable','24 tablets',8.4,3.5,25,0,25)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('senokot','max','10 tablets',6,2.7,10,0,10)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','advance','300ml',20,8.1,10,0,10)");
+
+                //Allergy
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benadryl','relief','24 caps',18,7.1,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('piriteze','tabs','7 tablets',6,2.3,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('beconase','relief','100 sprays',12,4,20,0,20)");
+
+                //First Aid
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','antiseptic','500ml',6.4,3,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','hand sanitizer','500ml',14,6.3,50,0,50)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('elastoplast','plasters','20 plasters',6,2,30,0,30)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',8,3.2,20,0,20)");
+            }
+
+            resp.getWriter().write("\nalterTestDatabase called\n");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void delTestPHABGreenPark(HttpServletResponse resp) throws IOException
+    {
+        try {
+
+            resp.getWriter().write("Deleting Test Rows Green Park\n");
+            Statement s=c.createStatement();
+
+            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='test'");
+            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='Test'");
+
+            resp.getWriter().write("\nalterTestDatabase called");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void returnPHABGreenPark(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("PHAB Stock Database Green Park Branch\n\n");
+
+            resp.getWriter().write("Manufacturer\t|Name\t|Quantity\t|SalesPrice|PurchasePrice|FullStock|LimitOne|CurrentStock\n");
+
+            //select GreenPark database
+            String strSelect = "SELECT * FROM StockDBGreenPark";
+
+            //execute selection command
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write(" Table Start ");
+
+            //get number of columns
+            ResultSetMetaData rsmd = rset.getMetaData();
+            int colNum = rsmd.getColumnCount();
+
+            resp.getWriter().write( "\n");
+            while (rset.next()) {
+                //https://stackoverflow.com/questions/15444982/how-to-display-or-print-the-contents-of-a-database-table-as-is
+                //print entire table
+                for(int n = 1; n <= colNum; n++)
+                {
+                    resp.getWriter().write(rset.getString(n) + "\t");
+                }
+                resp.getWriter().write( "\n");
+            }
+
+            resp.getWriter().write(" Table End ");
+
+            resp.getWriter().write("\n\nPrint Table Complete");
+
+            //close connection
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch(Exception e)
+        {
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void delAllPHABGreenPark(HttpServletResponse resp) throws IOException
+    {
+        try {
+
+            boolean deleteLock = false;
+
+            resp.getWriter().write("Deleting Test Rows Green Park\n");
+
+            if(deleteLock == true)
+            {
+                resp.getWriter().write("Delete Function Locked, Check Code!\n");
+            }
+            else {
+                Statement s = c.createStatement();
+
+                s.execute("DELETE FROM public.StockDBGreenPark WHERE FullStock > 0 ");
+
+                resp.getWriter().write("\nalterTestDatabase called");
+                if (s != null) {
+                    s.close();
+                }
+            }
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+
 
 
 
