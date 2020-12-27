@@ -218,7 +218,7 @@ public class phabservlet1 extends HttpServlet {
 
 
         //get request for decreasing stock MUST called after the post request
-        if(urlPattern.equals("/_decreaseStockmileend")) {
+        if(urlPattern.equals("/_decreaseStockMileEnd")) {
 
             decreaseStockMileEnd(resp);
         }
