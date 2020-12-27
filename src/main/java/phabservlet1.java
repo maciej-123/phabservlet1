@@ -33,6 +33,17 @@ import javax.servlet.http.*;
                 "/_decreaseStockGreenPark", //underscore important
                 "/replenishStockGreenPark",
 
+                //mile end
+                "/create_phab_mileend",
+                "/testfill_phab_mileend",
+                "/fill_phab_mileend", //DO NOT CALL ALONE
+                "/testdelete_phab_mileend",
+                "/delete_phab_mileend", //DO NOT CALL ALONE
+                "/return_phab_mileend",
+
+                "/_decreaseStockMileEnd", //underscore important
+                "/replenishStockMileEnd",
+
 
                 //not important - `this is just to create a test database
                 "/create_test_database",
@@ -166,6 +177,53 @@ public class phabservlet1 extends HttpServlet {
         }
 
         //End of Green Park related functions---------------------------------------------------------------------------
+
+        //Mileend Databases---------------------------------------------------------------------------------
+        //create PHAB Mileend Database
+        if(urlPattern.equals("/create_phab_mileend")) {
+            createPHABMileEnd(resp);
+        }
+
+        //fill with test variable
+        if(urlPattern.equals("/testfill_phab_mileend")) {
+            testFillPHABMileEnd(resp);
+        }
+
+        if(urlPattern.equals("/fill_phab_mileend")) {
+            fillPHABMileEnd(resp);
+        }
+
+
+
+        if(urlPattern.equals("/testdelete_phab_mileend")) {
+            delTestPHABMileEnd(resp);
+        }
+
+        if(urlPattern.equals("/return_phab_mileend")) {
+            returnPHABMileEnd(resp);
+        }
+
+        if(urlPattern.equals("/delete_phab_mileend")) {
+            delAllPHABMileEnd(resp);
+        }
+
+
+        //get request for decreasing stock MUST called after the post request
+        if(urlPattern.equals("/_decreaseStockmileend")) {
+
+            decreaseStockMileEnd(resp);
+        }
+
+        //I have not included the create test database here
+        if(urlPattern.equals("/replenishStock"))
+        {
+            resp.getWriter().write("\nSetting Stock to Max\n");
+            delAllPHABMileEnd(resp);
+            fillPHABMileEnd(resp);
+
+        }
+
+        // End of Mileend Database functions
 
 
         if(urlPattern.equals("/replenishStock"))
@@ -319,18 +377,18 @@ public class phabservlet1 extends HttpServlet {
 
             ResultSet rset = s.executeQuery(strSelect);
 
-                //create test table
-                s.execute("CREATE TABLE StockDBPaddington(\n" +
+            //create test table
+            s.execute("CREATE TABLE StockDBPaddington(\n" +
 
-                        "Manufacturer varchar(50)," +
-                        "Name varchar(100)," +
-                        "Quantity varchar(50)," +
-                        "SalesPrice float NOT NULL," +
-                        "PurchasePrice float NOT NULL," +
-                        "FullStock smallint NOT NULL," +
-                        "LimitOne int," +
-                        "CurrentStock smallint NOT NULL)"
-                );
+                    "Manufacturer varchar(50)," +
+                    "Name varchar(100)," +
+                    "Quantity varchar(50)," +
+                    "SalesPrice float NOT NULL," +
+                    "PurchasePrice float NOT NULL," +
+                    "FullStock smallint NOT NULL," +
+                    "LimitOne int," +
+                    "CurrentStock smallint NOT NULL)"
+            );
 
 
             resp.getWriter().write("Function Call Finished");
@@ -822,8 +880,286 @@ public class phabservlet1 extends HttpServlet {
     }
 
 
+    //Mile End--------------------------------------------------------------------------------------------------------
+    private void decreaseStockMileEnd(HttpServletResponse resp) throws IOException
+    {
+        resp.getWriter().write("Decreasing Stock\n");
+
+        resp.getWriter().write(SearchManufacturer);
+        resp.getWriter().write("\n");
+        resp.getWriter().write(SearchName);
+        resp.getWriter().write("\n");
 
 
+        try {
+            resp.getWriter().write("Editing Rows Mile End\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT * FROM StockDBGreenPark WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+
+
+            ResultSet rset = s.executeQuery(strSelect);
+            String transferStr;
+            //default error value - s.execute will not be called with -1
+            int cs = -1;
+
+            while(rset.next()) {
+                resp.getWriter().write(rset.getString("CurrentStock"));
+                transferStr=rset.getString("CurrentStock");
+                cs = Integer.valueOf(transferStr);
+
+            }
+
+            //subract 1 from the current value
+            cs--;
+
+            //to prevent decrementing below zero
+            if(cs >= 0) {
+                s.execute("UPDATE public.StockDBMileEnd SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
+            }
+
+
+            resp.getWriter().write("\nDecrease Stock Called");
+            if(s!=null){s.close();}
+
+            //reset to null
+            SearchName = "";
+            SearchManufacturer = "";
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+
+    }
+
+    private void createPHABMileEnd(HttpServletResponse resp) throws IOException
+    {
+        try{
+            resp.getWriter().write("Creating PHAB Database for Mile End\n");
+            Statement s=c.createStatement();
+
+            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
+            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+
+            ResultSet rset = s.executeQuery(strSelect);
+
+            //create test table
+            s.execute("CREATE TABLE StockDBMileEnd(\n" +
+
+                    "Manufacturer varchar(50)," +
+                    "Name varchar(100)," +
+                    "Quantity varchar(50)," +
+                    "SalesPrice float NOT NULL," +
+                    "PurchasePrice float NOT NULL," +
+                    "FullStock smallint NOT NULL," +
+                    "LimitOne int," +
+                    "CurrentStock smallint NOT NULL)"
+            );
+
+
+            resp.getWriter().write("Function Call Finished");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void testFillPHABMileEnd(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("Filling In PHAB Mile End Database\n");
+            Statement s=c.createStatement();
+
+            //fill database with test row
+            s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
+
+            resp.getWriter().write("\nalterTestDatabase called\n");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void fillPHABMileEnd(HttpServletResponse resp) throws IOException //2x paddington
+    {
+        try {
+            resp.getWriter().write("Filling In PHAB Mile End Database\n");
+            Statement s=c.createStatement();
+
+            boolean lockCreate = false;
+            //fill database with test row
+
+            if(lockCreate == true)
+            {
+                resp.getWriter().write("Creation Locked, Please Edit code\n");
+            }
+            else {
+                //Cold and Flu
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',3.5,3.7,15,0,15)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',5.2,5,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',6.5,7,30,0,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',6.9,7.5,30,0,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','max','16 caps',3.2,3.7,25,0,25)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','standard','10 sachets',3.5,3.5,25,0,25)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','day and night','16 caps',3.5,3.2,30,1,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','max','16 caps',3.2,3.2,30,1,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','mucus relief','16 caps',3.7,3.2,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','4 flu','24 caps',4.6,4.9,20,0,20)");
+
+                //Skincare
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('e45','psoriasis cream','50ml',15.4,16,15,0,15)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eurax','skin cream','100g',4.4,4.2,15,0,15)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','skin relief cream','50ml',6.9,7,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','face scrub','100ml',5.8,6,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','psoriasis cream','150ml',23.1,25,10,0,10)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','repair and Restore','100g',9.2,10,10,0,10)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','30g',9.2,9.7,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','100g',19.2,22.2,5,0,5)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','moisturising cream','50ml',7.7,7.6,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','exfoliating cleanser','180ml',9.2,10.1,20,0,20)");
+
+                //Headaches and Pain Relief
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','meltlets','16 caps',3.1,3.7,40,0,40)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','express','16 caps',3.1,3.5,30,0,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','max strength','32 caps',5.4,6.2,25,0,25)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','standard','16 caps',3.1,3.2,30,0,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cuprofen','max strength','96 caps',8.5,9,20,1,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('solpadeine','headache','16 caps',1.5,1.6,20,1,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','extra','16 caps',1.8,2,30,1,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','triple action','12 caps',1.5,1.9,30,1,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','original','16 caps',1.4,1.5,30,1,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cisprin','soluble','32 tablets',2.8,2.8,20,1,20)");
+
+                //Digestion
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','blackcurrant','12 sachets',6.2,7.3,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','lemon','12 sachets',6.2,7.3,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','chewable','24 tablets',3.2,3.5,25,0,25)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('senokot','max','10 tablets',2.3,2.7,10,0,10)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','advance','300ml',7.7,8.1,10,0,10)");
+
+                //Allergy
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benadryl','relief','24 caps',6.9,7.1,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('piriteze','tabs','7 tablets',2.3,2.3,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('beconase','relief','100 sprays',4.6,4,20,0,20)");
+
+                //First Aid
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','antiseptic','500ml',2.5,3,20,0,20)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','hand sanitizer','500ml',5.4,6.3,50,0,50)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('elastoplast','plasters','20 plasters',2.3,2,30,0,30)");
+                s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',3.1,3.2,20,0,20)");
+            }
+
+            resp.getWriter().write("\nalterTestDatabase called\n");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void delTestPHABMileEnd(HttpServletResponse resp) throws IOException
+    {
+        try {
+
+            resp.getWriter().write("Deleting Test Rows Mile End\n");
+            Statement s=c.createStatement();
+
+            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='test'");
+            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='Test'");
+
+            resp.getWriter().write("\nalterTestDatabase called");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void returnPHABMileEnd(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("PHAB Stock Database Mile End Branch\n\n");
+
+            resp.getWriter().write("Manufacturer\t|Name\t|Quantity\t|SalesPrice|PurchasePrice|FullStock|LimitOne|CurrentStock\n");
+
+            //select Mile End database
+            String strSelect = "SELECT * FROM StockDBMileEnd";
+
+            //execute selection command
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write(" Table Start ");
+
+            //get number of columns
+            ResultSetMetaData rsmd = rset.getMetaData();
+            int colNum = rsmd.getColumnCount();
+
+            resp.getWriter().write( "\n");
+            while (rset.next()) {
+                //https://stackoverflow.com/questions/15444982/how-to-display-or-print-the-contents-of-a-database-table-as-is
+                //print entire table
+                for(int n = 1; n <= colNum; n++)
+                {
+                    resp.getWriter().write(rset.getString(n) + "\t");
+                }
+                resp.getWriter().write( "\n");
+            }
+
+            resp.getWriter().write(" Table End ");
+
+            resp.getWriter().write("\n\nPrint Table Complete");
+
+            //close connection
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch(Exception e)
+        {
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void delAllPHABMileEnd(HttpServletResponse resp) throws IOException {
+        try {
+
+            boolean deleteLock = false;
+
+            resp.getWriter().write("Deleting Test Rows Mile End\n");
+
+            if (deleteLock == true) {
+                resp.getWriter().write("Delete Function Locked, Check Code!\n");
+            } else {
+                Statement s = c.createStatement();
+
+                s.execute("DELETE FROM public.StockDBMileEnd WHERE FullStock > 0 ");
+
+                resp.getWriter().write("\nalterTestDatabase called");
+                if (s != null) {
+                    s.close();
+                }
+            }
+
+        } catch (Exception e) {
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+// End of Mile End Functions
 
 
 
