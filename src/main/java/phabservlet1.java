@@ -379,15 +379,42 @@ public class phabservlet1 extends HttpServlet {
 
     private void checkStockPaddington(HttpServletResponse resp) throws IOException {
 
-
+        try {
             resp.getWriter().write("Checking Stock Paddington\n");
+            Statement s=c.createStatement();
 
             //first find current stock
-            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+            String strSelect = "SELECT CurrentStock FROM StockDBPaddington";
+            String strFullStock = "SELECT FullStock FROM StockDBPaddington";
 
+            ResultSet rset = s.executeQuery(strSelect);
+            ResultSet rset2 = s.executeQuery(strFullStock);
+            int cq = 0;
+            int fs = 0;
+            int count = 0;
+            String transferStr;
+            String transferStr2;
 
+            while(rset.next()) {
+                transferStr=rset.getString("CurrentStock");
+                cq = Integer.valueOf(transferStr);
 
+                transferStr2=rset2.getString("FullStock");
+                fs = Integer.valueOf(transferStr2);
+                if (cq <= fs*0.2 )
+                {
+                    count++;
+                }
 
+            }
+            if (count>=1)
+                resp.getWriter().write("\n WARNING: Stock below 20% found");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
 
     }
 
