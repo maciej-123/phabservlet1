@@ -18,6 +18,7 @@ import javax.servlet.http.*;
                 "/testdelete_phab_paddington",
                 "/delete_phab_paddington", //DO NOT CALL ALONE
                 "/return_phab_paddington",
+                "/_checkStockPaddington",
 
                 "/_decreaseStockPaddington", //underscore important
                 "/replenishStockPaddington",
