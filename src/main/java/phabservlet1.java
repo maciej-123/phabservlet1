@@ -60,74 +60,83 @@ public class phabservlet1 extends HttpServlet {
 
 
         //select driver
-        try { Class.forName("org.postgresql.Driver"); } catch (Exception e) {resp.getWriter().write(e.getMessage()); }
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (Exception e) {
+            resp.getWriter().write(e.getMessage());
+        }
         //connect to database
         try {
             String dbUrl = System.getenv("JDBC_DATABASE_URL");
             c = DriverManager.getConnection(dbUrl);
+        } catch (Exception e) {
+            resp.getWriter().write(e.getMessage());
         }
-        catch (Exception e) {resp.getWriter().write(e.getMessage());}
 
 
         //get current URL pattern
         String urlPattern = req.getServletPath();
 
         //return a simple text database
-        if(urlPattern.equals("/text_database")) {
+        if (urlPattern.equals("/text_database")) {
             textDatabase t = new textDatabase(resp);
         }
 
 
         //Paddington Databases------------------------------------------------------------------------------------------
         //create PHAB Paddington Database
-        if(urlPattern.equals("/create_phab_paddington")) {
+        if (urlPattern.equals("/create_phab_paddington")) {
             createPHABPaddington(resp);
         }
 
         //fill with test variable
-        if(urlPattern.equals("/testfill_phab_paddington")) {
+        if (urlPattern.equals("/testfill_phab_paddington")) {
             testFillPHABPaddington(resp);
         }
 
-        if(urlPattern.equals("/fill_phab_paddington")) {
+        if (urlPattern.equals("/fill_phab_paddington")) {
             fillPHABPaddington(resp);
         }
 
 
-
-        if(urlPattern.equals("/testdelete_phab_paddington")) {
+        if (urlPattern.equals("/testdelete_phab_paddington")) {
             delTestPHABPaddington(resp);
         }
 
-        if(urlPattern.equals("/return_phab_paddington")) {
+        if (urlPattern.equals("/return_phab_paddington")) {
             returnPHABPaddington(resp);
         }
 
-        if(urlPattern.equals("/delete_phab_paddington")) {
+        if (urlPattern.equals("/delete_phab_paddington")) {
             delAllPHABPaddington(resp);
         }
 
 
-
-
-        if(urlPattern.equals("/create_test_database")) {
+        if (urlPattern.equals("/create_test_database")) {
             createTestDatabase(resp);
         }
 
 
         //get request for decreasing stock MUST called after the post request
-        if(urlPattern.equals("/_decreaseStockPaddington")) {
+        if (urlPattern.equals("/_decreaseStockPaddington")) {
 
             decreaseStockPaddington(resp);
         }
 
 
-        if(urlPattern.equals("/replenishStock"))
-        {
+        if (urlPattern.equals("/replenishStock")) {
             resp.getWriter().write("\nSetting Stock to Max\n");
             delAllPHABPaddington(resp);
             fillPHABPaddington(resp);
 
+        }
+
+        //testing the check stock function
+
+        if (urlPattern.equals("/checkStockPaddington"))
+        {
+            resp.getWriter().write("\nChecking stock test function\n");
+            checkStockPaddington(resp);
         }
         //End of Paddington related functions---------------------------------------------------------------------------
 
@@ -328,7 +337,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("Editing Rows Paddington\n");
             Statement s=c.createStatement();
 
-            //first find current storck
+            //first find current stock
             String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
 
 
@@ -364,6 +373,20 @@ public class phabservlet1 extends HttpServlet {
 
             resp.getWriter().write(e.getMessage());
         }
+
+
+    }
+
+    private void checkStockPaddington(HttpServletResponse resp) throws IOException {
+
+
+            resp.getWriter().write("Checking Stock Paddington\n");
+
+            //first find current stock
+            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+
+
 
 
     }
