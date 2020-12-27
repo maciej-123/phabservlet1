@@ -1016,7 +1016,7 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
 
             //first find current stock
-            String strSelect = "SELECT * FROM StockDBGreenPark WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+            String strSelect = "SELECT * FROM StockDBMileEnd WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
 
 
             ResultSet rset = s.executeQuery(strSelect);
