@@ -465,11 +465,11 @@ public class phabservlet1 extends HttpServlet {
             String transferStr2;
 
             while(rset.next() && rset2.next()) {
-                resp.getWriter().write(rset.getString("CurrentStock"));
+                rset.getString("CurrentStock");
                 transferStr=rset.getString("CurrentStock");
                 cq = Integer.valueOf(transferStr);
 
-                resp.getWriter().write(rset2.getString("Fullstock"));
+                rset2.getString("Fullstock");
                 transferStr2=rset2.getString("FullStock");
                 fs = Integer.valueOf(transferStr2);
                 if (cq <= fs*0.2 )
