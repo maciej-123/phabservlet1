@@ -218,7 +218,7 @@ public class phabservlet1 extends HttpServlet {
 
 
         //get request for decreasing stock MUST called after the post request
-        if(urlPattern.equals("/_decreaseStockmileend")) {
+        if(urlPattern.equals("/_decreaseStockMileEnd")) {
 
             decreaseStockMileEnd(resp);
         }
@@ -269,6 +269,8 @@ public class phabservlet1 extends HttpServlet {
 
     private String SearchManufacturer;
     private String SearchName;
+    private int SearchCurrentStock;
+    private int SearchFullStock;
 
 
     @Override
@@ -286,6 +288,72 @@ public class phabservlet1 extends HttpServlet {
         if(urlPattern.equals("/_decreaseStockPaddington"))
         {
             resp.getWriter().write("\nDecreasingStockPaddington\n");
+
+
+            //recieves data in the form of Manufacturer@Name
+            String manufacturer = message.substring(0,message.indexOf('@'));
+            String name = message.substring(message.indexOf('@')+1,length);
+
+            resp.getWriter().write("\n");
+            resp.getWriter().write(manufacturer);
+            resp.getWriter().write("\n");
+            resp.getWriter().write(name);
+
+            resp.getWriter().write("#1");
+            try {
+                resp.getWriter().write("\nAltering Part\n");
+
+                //put into global variables
+                SearchManufacturer = manufacturer;
+                SearchName = name;
+
+
+            }
+            catch (Exception e){
+
+                resp.getWriter().write(e.getMessage());
+            }
+
+            resp.getWriter().write("#2");
+
+        }
+
+        if(urlPattern.equals("/_decreaseStockGreenPark"))
+        {
+            resp.getWriter().write("\nDecreasingStockGreenPark\n");
+
+
+            //recieves data in the form of Manufacturer@Name
+            String manufacturer = message.substring(0,message.indexOf('@'));
+            String name = message.substring(message.indexOf('@')+1,length);
+
+            resp.getWriter().write("\n");
+            resp.getWriter().write(manufacturer);
+            resp.getWriter().write("\n");
+            resp.getWriter().write(name);
+
+            resp.getWriter().write("#1");
+            try {
+                resp.getWriter().write("\nAltering Part\n");
+
+                //put into global variables
+                SearchManufacturer = manufacturer;
+                SearchName = name;
+
+
+            }
+            catch (Exception e){
+
+                resp.getWriter().write(e.getMessage());
+            }
+
+            resp.getWriter().write("#2");
+
+        }
+
+        if(urlPattern.equals("/_decreaseStockMileEnd"))
+        {
+            resp.getWriter().write("\nDecreasingStockMileEnd\n");
 
 
             //recieves data in the form of Manufacturer@Name
@@ -948,7 +1016,7 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
 
             //first find current stock
-            String strSelect = "SELECT * FROM StockDBGreenPark WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+            String strSelect = "SELECT * FROM StockDBMileEnd WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
 
 
             ResultSet rset = s.executeQuery(strSelect);
