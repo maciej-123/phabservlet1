@@ -111,7 +111,7 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
-        if(urlPattern.equals("/replenishStockPaddington"))
+        if(urlPattern.equals("/replenishStock"))
         {
             resp.getWriter().write("\nSetting Stock to Max\n");
             delAllPHABPaddington(resp);
@@ -157,7 +157,7 @@ public class phabservlet1 extends HttpServlet {
         }
 
         //I have not included the create test database here
-        if(urlPattern.equals("/replenishStock"))
+        if(urlPattern.equals("/replenishStockGreenPark"))
         {
             resp.getWriter().write("\nSetting Stock to Max\n");
             delAllPHABGreenPark(resp);
@@ -166,6 +166,16 @@ public class phabservlet1 extends HttpServlet {
         }
 
         //End of Green Park related functions---------------------------------------------------------------------------
+
+
+        if(urlPattern.equals("/replenishStock"))
+        {
+            resp.getWriter().write("\nSetting Stock to Max\n");
+            delAllPHABGreenPark(resp);
+            fillPHABGreenPark(resp);
+            delAllPHABPaddington(resp);
+            fillPHABPaddington(resp);
+        }
 
 
         //Test database functions
@@ -723,8 +733,8 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("Deleting Test Rows Green Park\n");
             Statement s=c.createStatement();
 
-            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='test'");
-            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='Test'");
+            s.execute("DELETE FROM public.StockDBGreenPark WHERE Manufacturer='test'");
+            s.execute("DELETE FROM public.StockDBGreenPark WHERE Manufacturer='Test'");
 
             resp.getWriter().write("\nalterTestDatabase called");
             if(s!=null){s.close();}
