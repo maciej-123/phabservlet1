@@ -133,7 +133,7 @@ public class phabservlet1 extends HttpServlet {
 
         //testing the check stock function
 
-        if (urlPattern.equals("/checkStockPaddington"))
+        if (urlPattern.equals("/_checkStockPaddington"))
         {
             resp.getWriter().write("\nChecking stock test function\n");
             checkStockPaddington(resp);
