@@ -479,7 +479,7 @@ public class phabservlet1 extends HttpServlet {
 
             }
             if (count>=1)
-                resp.getWriter().write("\n WARNING: Stock below 20% found");
+                resp.getWriter().write("\n WARNING: "+count" stocks below 20% found");
 
         }
         catch (Exception e){
