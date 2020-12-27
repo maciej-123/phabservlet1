@@ -178,7 +178,7 @@ public class phabservlet1 extends HttpServlet {
 
         //End of Green Park related functions---------------------------------------------------------------------------
 
-        //Mileend Databases---------------------------------------------------------------------------------
+        //Mileend Databases---------------------------------------------------------------------------------------------
         //create PHAB Mileend Database
         if(urlPattern.equals("/create_phab_mileend")) {
             createPHABMileEnd(resp);
@@ -215,7 +215,7 @@ public class phabservlet1 extends HttpServlet {
         }
 
         //I have not included the create test database here
-        if(urlPattern.equals("/replenishStock"))
+        if(urlPattern.equals("/replenishStockMileEnd"))
         {
             resp.getWriter().write("\nSetting Stock to Max\n");
             delAllPHABMileEnd(resp);
@@ -223,7 +223,7 @@ public class phabservlet1 extends HttpServlet {
 
         }
 
-        // End of Mileend Database functions
+        // End of Mileend Database functions----------------------------------------------------------------------------
 
 
         if(urlPattern.equals("/replenishStock"))
@@ -233,6 +233,8 @@ public class phabservlet1 extends HttpServlet {
             fillPHABGreenPark(resp);
             delAllPHABPaddington(resp);
             fillPHABPaddington(resp);
+            delAllPHABMileEnd(resp);
+            fillPHABMileEnd(resp);
         }
 
 
