@@ -22,6 +22,7 @@ import javax.servlet.http.*;
 
                 "/_decreaseStockPaddington", //underscore important
                 "/replenishStockPaddington",
+                "/getLimitOnePaddington",
 
                 //green park
                 "/create_phab_greenpark",
@@ -31,6 +32,7 @@ import javax.servlet.http.*;
                 "/delete_phab_greenpark", //DO NOT CALL ALONE
                 "/return_phab_greenpark",
                 "/_checkStockGreenPark",
+
 
                 "/_decreaseStockGreenPark", //underscore important
                 "/replenishStockGreenPark",
@@ -124,6 +126,12 @@ public class phabservlet1 extends HttpServlet {
         if (urlPattern.equals("/_decreaseStockPaddington")) {
 
             decreaseStockPaddington(resp);
+        }
+
+
+        if (urlPattern.equals("/getLimitOnePaddington")) {
+
+            getLimitOnePaddington(resp);
         }
 
 
@@ -728,6 +736,36 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write(e.getMessage());
         }
     }
+
+    private void getLimitOnePaddington(HttpServletResponse resp) throws IOException
+    {
+
+        try {
+            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("\n");
+            while (rset.next()) {
+                resp.getWriter().write(rset.getString(7));
+            }
+
+            //close connection
+            if (rset != null) {
+                rset.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
+    }
+
+
     //------------------------------------------------------------------------------------------------------------------
 
 
