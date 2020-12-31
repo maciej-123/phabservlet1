@@ -185,7 +185,7 @@ public class phabservlet1 extends HttpServlet {
 
     }
 
-
+//
 
     private void decreaseStock(HttpServletResponse resp) throws IOException
     {
