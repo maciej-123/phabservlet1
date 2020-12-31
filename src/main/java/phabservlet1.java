@@ -36,6 +36,7 @@ import javax.servlet.http.*;
 
                 "/_decreaseStockGreenPark", //underscore important
                 "/replenishStockGreenPark",
+                "/getLimitOneGreenPark",
 
                 //mile end
                 "/create_phab_mileend",
@@ -48,6 +49,7 @@ import javax.servlet.http.*;
 
                 "/_decreaseStockMileEnd", //underscore important
                 "/replenishStockMileEnd",
+                "/getLimitOneMileEnd",
 
 
                 //not important - `this is just to create a test database
@@ -187,6 +189,10 @@ public class phabservlet1 extends HttpServlet {
             decreaseStockGreenPark(resp);
         }
 
+        if (urlPattern.equals("/getLimitOneGreenPark")) {
+            getLimitOneGreenPark(resp);
+        }
+
         //I have not included the create test database here
         if(urlPattern.equals("/replenishStockGreenPark"))
         {
@@ -237,6 +243,11 @@ public class phabservlet1 extends HttpServlet {
         if(urlPattern.equals("/_decreaseStockMileEnd")) {
 
             decreaseStockMileEnd(resp);
+        }
+
+        if (urlPattern.equals("/getLimitOneMileEnd")) {
+
+            getLimitOneMileEnd(resp);
         }
 
         //I have not included the create test database here
@@ -1095,6 +1106,34 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
+    private void getLimitOneGreenPark(HttpServletResponse resp) throws IOException
+    {
+
+        try {
+            String strSelect = "SELECT * FROM StockDBGreenPark WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("\n");
+            while (rset.next()) {
+                resp.getWriter().write(rset.getString(7));
+            }
+
+            //close connection
+            if (rset != null) {
+                rset.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
+    }
+
 
     //Mile End--------------------------------------------------------------------------------------------------------
     private void decreaseStockMileEnd(HttpServletResponse resp) throws IOException
@@ -1415,6 +1454,34 @@ public class phabservlet1 extends HttpServlet {
         } catch (Exception e) {
 
             resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void getLimitOneMileEnd(HttpServletResponse resp) throws IOException
+    {
+
+        try {
+            String strSelect = "SELECT * FROM StockDBMileEnd WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("\n");
+            while (rset.next()) {
+                resp.getWriter().write(rset.getString(7));
+            }
+
+            //close connection
+            if (rset != null) {
+                rset.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        }
+        catch(Exception e)
+        {
+
         }
     }
 
