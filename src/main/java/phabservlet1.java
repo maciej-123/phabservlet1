@@ -22,6 +22,7 @@ import javax.servlet.http.*;
 
                 "/_decreaseStockPaddington", //underscore important
                 "/replenishStockPaddington",
+                "/getLimitOnePaddington",
 
                 //green park
                 "/create_phab_greenpark",
@@ -30,9 +31,12 @@ import javax.servlet.http.*;
                 "/testdelete_phab_greenpark",
                 "/delete_phab_greenpark", //DO NOT CALL ALONE
                 "/return_phab_greenpark",
+                "/_checkStockGreenPark",
+
 
                 "/_decreaseStockGreenPark", //underscore important
                 "/replenishStockGreenPark",
+                "/getLimitOneGreenPark",
 
                 //mile end
                 "/create_phab_mileend",
@@ -41,9 +45,11 @@ import javax.servlet.http.*;
                 "/testdelete_phab_mileend",
                 "/delete_phab_mileend", //DO NOT CALL ALONE
                 "/return_phab_mileend",
+                "/_checkStockMileEnd",
 
                 "/_decreaseStockMileEnd", //underscore important
                 "/replenishStockMileEnd",
+                "/getLimitOneMileEnd",
 
 
                 //not important - `this is just to create a test database
@@ -125,6 +131,12 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
+        if (urlPattern.equals("/getLimitOnePaddington")) {
+
+            getLimitOnePaddington(resp);
+        }
+
+
         if (urlPattern.equals("/replenishStock")) {
             resp.getWriter().write("\nSetting Stock to Max\n");
             delAllPHABPaddington(resp);
@@ -177,6 +189,10 @@ public class phabservlet1 extends HttpServlet {
             decreaseStockGreenPark(resp);
         }
 
+        if (urlPattern.equals("/getLimitOneGreenPark")) {
+            getLimitOneGreenPark(resp);
+        }
+
         //I have not included the create test database here
         if(urlPattern.equals("/replenishStockGreenPark"))
         {
@@ -184,6 +200,11 @@ public class phabservlet1 extends HttpServlet {
             delAllPHABGreenPark(resp);
             fillPHABGreenPark(resp);
 
+        }
+        if (urlPattern.equals("/_checkStockGreenPark"))
+        {
+            resp.getWriter().write("\nChecking stock test function\n");
+            checkStockGreenPark(resp);
         }
 
         //End of Green Park related functions---------------------------------------------------------------------------
@@ -224,6 +245,11 @@ public class phabservlet1 extends HttpServlet {
             decreaseStockMileEnd(resp);
         }
 
+        if (urlPattern.equals("/getLimitOneMileEnd")) {
+
+            getLimitOneMileEnd(resp);
+        }
+
         //I have not included the create test database here
         if(urlPattern.equals("/replenishStockMileEnd"))
         {
@@ -231,6 +257,11 @@ public class phabservlet1 extends HttpServlet {
             delAllPHABMileEnd(resp);
             fillPHABMileEnd(resp);
 
+        }
+        if (urlPattern.equals("/_checkStockMileEnd"))
+        {
+            resp.getWriter().write("\nChecking stock test function\n");
+            checkStockMileEnd(resp);
         }
 
         // End of Mileend Database functions----------------------------------------------------------------------------
@@ -411,7 +442,7 @@ public class phabservlet1 extends HttpServlet {
 
             }
             if (count>=1)
-                resp.getWriter().write("\n WARNING: Stock below 20% found");
+                resp.getWriter().write("\n WARNING: "+ count +" stock(s) below 20% found");
 
         }
         catch (Exception e){
@@ -491,7 +522,7 @@ public class phabservlet1 extends HttpServlet {
             else {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',4.5,3.7,15,0,0)"); //current stock actually 15 but changed to test
-                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',6.8,5,20,0,20)");
+                s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',6.8,5,20,0,0)"); //current stock actually 20 but changed to test
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',8.5,7,30,0,30)");
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',9,7.5,30,0,30)");
                 s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','max','16 caps',4.2,3.7,25,0,25)");
@@ -648,6 +679,36 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write(e.getMessage());
         }
     }
+
+    private void getLimitOnePaddington(HttpServletResponse resp) throws IOException
+    {
+
+        try {
+            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("\n");
+            while (rset.next()) {
+                resp.getWriter().write(rset.getString(7));
+            }
+
+            //close connection
+            if (rset != null) {
+                rset.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
+    }
+
+
     //------------------------------------------------------------------------------------------------------------------
 
 
@@ -705,6 +766,49 @@ public class phabservlet1 extends HttpServlet {
 
 
     }
+    private void checkStockGreenPark(HttpServletResponse resp) throws IOException {
+
+        try {
+            resp.getWriter().write("Checking Stock Green Park\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT CurrentStock FROM StockDBGreenPark";
+            String strFullStock = "SELECT FullStock FROM StockDBGreenPark";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            ResultSet rset2 = s.executeQuery(strFullStock);
+            int cq = 0;
+            int fs = 0;
+            int count = 0;
+            String transferStr;
+            String transferStr2;
+
+            while(rset.next() && rset2.next()) {
+                rset.getString("CurrentStock");
+                transferStr=rset.getString("CurrentStock");
+                cq = Integer.valueOf(transferStr);
+
+                rset2.getString("Fullstock");
+                transferStr2=rset2.getString("FullStock");
+                fs = Integer.valueOf(transferStr2);
+                if (cq <= fs*0.2 )
+                {
+                    count++;
+                }
+
+            }
+            if (count>=1)
+                resp.getWriter().write("\n WARNING: "+ count +" stocks below 20% found");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+    }
+
 
     private void createPHABGreenPark(HttpServletResponse resp) throws IOException
     {
@@ -777,8 +881,8 @@ public class phabservlet1 extends HttpServlet {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',9,3.7,15,0,15)");
                 s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',13.6,5,20,0,20)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',17,7,30,0,30)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',18,7.5,30,0,30)");
+                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',17,7,30,0,0)");//actual 30
+                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',18,7.5,30,0,30)");//actual 30
                 s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','max','16 caps',8.4,3.7,25,0,25)");
                 s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','standard','10 sachets',9,3.5,25,0,25)");
                 s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','day and night','16 caps',9,3.2,30,1,30)");
@@ -934,6 +1038,34 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
+    private void getLimitOneGreenPark(HttpServletResponse resp) throws IOException
+    {
+
+        try {
+            String strSelect = "SELECT * FROM StockDBGreenPark WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("\n");
+            while (rset.next()) {
+                resp.getWriter().write(rset.getString(7));
+            }
+
+            //close connection
+            if (rset != null) {
+                rset.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
+    }
+
 
     //Mile End--------------------------------------------------------------------------------------------------------
     private void decreaseStockMileEnd(HttpServletResponse resp) throws IOException
@@ -989,6 +1121,49 @@ public class phabservlet1 extends HttpServlet {
 
 
     }
+    private void checkStockMileEnd(HttpServletResponse resp) throws IOException {
+
+        try {
+            resp.getWriter().write("Checking Stock Paddington\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT CurrentStock FROM StockDBMileEnd";
+            String strFullStock = "SELECT FullStock FROM StockDBMileEnd";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            ResultSet rset2 = s.executeQuery(strFullStock);
+            int cq = 0;
+            int fs = 0;
+            int count = 0;
+            String transferStr;
+            String transferStr2;
+
+            while(rset.next() && rset2.next()) {
+                rset.getString("CurrentStock");
+                transferStr=rset.getString("CurrentStock");
+                cq = Integer.valueOf(transferStr);
+
+                rset2.getString("Fullstock");
+                transferStr2=rset2.getString("FullStock");
+                fs = Integer.valueOf(transferStr2);
+                if (cq <= fs*0.2 )
+                {
+                    count++;
+                }
+
+            }
+            if (count>=1)
+                resp.getWriter().write("\n WARNING: "+ count +" stocks below 20% found");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+    }
+
 
     private void createPHABMileEnd(HttpServletResponse resp) throws IOException
     {
@@ -1211,6 +1386,34 @@ public class phabservlet1 extends HttpServlet {
         } catch (Exception e) {
 
             resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void getLimitOneMileEnd(HttpServletResponse resp) throws IOException
+    {
+
+        try {
+            String strSelect = "SELECT * FROM StockDBMileEnd WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("\n");
+            while (rset.next()) {
+                resp.getWriter().write(rset.getString(7));
+            }
+
+            //close connection
+            if (rset != null) {
+                rset.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        }
+        catch(Exception e)
+        {
+
         }
     }
 
