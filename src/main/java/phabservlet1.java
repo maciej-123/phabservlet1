@@ -491,7 +491,7 @@ public class phabservlet1 extends HttpServlet {
             String transferStr3;
             String transferStr4;
 
-            while(rset.next() && rset2.next()) {
+            while(rset.next() && rset2.next() && rset3.next() && rset4.next()) {
                 rset.getString("CurrentStock");
                 transferStr=rset.getString("CurrentStock");
                 cq = Integer.valueOf(transferStr);
