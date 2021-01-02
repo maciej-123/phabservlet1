@@ -501,7 +501,7 @@ public class phabservlet1 extends HttpServlet {
                 fs = Integer.valueOf(transferStr2);
 
                 rset3.getString("SalesPrice");
-                transferStr3=rset.getString("SalesPrice");
+                transferStr3=rset3.getString("SalesPrice");
                 sp = Integer.valueOf(transferStr3);
 
                 rset4.getString("PurchasePrice");
