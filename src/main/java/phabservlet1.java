@@ -24,6 +24,7 @@ import javax.servlet.http.*;
                 "/replenishStockPaddington",
                 "/getLimitOnePaddington",
                 "/calculateProfitPaddington",
+                "/calculateRevenuePaddington",
 
                 //green park
                 "/create_phab_greenpark",
@@ -51,6 +52,7 @@ import javax.servlet.http.*;
                 "/_decreaseStockMileEnd", //underscore important
                 "/replenishStockMileEnd",
                 "/getLimitOneMileEnd",
+
 
 
                 //not important - `this is just to create a test database
@@ -159,6 +161,12 @@ public class phabservlet1 extends HttpServlet {
         {
             resp.getWriter().write("\nCalculate profit paddington called\n");
             calculateProfitPaddington(resp);
+        }
+
+        if (urlPattern.equals("/calculateRevenuePaddington"))
+        {
+            resp.getWriter().write("\nCalculate revenue paddington called\n");
+            calculateRevenuePaddington(resp);
         }
         //End of Paddington related functions---------------------------------------------------------------------------
 
@@ -310,8 +318,7 @@ public class phabservlet1 extends HttpServlet {
 
     private String SearchManufacturer;
     private String SearchName;
-    private int SearchCurrentStock;
-    private int SearchFullStock;
+
 
 
     @Override
@@ -516,6 +523,56 @@ public class phabservlet1 extends HttpServlet {
 
     }
 
+    private void calculateRevenuePaddington(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("Calculating Revenue Paddington\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT CurrentStock FROM StockDBPaddington";
+            String strFullStock = "SELECT FullStock FROM StockDBPaddington";
+            String strSalesPrice = "SELECT SalesPrice FROM StockDBPaddington";
+            String strPurchasePrice = "SELECT PurchasePrice FROM StockDBPaddington";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            ResultSet rset2 = s.executeQuery(strFullStock);
+            ResultSet rset3 = s.executeQuery(strSalesPrice);
+            ResultSet rset4 = s.executeQuery(strPurchasePrice);
+            int cq = 0;
+            int fs = 0;
+            double sp = 0;
+
+            double rev = 0;
+
+
+            String transferStr;
+            String transferStr2;
+
+
+            while(rset.next() && rset2.next() && rset3.next() && rset4.next()) {
+                rset.getString("CurrentStock");
+                transferStr=rset.getString("CurrentStock");
+                cq = Integer.valueOf(transferStr);
+
+                rset2.getString("Fullstock");
+                transferStr2=rset2.getString("FullStock");
+                fs = Integer.valueOf(transferStr2);
+
+                sp = rset3.getDouble("SalesPrice");
+
+                rev = rev + (fs-cq)*(sp);
+
+            }
+
+            resp.getWriter().write("\n Revenue: "+ rev +" pounds");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
 
     private void createPHABPaddington(HttpServletResponse resp) throws IOException
     {
