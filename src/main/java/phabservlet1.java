@@ -40,7 +40,7 @@ import javax.servlet.http.*;
                 "/replenishStockGreenPark",
                 "/getLimitOneGreenPark",
                 "/calculateRevenueGreenPark",
-                "calculateProfitGreenPark",
+                "/calculateProfitGreenPark",
 
                 //mile end
                 "/create_phab_mileend",
@@ -54,8 +54,8 @@ import javax.servlet.http.*;
                 "/_decreaseStockMileEnd", //underscore important
                 "/replenishStockMileEnd",
                 "/getLimitOneMileEnd",
-                "calculateProfitMileEnd",
-                "calculateRevenueMileEnd",
+                "/calculateProfitMileEnd",
+                "/calculateRevenueMileEnd",
 
 
 
