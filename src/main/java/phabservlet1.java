@@ -23,6 +23,7 @@ import javax.servlet.http.*;
                 "/_decreaseStockPaddington", //underscore important
                 "/replenishStockPaddington",
                 "/getLimitOnePaddington",
+                "/calculateProfitPaddington",
 
                 //green park
                 "/create_phab_greenpark",
@@ -150,6 +151,14 @@ public class phabservlet1 extends HttpServlet {
         {
             resp.getWriter().write("\nChecking stock test function\n");
             checkStockPaddington(resp);
+        }
+
+        //testing the calculate profit function
+
+        if (urlPattern.equals("/calculateProfitPaddington"))
+        {
+            resp.getWriter().write("\nCalculate profit paddington called\n");
+            calculateProfitPaddington(resp);
         }
         //End of Paddington related functions---------------------------------------------------------------------------
 
