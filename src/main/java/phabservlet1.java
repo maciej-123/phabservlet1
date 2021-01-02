@@ -481,15 +481,14 @@ public class phabservlet1 extends HttpServlet {
             ResultSet rset4 = s.executeQuery(strPurchasePrice);
             int cq = 0;
             int fs = 0;
-            int sp = 0;
-            int pp = 0;
-            int profit = 0;
+            double sp = 0;
+            double pp = 0;
+            double profit = 0;
             int count = 0;
 
             String transferStr;
             String transferStr2;
-            String transferStr3;
-            String transferStr4;
+
 
             while(rset.next() && rset2.next() && rset3.next() && rset4.next()) {
                 rset.getString("CurrentStock");
@@ -500,13 +499,8 @@ public class phabservlet1 extends HttpServlet {
                 transferStr2=rset2.getString("FullStock");
                 fs = Integer.valueOf(transferStr2);
 
-                rset3.getString("SalesPrice");
-                transferStr3=rset3.getString("SalesPrice");
-                sp = Integer.valueOf(transferStr3);
-
-                rset4.getString("PurchasePrice");
-                transferStr4=rset4.getString("PurchasePrice");
-                pp = Integer.valueOf(transferStr4);
+                sp = rset3.getDouble("SalesPrice");
+                pp = rset4.getDouble("PurchasePrice");
 
                 profit = profit + (fs-cq)*(sp-pp);
 
