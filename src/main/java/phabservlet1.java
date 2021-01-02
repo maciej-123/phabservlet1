@@ -484,7 +484,7 @@ public class phabservlet1 extends HttpServlet {
             double sp = 0;
             double pp = 0;
             double profit = 0;
-            int count = 0;
+
 
             String transferStr;
             String transferStr2;
@@ -505,7 +505,7 @@ public class phabservlet1 extends HttpServlet {
                 profit = profit + (fs-cq)*(sp-pp);
 
             }
-            if (count>=1)
+
                 resp.getWriter().write("\n Profit: "+ profit +" pounds");
 
         }
