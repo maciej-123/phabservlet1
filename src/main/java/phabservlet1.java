@@ -418,6 +418,8 @@ public class phabservlet1 extends HttpServlet {
             //first find current stock
             String strSelect = "SELECT CurrentStock FROM StockDBPaddington";
             String strFullStock = "SELECT FullStock FROM StockDBPaddington";
+            String strSalesPrice = "SELECT SalesPrice FROM StockDBPaddington";
+            String strPurchasePrice = "SELECT PurchasePrice FROM StockDBPaddington";
 
             ResultSet rset = s.executeQuery(strSelect);
             ResultSet rset2 = s.executeQuery(strFullStock);
@@ -451,6 +453,66 @@ public class phabservlet1 extends HttpServlet {
         }
 
     }
+
+    private void calculateProfitPaddington(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("Calculating Profit Paddington\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT CurrentStock FROM StockDBPaddington";
+            String strFullStock = "SELECT FullStock FROM StockDBPaddington";
+            String strSalesPrice = "SELECT SalesPrice FROM StockDBPaddington";
+            String strPurchasePrice = "SELECT PurchasePrice FROM StockDBPaddington";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            ResultSet rset2 = s.executeQuery(strFullStock);
+            ResultSet rset3 = s.executeQuery(strSalesPrice);
+            ResultSet rset4 = s.executeQuery(strPurchasePrice);
+            int cq = 0;
+            int fs = 0;
+            int sp = 0;
+            int pp = 0;
+            int profit = 0;
+            int count = 0;
+
+            String transferStr;
+            String transferStr2;
+            String transferStr3;
+            String transferStr4;
+
+            while(rset.next() && rset2.next()) {
+                rset.getString("CurrentStock");
+                transferStr=rset.getString("CurrentStock");
+                cq = Integer.valueOf(transferStr);
+
+                rset2.getString("Fullstock");
+                transferStr2=rset2.getString("FullStock");
+                fs = Integer.valueOf(transferStr2);
+
+                rset3.getString("SalesPrice");
+                transferStr3=rset.getString("SalesPrice");
+                sp = Integer.valueOf(transferStr3);
+
+                rset4.getString("PurchasePrice");
+                transferStr4=rset4.getString("PurchasePrice");
+                pp = Integer.valueOf(transferStr4);
+
+                profit = profit + (fs-cq)*(sp-pp);
+
+            }
+            if (count>=1)
+                resp.getWriter().write("\n Profit: "+ profit +" pounds");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+    }
+
 
     private void createPHABPaddington(HttpServletResponse resp) throws IOException
     {
