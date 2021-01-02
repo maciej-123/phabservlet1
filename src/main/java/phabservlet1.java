@@ -39,6 +39,8 @@ import javax.servlet.http.*;
                 "/_decreaseStockGreenPark", //underscore important
                 "/replenishStockGreenPark",
                 "/getLimitOneGreenPark",
+                "/calculateRevenueGreenPark",
+                "calculateProfitGreenPark",
 
                 //mile end
                 "/create_phab_mileend",
@@ -52,6 +54,8 @@ import javax.servlet.http.*;
                 "/_decreaseStockMileEnd", //underscore important
                 "/replenishStockMileEnd",
                 "/getLimitOneMileEnd",
+                "calculateProfitMileEnd",
+                "calculateRevenueMileEnd",
 
 
 
@@ -224,6 +228,15 @@ public class phabservlet1 extends HttpServlet {
             checkStockGreenPark(resp);
         }
 
+        if (urlPattern.equals("/calculateProfitGreenPark"))
+        {
+            calculateProfitGreenPark(resp);
+        }
+
+        if (urlPattern.equals("/calculateRevenueGreenPark"))
+        {
+            calculateRevenueGreenPark(resp);
+        }
         //End of Green Park related functions---------------------------------------------------------------------------
 
         //Mileend Databases---------------------------------------------------------------------------------------------
@@ -279,6 +292,16 @@ public class phabservlet1 extends HttpServlet {
         {
             resp.getWriter().write("\nChecking stock test function\n");
             checkStockMileEnd(resp);
+        }
+
+        if (urlPattern.equals("/calculateProfitMileEnd"))
+        {
+            calculateProfitMileEnd(resp);
+        }
+
+        if (urlPattern.equals("/calculateRevenueMileEnd"))
+        {
+            calculateRevenueMileEnd(resp);
         }
 
         // End of Mileend Database functions----------------------------------------------------------------------------
@@ -967,6 +990,110 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
+    private void calculateProfitGreenPark(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("Calculating Profit Green Park\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT CurrentStock FROM StockDBGreenPark";
+            String strFullStock = "SELECT FullStock FROM StockDBGreenPark";
+            String strSalesPrice = "SELECT SalesPrice FROM StockDBGreenPark";
+            String strPurchasePrice = "SELECT PurchasePrice FROM StockDBGreenPark";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            ResultSet rset2 = s.executeQuery(strFullStock);
+            ResultSet rset3 = s.executeQuery(strSalesPrice);
+            ResultSet rset4 = s.executeQuery(strPurchasePrice);
+            int cq = 0;
+            int fs = 0;
+            double sp = 0;
+            double pp = 0;
+            double profit = 0;
+
+
+            String transferStr;
+            String transferStr2;
+
+
+            while(rset.next() && rset2.next() && rset3.next() && rset4.next()) {
+                rset.getString("CurrentStock");
+                transferStr=rset.getString("CurrentStock");
+                cq = Integer.valueOf(transferStr);
+
+                rset2.getString("Fullstock");
+                transferStr2=rset2.getString("FullStock");
+                fs = Integer.valueOf(transferStr2);
+
+                sp = rset3.getDouble("SalesPrice");
+                pp = rset4.getDouble("PurchasePrice");
+
+                profit = profit + (fs-cq)*(sp-pp);
+
+            }
+
+            resp.getWriter().write("\n Profit: "+ profit +" pounds");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+    }
+
+    private void calculateRevenueGreenPark(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("Calculating Revenue Green Park\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT CurrentStock FROM StockDBGreenPark";
+            String strFullStock = "SELECT FullStock FROM StockDBGreenPark";
+            String strSalesPrice = "SELECT SalesPrice FROM StockDBGreenPark";
+            String strPurchasePrice = "SELECT PurchasePrice FROM StockDBGreenPark";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            ResultSet rset2 = s.executeQuery(strFullStock);
+            ResultSet rset3 = s.executeQuery(strSalesPrice);
+            ResultSet rset4 = s.executeQuery(strPurchasePrice);
+            int cq = 0;
+            int fs = 0;
+            double sp = 0;
+
+            double rev = 0;
+
+
+            String transferStr;
+            String transferStr2;
+
+
+            while(rset.next() && rset2.next() && rset3.next() && rset4.next()) {
+                rset.getString("CurrentStock");
+                transferStr=rset.getString("CurrentStock");
+                cq = Integer.valueOf(transferStr);
+
+                rset2.getString("Fullstock");
+                transferStr2=rset2.getString("FullStock");
+                fs = Integer.valueOf(transferStr2);
+
+                sp = rset3.getDouble("SalesPrice");
+
+                rev = rev + (fs-cq)*(sp);
+
+            }
+
+            resp.getWriter().write("\n Revenue: "+ rev +" pounds");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
     private void testFillPHABGreenPark(HttpServletResponse resp) throws IOException
     {
         try {
@@ -1286,6 +1413,109 @@ public class phabservlet1 extends HttpServlet {
 
     }
 
+    private void calculateProfitMileEnd(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("Calculating Profit Mile End\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT CurrentStock FROM StockDBMileEnd";
+            String strFullStock = "SELECT FullStock FROM StockDBMileEnd";
+            String strSalesPrice = "SELECT SalesPrice FROM StockDBMileEnd";
+            String strPurchasePrice = "SELECT PurchasePrice FROM StockDBMileEnd";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            ResultSet rset2 = s.executeQuery(strFullStock);
+            ResultSet rset3 = s.executeQuery(strSalesPrice);
+            ResultSet rset4 = s.executeQuery(strPurchasePrice);
+            int cq = 0;
+            int fs = 0;
+            double sp = 0;
+            double pp = 0;
+            double profit = 0;
+
+
+            String transferStr;
+            String transferStr2;
+
+
+            while(rset.next() && rset2.next() && rset3.next() && rset4.next()) {
+                rset.getString("CurrentStock");
+                transferStr=rset.getString("CurrentStock");
+                cq = Integer.valueOf(transferStr);
+
+                rset2.getString("Fullstock");
+                transferStr2=rset2.getString("FullStock");
+                fs = Integer.valueOf(transferStr2);
+
+                sp = rset3.getDouble("SalesPrice");
+                pp = rset4.getDouble("PurchasePrice");
+
+                profit = profit + (fs-cq)*(sp-pp);
+
+            }
+
+            resp.getWriter().write("\n Profit: "+ profit +" pounds");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+    }
+
+    private void calculateRevenueMileEnd(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("Calculating Revenue Mile End\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT CurrentStock FROM StockDBMileEnd";
+            String strFullStock = "SELECT FullStock FROM StockDBMileEnd";
+            String strSalesPrice = "SELECT SalesPrice FROM StockDBMileEnd";
+            String strPurchasePrice = "SELECT PurchasePrice FROM StockDBMileEnd";
+
+            ResultSet rset = s.executeQuery(strSelect);
+            ResultSet rset2 = s.executeQuery(strFullStock);
+            ResultSet rset3 = s.executeQuery(strSalesPrice);
+            ResultSet rset4 = s.executeQuery(strPurchasePrice);
+            int cq = 0;
+            int fs = 0;
+            double sp = 0;
+
+            double rev = 0;
+
+
+            String transferStr;
+            String transferStr2;
+
+
+            while(rset.next() && rset2.next() && rset3.next() && rset4.next()) {
+                rset.getString("CurrentStock");
+                transferStr=rset.getString("CurrentStock");
+                cq = Integer.valueOf(transferStr);
+
+                rset2.getString("Fullstock");
+                transferStr2=rset2.getString("FullStock");
+                fs = Integer.valueOf(transferStr2);
+
+                sp = rset3.getDouble("SalesPrice");
+
+                rev = rev + (fs-cq)*(sp);
+
+            }
+
+            resp.getWriter().write("\n Revenue: "+ rev +" pounds");
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
 
     private void createPHABMileEnd(HttpServletResponse resp) throws IOException
     {
