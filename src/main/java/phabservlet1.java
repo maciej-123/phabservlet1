@@ -13,9 +13,9 @@ import javax.servlet.http.*;
 
                 //paddington -for editing the main database we have - testfill and testdelete are dummy functions
                 "/create_phab_paddington",
-                "/testfill_phab_paddington",
+                "/testfill_phab",
                 "/fill_phab", //DO NOT CALL ALONE
-                "/testdelete_phab_paddington",
+                "/testdelete_phab",
                 "/delete_phab", //DO NOT CALL ALONE
                 "/return_phab_paddington",
                 "/_checkStockPaddington",
@@ -30,11 +30,8 @@ import javax.servlet.http.*;
 
                 //green park
                 "/create_phab_greenpark",
-                "/testfill_phab_greenpark",
-                "/testdelete_phab_greenpark",
                 "/return_phab_greenpark",
                 "/_checkStockGreenPark",
-
 
                 "/_decreaseStockGreenPark", //underscore important
                 "/replenishStockGreenPark",
@@ -43,8 +40,6 @@ import javax.servlet.http.*;
 
                 //mile end
                 "/create_phab_mileend",
-                "/testfill_phab_mileend",
-                "/testdelete_phab_mileend",
                 "/return_phab_mileend",
                 "/_checkStockMileEnd",
 
@@ -105,18 +100,14 @@ public class phabservlet1 extends HttpServlet {
         }
 
         //fill with test variable
-        if (urlPattern.equals("/testfill_phab_paddington")) {
-            testFillPHABPaddington(resp);
+        if (urlPattern.equals("/testfill_phab")) {
+            testFillPHAB(resp);
         }
 
         if (urlPattern.equals("/fill_phab")) {
             fillPHAB(resp);
         }
 
-
-        if (urlPattern.equals("/testdelete_phab_paddington")) {
-            delTestPHABPaddington(resp);
-        }
 
         if (urlPattern.equals("/return_phab_paddington")) {
             returnPHABPaddington(resp);
@@ -185,18 +176,6 @@ public class phabservlet1 extends HttpServlet {
             createPHABGreenPark(resp);
         }
 
-        //fill with test variable
-        if(urlPattern.equals("/testfill_phab_greenpark")) {
-            testFillPHABGreenPark(resp);
-        }
-
-
-
-
-
-        if(urlPattern.equals("/testdelete_phab_greenpark")) {
-            delTestPHABGreenPark(resp);
-        }
 
         if(urlPattern.equals("/return_phab_greenpark")) {
             returnPHABGreenPark(resp);
@@ -238,17 +217,6 @@ public class phabservlet1 extends HttpServlet {
         //create PHAB Mileend Database
         if(urlPattern.equals("/create_phab_mileend")) {
             createPHABMileEnd(resp);
-        }
-
-        //fill with test variable
-        if(urlPattern.equals("/testfill_phab_mileend")) {
-            testFillPHABMileEnd(resp);
-        }
-
-
-
-        if(urlPattern.equals("/testdelete_phab_mileend")) {
-            delTestPHABMileEnd(resp);
         }
 
         if(urlPattern.equals("/return_phab_mileend")) {
@@ -634,14 +602,14 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void testFillPHABPaddington(HttpServletResponse resp) throws IOException
+    private void testFillPHAB(HttpServletResponse resp) throws IOException
     {
         try {
             resp.getWriter().write("Filling In PHAB Paddington Database\n");
             Statement s=c.createStatement();
 
             //fill database with test row
-            s.execute("INSERT INTO public.StockDBPaddington (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
+            s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
 
             resp.getWriter().write("\nalterTestDatabase called\n");
             if(s!=null){s.close();}
@@ -776,16 +744,16 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write(e.getMessage());
         }
     }
-//
-    private void delTestPHABPaddington(HttpServletResponse resp) throws IOException
+
+    private void delTestPHAB(HttpServletResponse resp) throws IOException
     {
         try {
 
             resp.getWriter().write("Deleting Test Rows Paddington\n");
             Statement s=c.createStatement();
 
-            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='test'");
-            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='Test'");
+            s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE Manufacturer='test'");
+            s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE Manufacturer='Test'");
 
             resp.getWriter().write("\nalterTestDatabase called");
             if(s!=null){s.close();}
@@ -1127,44 +1095,6 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void testFillPHABGreenPark(HttpServletResponse resp) throws IOException
-    {
-        try {
-            resp.getWriter().write("Filling In PHAB Green Park Database\n");
-            Statement s=c.createStatement();
-
-            //fill database with test row
-            s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
-
-            resp.getWriter().write("\nalterTestDatabase called\n");
-            if(s!=null){s.close();}
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void delTestPHABGreenPark(HttpServletResponse resp) throws IOException
-    {
-        try {
-
-            resp.getWriter().write("Deleting Test Rows Green Park\n");
-            Statement s=c.createStatement();
-
-            s.execute("DELETE FROM public.StockDBGreenPark WHERE Manufacturer='test'");
-            s.execute("DELETE FROM public.StockDBGreenPark WHERE Manufacturer='Test'");
-
-            resp.getWriter().write("\nalterTestDatabase called");
-            if(s!=null){s.close();}
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
 
     private void returnPHABGreenPark(HttpServletResponse resp) throws IOException
     {
@@ -1446,45 +1376,6 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("Function Call Finished");
             if(rset!=null){rset.close();}
             if(s!=null){s.close();}
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void testFillPHABMileEnd(HttpServletResponse resp) throws IOException
-    {
-        try {
-            resp.getWriter().write("Filling In PHAB Mile End Database\n");
-            Statement s=c.createStatement();
-
-            //fill database with test row
-            s.execute("INSERT INTO public.StockDBMileEnd (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
-
-            resp.getWriter().write("\nalterTestDatabase called\n");
-            if(s!=null){s.close();}
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void delTestPHABMileEnd(HttpServletResponse resp) throws IOException
-    {
-        try {
-
-            resp.getWriter().write("Deleting Test Rows Mile End\n");
-            Statement s=c.createStatement();
-
-            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='test'");
-            s.execute("DELETE FROM public.StockDBPaddington WHERE Manufacturer='Test'");
-
-            resp.getWriter().write("\nalterTestDatabase called");
-            if(s!=null){s.close();}
-
         }
         catch (Exception e){
 
