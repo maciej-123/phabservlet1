@@ -58,6 +58,9 @@ import javax.servlet.http.*;
                 "/calculateProfitMileEnd",
                 "/calculateRevenueMileEnd",
 
+                //URL patterns for post requests
+                "/inputManufacturerName",
+                "/inputBranch",
 
 
                 //not important - `this is just to create a test database
@@ -342,6 +345,7 @@ public class phabservlet1 extends HttpServlet {
 
     private String SearchManufacturer;
     private String SearchName;
+    private String Branch;
 
 
 
@@ -357,27 +361,50 @@ public class phabservlet1 extends HttpServlet {
 
         //one function to change the global variables
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/_decreaseStockPaddington"))
+        if(urlPattern.equals("/inputManufacturerName"))
         {
-            resp.getWriter().write("\nDecreasing stock\n");
-
+            resp.getWriter().write("\nInputting Manufacturer and Name\n");
 
             //recieves data in the form of Manufacturer@Name
             String manufacturer = message.substring(0,message.indexOf('@'));
             String name = message.substring(message.indexOf('@')+1,length);
 
-            resp.getWriter().write("\n");
-            resp.getWriter().write(manufacturer);
-            resp.getWriter().write("\n");
-            resp.getWriter().write(name);
 
             resp.getWriter().write("#1");
             try {
-                resp.getWriter().write("\nAltering Part\n");
+                resp.getWriter().write("\nGlobal Variables Manufacturer and Name\n");
 
                 //put into global variables
                 SearchManufacturer = manufacturer;
                 SearchName = name;
+
+                resp.getWriter().write(SearchManufacturer+"\n");
+                resp.getWriter().write(SearchName+"\n");
+            }
+            catch (Exception e){
+
+                resp.getWriter().write(e.getMessage());
+            }
+
+            resp.getWriter().write("Input Manufacturer and Name ended");
+
+        }
+
+        if(urlPattern.equals("/inputBranch"))
+        {
+            resp.getWriter().write("\nInputting Branch Name\n");
+
+            //recieves data in the form of Manufacturer@Name
+            String branch = message;
+
+
+
+            resp.getWriter().write("#1");
+            try {
+                resp.getWriter().write("\nGlobal Variable Branch\n");
+
+                //put into global variables
+                Branch = branch;
 
 
             }
@@ -385,8 +412,8 @@ public class phabservlet1 extends HttpServlet {
 
                 resp.getWriter().write(e.getMessage());
             }
+            resp.getWriter().write("Input Branch ended");
 
-            resp.getWriter().write("#2");
 
         }
 
