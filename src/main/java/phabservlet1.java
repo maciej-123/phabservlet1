@@ -358,7 +358,7 @@ public class phabservlet1 extends HttpServlet {
 
         //one function to change the global variables
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/inputManufacturerName"))
+        if(urlPattern.equals("/ee"))
         {
             resp.getWriter().write("\nDecreasing stock\n");
 
