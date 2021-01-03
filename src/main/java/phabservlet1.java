@@ -12,27 +12,31 @@ import javax.servlet.http.*;
                 "/text_database",//text from database
 
                 //paddington -for editing the main database we have - testfill and testdelete are dummy functions
-                "/create_phab_paddington",
                 "/testfill_phab",
                 "/fill_phab", //DO NOT CALL ALONE
                 "/testdelete_phab",
                 "/delete_phab", //DO NOT CALL ALONE
-                "/return_phab_paddington",
                 "/_checkStock",
                 "/searchForDrug",
 
-                "/_decreaseStockPaddington", //underscore important
                 "/replenishStock",
                 "/getLimitOne",
                 "/calculateProfit",
                 "/calculateRevenue",
-                "/_inputManufacturerName",
+
+                "/inputManufacturerName",
+
+
+                //paddington
+                "/create_phab_paddington",
+                "/return_phab_paddington",
+                "/_decreaseStockPaddington", //underscore important
+
 
                 //green park
                 "/create_phab_greenpark",
                 "/return_phab_greenpark",
                 "/_decreaseStockGreenPark", //underscore important
-
 
                 //mile end
                 "/create_phab_mileend",
@@ -74,10 +78,6 @@ public class phabservlet1 extends HttpServlet {
         //get current URL pattern
         String urlPattern = req.getServletPath();
 
-        if (urlPattern.equals("/_inputManufacturerName")) {
-            resp.getWriter().write("ManufacturerName empty get request called, use post request instead");
-
-        }
 
         //return a simple text database
         if (urlPattern.equals("/text_database")) {
@@ -264,7 +264,7 @@ public class phabservlet1 extends HttpServlet {
 
         //one function to change the global variables
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/_inputManufacturerName"))
+        if(urlPattern.equals("/_decreaseStockPaddington"))
         {
             resp.getWriter().write("\nInputting Manufacturer and Name\n");
 
