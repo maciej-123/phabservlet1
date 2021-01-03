@@ -886,7 +886,7 @@ public class phabservlet1 extends HttpServlet {
 
             resp.getWriter().write("\n");
             while (rset.next()) {
-                for(int n=4;n<6;n++) {
+                for(int n=0;n<8;n++) {
                     resp.getWriter().write(rset.getString(n));
                     resp.getWriter().write("\t");
                 }
