@@ -18,7 +18,7 @@ import javax.servlet.http.*;
                 "/testdelete_phab",
                 "/delete_phab", //DO NOT CALL ALONE
                 "/return_phab_paddington",
-                "/_checkStockPaddington",
+                "/_checkStock",
                 "/searchForDrug",
 
                 "/_decreaseStockPaddington", //underscore important
@@ -31,16 +31,12 @@ import javax.servlet.http.*;
                 //green park
                 "/create_phab_greenpark",
                 "/return_phab_greenpark",
-                "/_checkStockGreenPark",
-
                 "/_decreaseStockGreenPark", //underscore important
 
 
                 //mile end
                 "/create_phab_mileend",
                 "/return_phab_mileend",
-                "/_checkStockMileEnd",
-
                 "/_decreaseStockMileEnd", //underscore important
 
 
@@ -142,10 +138,10 @@ public class phabservlet1 extends HttpServlet {
 
         //testing the check stock function
 
-        if (urlPattern.equals("/_checkStockPaddington"))
+        if (urlPattern.equals("/_checkStock"))
         {
             resp.getWriter().write("\nChecking stock test function\n");
-            checkStockPaddington(resp);
+            checkStock(resp);
         }
 
         //testing the calculate profit function
@@ -181,11 +177,7 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
-        if (urlPattern.equals("/_checkStockGreenPark"))
-        {
-            resp.getWriter().write("\nChecking stock test function\n");
-            checkStockGreenPark(resp);
-        }
+
 
 
         //End of Green Park related functions---------------------------------------------------------------------------
@@ -208,11 +200,7 @@ public class phabservlet1 extends HttpServlet {
             decreaseStockMileEnd(resp);
         }
 
-        if (urlPattern.equals("/_checkStockMileEnd"))
-        {
-            resp.getWriter().write("\nChecking stock test function\n");
-            checkStockMileEnd(resp);
-        }
+
 
 
 
@@ -379,17 +367,17 @@ public class phabservlet1 extends HttpServlet {
 
     }
 
-    private void checkStockPaddington(HttpServletResponse resp) throws IOException {
+    private void checkStock(HttpServletResponse resp) throws IOException {
 
         try {
             resp.getWriter().write("Checking Stock Paddington\n");
             Statement s=c.createStatement();
 
             //first find current stock
-            String strSelect = "SELECT CurrentStock FROM StockDBPaddington";
-            String strFullStock = "SELECT FullStock FROM StockDBPaddington";
-            String strSalesPrice = "SELECT SalesPrice FROM StockDBPaddington";
-            String strPurchasePrice = "SELECT PurchasePrice FROM StockDBPaddington";
+            String strSelect = "SELECT CurrentStock FROM StockDB"+SearchBranch;
+            String strFullStock = "SELECT FullStock FROM StockDB"+SearchBranch;
+            String strSalesPrice = "SELECT SalesPrice FROM StockDB"+SearchBranch;
+            String strPurchasePrice = "SELECT PurchasePrice FROM StockDB"+SearchBranch;
 
             ResultSet rset = s.executeQuery(strSelect);
             ResultSet rset2 = s.executeQuery(strFullStock);
@@ -873,49 +861,6 @@ public class phabservlet1 extends HttpServlet {
 
 
     }
-    private void checkStockGreenPark(HttpServletResponse resp) throws IOException {
-
-        try {
-            resp.getWriter().write("Checking Stock Green Park\n");
-            Statement s=c.createStatement();
-
-            //first find current stock
-            String strSelect = "SELECT CurrentStock FROM StockDBGreenPark";
-            String strFullStock = "SELECT FullStock FROM StockDBGreenPark";
-
-            ResultSet rset = s.executeQuery(strSelect);
-            ResultSet rset2 = s.executeQuery(strFullStock);
-            int cq = 0;
-            int fs = 0;
-            int count = 0;
-            String transferStr;
-            String transferStr2;
-
-            while(rset.next() && rset2.next()) {
-                rset.getString("CurrentStock");
-                transferStr=rset.getString("CurrentStock");
-                cq = Integer.valueOf(transferStr);
-
-                rset2.getString("Fullstock");
-                transferStr2=rset2.getString("FullStock");
-                fs = Integer.valueOf(transferStr2);
-                if (cq <= fs*0.2 )
-                {
-                    count++;
-                }
-
-            }
-            if (count>=1)
-                resp.getWriter().write("\n WARNING: "+ count +" stocks below 20% found");
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-
-    }
-
 
     private void createPHABGreenPark(HttpServletResponse resp) throws IOException
     {
@@ -1057,50 +1002,6 @@ public class phabservlet1 extends HttpServlet {
 
     }
 
-    private void checkStockMileEnd(HttpServletResponse resp) throws IOException
-    {
-
-        try {
-            resp.getWriter().write("Checking Stock Paddington\n");
-            Statement s=c.createStatement();
-
-            //first find current stock
-            String strSelect = "SELECT CurrentStock FROM StockDBMileEnd";
-            String strFullStock = "SELECT FullStock FROM StockDBMileEnd";
-
-            ResultSet rset = s.executeQuery(strSelect);
-            ResultSet rset2 = s.executeQuery(strFullStock);
-            int cq = 0;
-            int fs = 0;
-            int count = 0;
-            String transferStr;
-            String transferStr2;
-
-            while(rset.next() && rset2.next()) {
-                rset.getString("CurrentStock");
-                transferStr=rset.getString("CurrentStock");
-                cq = Integer.valueOf(transferStr);
-
-                rset2.getString("Fullstock");
-                transferStr2=rset2.getString("FullStock");
-                fs = Integer.valueOf(transferStr2);
-                if (cq <= fs*0.2 )
-                {
-                    count++;
-                }
-
-            }
-            if (count>=1)
-                resp.getWriter().write("\n WARNING: "+ count +" stocks below 20% found");
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-
-    }
-
     private void createPHABMileEnd(HttpServletResponse resp) throws IOException
     {
         try{
@@ -1186,6 +1087,8 @@ public class phabservlet1 extends HttpServlet {
 // End of Mile End Functions
 
 
+
+    //test database
 
     private void createTestDatabase(HttpServletResponse resp) throws IOException
     {
