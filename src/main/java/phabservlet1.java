@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.http.HttpResponse;
 import java.nio.file.Path;
 import java.sql.*;
 import java.util.stream.Collectors;
@@ -56,6 +57,11 @@ import javax.servlet.http.*;
                 "/getLimitOneMileEnd",
                 "/calculateProfitMileEnd",
                 "/calculateRevenueMileEnd",
+
+                //User database
+                "/create_user_database",
+                //"/add_user",
+                //"/verify_user",
 
 
 
@@ -303,6 +309,20 @@ public class phabservlet1 extends HttpServlet {
         {
             calculateRevenueMileEnd(resp);
         }
+
+        if (urlPattern.equals("/create_user_database")) {
+            createUserDatabase(resp);
+        }
+
+       // if (urlPattern.equals("/add_user")) {
+        //    addUser(resp);
+        //}
+
+        //if (urlPattern.equals("/verify_user")) {
+        //    verifyUser(resp); 
+        // }  
+
+        
 
         // End of Mileend Database functions----------------------------------------------------------------------------
 
@@ -1869,4 +1889,41 @@ public class phabservlet1 extends HttpServlet {
         }
 //
     }
+
+    private void createUserDatabase(HttpServletResponse resp) throws IOException {
+        try{
+            resp.getWriter().write("Creating User Database\n");
+            Statement s = this.c.createStatement();
+
+            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+
+            ResultSet rset = s.executeQuery(strSelect);
+
+            s.execute("CREATE TABLE Users (\n" +
+                "Username varchar(50) NOT NULL," +
+                "FirstName varchar(100) NOT NULL," +
+                "LastName varchar(50) NOT NULL," +
+                "Password varchar(100) NOT NULL"
+                
+            );
+
+            resp.getWriter().write("Function Call Finished");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch (Exception e) {
+            resp.getWriter().write(e.getMessage());
+        }
+
+        
+
+    }
+
+    /*private void addUser(HttpServletResponse resp) throws IOException {
+
+    }
+
+    private void verifyUser(HttpServletResponse resp) throws IOException {
+
+    }*/
 }
