@@ -217,7 +217,7 @@ public class phabservlet1 extends HttpServlet {
         if(urlPattern.equals("/replenishStockGreenPark"))
         {
             resp.getWriter().write("\nSetting Stock to Max\n");
-            delAllPHABGreenPark(resp);
+            delAllPHAB(resp);
             fillPHABGreenPark(resp);
 
         }
@@ -276,7 +276,7 @@ public class phabservlet1 extends HttpServlet {
         if(urlPattern.equals("/replenishStockMileEnd"))
         {
             resp.getWriter().write("\nSetting Stock to Max\n");
-            delAllPHABMileEnd(resp);
+            delAllPHAB(resp);
             fillPHABMileEnd(resp);
 
         }
@@ -302,11 +302,11 @@ public class phabservlet1 extends HttpServlet {
         if(urlPattern.equals("/replenishStock"))
         {
             resp.getWriter().write("\nSetting Stock to Max\n");
-            delAllPHABGreenPark(resp);
+            delAllPHAB(resp);
             fillPHABGreenPark(resp);
             delAllPHAB(resp);
             fillPHABPaddington(resp);
-            delAllPHABMileEnd(resp);
+            delAllPHAB(resp);
             fillPHABMileEnd(resp);
         }
 
