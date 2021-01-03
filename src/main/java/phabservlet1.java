@@ -361,7 +361,7 @@ public class phabservlet1 extends HttpServlet {
 
         //one function to change the global variables
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/inputManufacturerName"))
+        if(urlPattern.equals("/_decreaseStockPaddington"))
         {
             resp.getWriter().write("\nInputting Manufacturer and Name\n");
 
@@ -390,32 +390,30 @@ public class phabservlet1 extends HttpServlet {
 
         }
 
-        if(urlPattern.equals("/inputBranch"))
-        {
-            resp.getWriter().write("\nInputting Branch Name\n");
-
-            //recieves data in the form of Manufacturer@Name
-            String branch = message;
-
-
-
-            resp.getWriter().write("#1");
-            try {
-                resp.getWriter().write("\nGlobal Variable Branch\n");
-
-                //put into global variables
-                Branch = branch;
-
-
-            }
-            catch (Exception e){
-
-                resp.getWriter().write(e.getMessage());
-            }
-            resp.getWriter().write("Input Branch ended");
-
-
-        }
+//        if(urlPattern.equals("/inputBranch"))
+//        {
+//            resp.getWriter().write("\nInputting Branch Name\n");
+//
+//            //recieves data in the form of Manufacturer@Name
+//            String branch = message;
+//
+//            resp.getWriter().write("#1");
+//            try {
+//                resp.getWriter().write("\nGlobal Variable Branch\n");
+//
+//                //put into global variables
+//                Branch = branch;
+//
+//
+//            }
+//            catch (Exception e){
+//
+//                resp.getWriter().write(e.getMessage());
+//            }
+//            resp.getWriter().write("Input Branch ended");
+//
+//
+//        }
 
 
     }
