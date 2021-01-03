@@ -117,6 +117,10 @@ public class phabservlet1 extends HttpServlet {
             delAllPHAB(resp);
         }
 
+        if (urlPattern.equals("/testdelete_phab")) {
+            delTestPHAB(resp);
+        }
+
 
         if (urlPattern.equals("/create_test_database")) {
             createTestDatabase(resp);
