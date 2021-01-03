@@ -19,6 +19,7 @@ import javax.servlet.http.*;
                 "/delete_phab_paddington", //DO NOT CALL ALONE
                 "/return_phab_paddington",
                 "/_checkStockPaddington",
+                "/searchForDrugPaddington",
 
                 "/_decreaseStockPaddington", //underscore important
                 "/replenishStockPaddington",
