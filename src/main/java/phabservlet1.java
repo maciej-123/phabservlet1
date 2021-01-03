@@ -22,7 +22,7 @@ import javax.servlet.http.*;
                 "/searchForDrug",
 
                 "/_decreaseStockPaddington", //underscore important
-                "/replenishStockPaddington",
+                "/replenishStock",
                 "/getLimitOne",
                 "/calculateProfitPaddington",
                 "/calculateRevenuePaddington",
@@ -34,7 +34,6 @@ import javax.servlet.http.*;
                 "/_checkStockGreenPark",
 
                 "/_decreaseStockGreenPark", //underscore important
-                "/replenishStockGreenPark",
                 "/calculateRevenueGreenPark",
                 "/calculateProfitGreenPark",
 
@@ -44,7 +43,6 @@ import javax.servlet.http.*;
                 "/_checkStockMileEnd",
 
                 "/_decreaseStockMileEnd", //underscore important
-                "/replenishStockMileEnd",
                 "/calculateProfitMileEnd",
                 "/calculateRevenueMileEnd",
 
@@ -144,13 +142,6 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
-        if (urlPattern.equals("/replenishStock")) {
-            resp.getWriter().write("\nSetting Stock to Max\n");
-            delAllPHAB(resp);
-            fillPHAB(resp);
-
-        }
-
         //testing the check stock function
 
         if (urlPattern.equals("/_checkStockPaddington"))
@@ -192,14 +183,6 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
-        //I have not included the create test database here
-        if(urlPattern.equals("/replenishStockGreenPark"))
-        {
-            resp.getWriter().write("\nSetting Stock to Max\n");
-            delAllPHAB(resp);
-            fillPHAB(resp);
-
-        }
         if (urlPattern.equals("/_checkStockGreenPark"))
         {
             resp.getWriter().write("\nChecking stock test function\n");
@@ -235,15 +218,6 @@ public class phabservlet1 extends HttpServlet {
             decreaseStockMileEnd(resp);
         }
 
-
-        //I have not included the create test database here
-        if(urlPattern.equals("/replenishStockMileEnd"))
-        {
-            resp.getWriter().write("\nSetting Stock to Max\n");
-            delAllPHAB(resp);
-            fillPHAB(resp);
-
-        }
         if (urlPattern.equals("/_checkStockMileEnd"))
         {
             resp.getWriter().write("\nChecking stock test function\n");
