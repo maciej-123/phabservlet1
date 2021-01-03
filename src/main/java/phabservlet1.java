@@ -26,7 +26,7 @@ import javax.servlet.http.*;
                 "/getLimitOne",
                 "/calculateProfit",
                 "/calculateRevenue",
-                "/inputManufacturerName",
+                "/_inputManufacturerName",
 
                 //green park
                 "/create_phab_greenpark",
@@ -74,8 +74,8 @@ public class phabservlet1 extends HttpServlet {
         //get current URL pattern
         String urlPattern = req.getServletPath();
 
-        if (urlPattern.equals("/inputManufacturerName")) {
-            resp.getWriter().write("ManufacturerName Empty get request called");
+        if (urlPattern.equals("/_inputManufacturerName")) {
+            resp.getWriter().write("ManufacturerName empty get request called, use post request instead");
 
         }
 
@@ -264,7 +264,7 @@ public class phabservlet1 extends HttpServlet {
 
         //one function to change the global variables
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/_decreaseStockPaddington"))
+        if(urlPattern.equals("/_inputManufacturerName"))
         {
             resp.getWriter().write("\nInputting Manufacturer and Name\n");
 
@@ -370,7 +370,7 @@ public class phabservlet1 extends HttpServlet {
     private void checkStock(HttpServletResponse resp) throws IOException {
 
         try {
-            resp.getWriter().write("Checking Stock Paddington\n");
+            resp.getWriter().write("Checking Stock \n");
             Statement s=c.createStatement();
 
             //first find current stock
