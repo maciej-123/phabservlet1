@@ -393,14 +393,13 @@ public class phabservlet1 extends HttpServlet {
 
         }
 
-        if(urlPattern.equals("/replenishStock"))
+        if(urlPattern.equals("/_decreaseStockMileEnd"))
         {
             resp.getWriter().write("\nInputting Branch Name\n");
 
             //recieves data in the form of Manufacturer@Name
-            String branch = message;
+            String branch = message.substring(0,length);
 
-            resp.getWriter().write("#1");
             try {
                 resp.getWriter().write("\nGlobal Variable Branch\n");
 
