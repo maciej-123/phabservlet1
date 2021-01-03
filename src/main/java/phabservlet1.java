@@ -15,7 +15,7 @@ import javax.servlet.http.*;
                 "/create_phab_paddington",
                 "/testfill_phab_paddington",
                 "/fill_phab_paddington", //DO NOT CALL ALONE
-                "/testdelete_phab",
+                "/testdelete_phab_paddington",
                 "/delete_phab", //DO NOT CALL ALONE
                 "/return_phab_paddington",
                 "/_checkStockPaddington",
@@ -33,7 +33,6 @@ import javax.servlet.http.*;
                 "/testfill_phab_greenpark",
                 "/fill_phab_greenpark", //DO NOT CALL ALONE
                 "/testdelete_phab_greenpark",
-                "/delete_phab_greenpark", //DO NOT CALL ALONE
                 "/return_phab_greenpark",
                 "/_checkStockGreenPark",
 
@@ -48,7 +47,6 @@ import javax.servlet.http.*;
                 "/testfill_phab_mileend",
                 "/fill_phab_mileend", //DO NOT CALL ALONE
                 "/testdelete_phab_mileend",
-                "/delete_phab_mileend", //DO NOT CALL ALONE
                 "/return_phab_mileend",
                 "/_checkStockMileEnd",
 
@@ -208,11 +206,6 @@ public class phabservlet1 extends HttpServlet {
             returnPHABGreenPark(resp);
         }
 
-        if(urlPattern.equals("/delete_phab_greenpark")) {
-            delAllPHABGreenPark(resp);
-        }
-
-
         //get request for decreasing stock MUST called after the post request
         if(urlPattern.equals("/_decreaseStockGreenPark")) {
 
@@ -270,9 +263,6 @@ public class phabservlet1 extends HttpServlet {
             returnPHABMileEnd(resp);
         }
 
-        if(urlPattern.equals("/delete_phab_mileend")) {
-            delAllPHABMileEnd(resp);
-        }
 
 
         //get request for decreasing stock MUST called after the post request
@@ -1301,35 +1291,7 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void delAllPHABGreenPark(HttpServletResponse resp) throws IOException
-    {
-        try {
 
-            boolean deleteLock = false;
-
-            resp.getWriter().write("Deleting Test Rows Green Park\n");
-
-            if(deleteLock == true)
-            {
-                resp.getWriter().write("Delete Function Locked, Check Code!\n");
-            }
-            else {
-                Statement s = c.createStatement();
-
-                s.execute("DELETE FROM public.StockDBGreenPark WHERE FullStock > 0 ");
-
-                resp.getWriter().write("\nalterTestDatabase called");
-                if (s != null) {
-                    s.close();
-                }
-            }
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
 
 
 
@@ -1730,32 +1692,6 @@ public class phabservlet1 extends HttpServlet {
         }
         catch(Exception e)
         {
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void delAllPHABMileEnd(HttpServletResponse resp) throws IOException {
-        try {
-
-            boolean deleteLock = false;
-
-            resp.getWriter().write("Deleting Test Rows Mile End\n");
-
-            if (deleteLock == true) {
-                resp.getWriter().write("Delete Function Locked, Check Code!\n");
-            } else {
-                Statement s = c.createStatement();
-
-                s.execute("DELETE FROM public.StockDBMileEnd WHERE FullStock > 0 ");
-
-                resp.getWriter().write("\nalterTestDatabase called");
-                if (s != null) {
-                    s.close();
-                }
-            }
-
-        } catch (Exception e) {
-
             resp.getWriter().write(e.getMessage());
         }
     }
