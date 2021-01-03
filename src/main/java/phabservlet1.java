@@ -293,7 +293,7 @@ public class phabservlet1 extends HttpServlet {
 
         }
 
-        if(urlPattern.equals("/_decreaseStockMileEnd"))
+        if(urlPattern.equals("/inputB"))
         {
             resp.getWriter().write("\nInputting Branch Name\n");
 
