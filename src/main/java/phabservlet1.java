@@ -59,6 +59,7 @@ import javax.servlet.http.*;
                 "/calculateRevenueMileEnd",
 
                 //new URL patterns for post requests
+                "/inputManufacturerName",
 
                 //not important - `this is just to create a test database
                 "/create_test_database",
@@ -91,6 +92,11 @@ public class phabservlet1 extends HttpServlet {
 
         //get current URL pattern
         String urlPattern = req.getServletPath();
+
+        if (urlPattern.equals("/inputManufacturerName")) {
+            resp.getWriter().write("ManufacturerName Empty get request called");
+
+        }
 
         //return a simple text database
         if (urlPattern.equals("/text_database")) {
