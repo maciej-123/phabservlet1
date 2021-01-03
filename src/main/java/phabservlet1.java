@@ -19,7 +19,7 @@ import javax.servlet.http.*;
                 "/delete_phab_paddington", //DO NOT CALL ALONE
                 "/return_phab_paddington",
                 "/_checkStockPaddington",
-                "/searchForDrugPaddington",
+                "/searchForDrug",
 
                 "/_decreaseStockPaddington", //underscore important
                 "/replenishStockPaddington",
@@ -150,8 +150,8 @@ public class phabservlet1 extends HttpServlet {
             getLimitOnePaddington(resp);
         }
 
-        if (urlPattern.equals("/searchForDrugPaddington")) {
-            searchForDrugPaddington(resp);
+        if (urlPattern.equals("/searchForDrug")) {
+            searchForDrug(resp);
         }
 
 
@@ -875,18 +875,18 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void searchForDrugPaddington(HttpServletResponse resp) throws IOException
+    private void searchForDrug(HttpServletResponse resp) throws IOException
     {
 
         try {
-            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
 
             Statement s = c.createStatement();
             ResultSet rset = s.executeQuery(strSelect);
 
             resp.getWriter().write("\n");
             while (rset.next()) {
-                for(int n=1;n<8;n++) {
+                for(int n=1;n<=8;n++) {
                     resp.getWriter().write(rset.getString(n));
                     resp.getWriter().write("\t");
                 }
