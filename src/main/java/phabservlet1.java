@@ -137,9 +137,9 @@ public class phabservlet1 extends HttpServlet {
 
 
         //get request for decreasing stock MUST called after the post request
-        if (urlPattern.equals("/_decreaseStock")) {
+        if (urlPattern.equals("/_decreaseStockPaddington")) {
 
-            decreaseStock(resp);
+            decreaseStockPaddington(resp);
         }
 
 
@@ -358,7 +358,7 @@ public class phabservlet1 extends HttpServlet {
 
         //one function to change the global variables
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/_decreaseStockGreenPark"))
+        if(urlPattern.equals("/_decreaseStockPaddington"))
         {
             resp.getWriter().write("\nInputting Manufacturer and Name\n");
 
@@ -407,7 +407,7 @@ public class phabservlet1 extends HttpServlet {
 
 
     //Paddington--------------------------------------------------------------------------------------------------------
-    private void decreaseStock(HttpServletResponse resp) throws IOException
+    private void decreaseStockPaddington(HttpServletResponse resp) throws IOException
     {
         resp.getWriter().write("Decreasing Stock\n");
 
@@ -422,7 +422,7 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
 
             //first find current stock
-            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
 
 
             ResultSet rset = s.executeQuery(strSelect);
