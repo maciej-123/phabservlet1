@@ -24,7 +24,8 @@ import javax.servlet.http.*;
                 "/calculateProfit",
                 "/calculateRevenue",
 
-                "/inputManufacturerName",
+                "/inputMN",
+                "/inputB",
 
 
                 //paddington
@@ -264,7 +265,7 @@ public class phabservlet1 extends HttpServlet {
 
         //one function to change the global variables
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/_decreaseStockPaddington"))
+        if(urlPattern.equals("/inputMN"))
         {
             resp.getWriter().write("\nInputting Manufacturer and Name\n");
 
@@ -292,7 +293,7 @@ public class phabservlet1 extends HttpServlet {
 
         }
 
-        if(urlPattern.equals("/_decreaseStockMileEnd"))
+        if(urlPattern.equals("/inputB"))
         {
             resp.getWriter().write("\nInputting Branch Name\n");
 
@@ -312,61 +313,8 @@ public class phabservlet1 extends HttpServlet {
     }
 
 
-    //Paddington--------------------------------------------------------------------------------------------------------
-    private void decreaseStockPaddington(HttpServletResponse resp) throws IOException
-    {
-        resp.getWriter().write("Decreasing Stock\n");
 
-        resp.getWriter().write(SearchManufacturer);
-        resp.getWriter().write("\n");
-        resp.getWriter().write(SearchName);
-        resp.getWriter().write("\n");
-
-
-        try {
-            resp.getWriter().write("Editing Rows Paddington\n");
-            Statement s=c.createStatement();
-
-            //first find current stock
-            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
-
-
-            ResultSet rset = s.executeQuery(strSelect);
-            String transferStr;
-            //default error value - s.execute will not be called with -1
-            int cs = -1;
-
-            while(rset.next()) {
-                resp.getWriter().write(rset.getString("CurrentStock"));
-                transferStr=rset.getString("CurrentStock");
-                cs = Integer.valueOf(transferStr);
-
-            }
-
-            //subract 1 from the current value
-            cs--;
-
-            //to prevent decrementing below zero
-            if(cs >= 0) {
-                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
-            }
-
-
-            resp.getWriter().write("\nDecrease Stock Called");
-            if(s!=null){s.close();}
-
-            //reset to null
-            SearchName = "";
-            SearchManufacturer = "";
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-
-
-    }
-
+    //Common Functions
     private void checkStock(HttpServletResponse resp) throws IOException {
 
         try {
@@ -455,7 +403,7 @@ public class phabservlet1 extends HttpServlet {
 
             }
 
-                resp.getWriter().write("\n Profit: "+ profit +" pounds");
+            resp.getWriter().write("\n Profit: "+ profit +" pounds");
 
         }
         catch (Exception e){
@@ -509,41 +457,6 @@ public class phabservlet1 extends HttpServlet {
 
             resp.getWriter().write("\n Revenue: "+ rev +" pounds");
 
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void createPHABPaddington(HttpServletResponse resp) throws IOException
-    {
-        try{
-            resp.getWriter().write("Creating PHAB Database for Paddington\n");
-            Statement s=c.createStatement();
-
-            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
-            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
-
-            ResultSet rset = s.executeQuery(strSelect);
-
-            //create test table
-            s.execute("CREATE TABLE StockDBPaddington(\n" +
-
-                    "Manufacturer varchar(50)," +
-                    "Name varchar(100)," +
-                    "Quantity varchar(50)," +
-                    "SalesPrice float NOT NULL," +
-                    "PurchasePrice float NOT NULL," +
-                    "FullStock smallint NOT NULL," +
-                    "LimitOne int," +
-                    "CurrentStock smallint NOT NULL)"
-            );
-
-
-            resp.getWriter().write("Function Call Finished");
-            if(rset!=null){rset.close();}
-            if(s!=null){s.close();}
         }
         catch (Exception e){
 
@@ -645,51 +558,6 @@ public class phabservlet1 extends HttpServlet {
         }
         catch (Exception e){
 
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void returnPHABPaddington(HttpServletResponse resp) throws IOException
-    {
-        try {
-            resp.getWriter().write("PHAB Stock Database Paddington Branch\n\n");
-
-            resp.getWriter().write("Manufacturer\t|Name\t|Quantity\t|SalesPrice|PurchasePrice|FullStock|LimitOne|CurrentStock\n");
-
-            //select Paddington database
-            String strSelect = "SELECT * FROM StockDBPaddington";
-
-            //execute selection command
-            Statement s = c.createStatement();
-            ResultSet rset = s.executeQuery(strSelect);
-
-            resp.getWriter().write(" Table Start ");
-
-            //get number of columns
-            ResultSetMetaData rsmd = rset.getMetaData();
-            int colNum = rsmd.getColumnCount();
-
-            resp.getWriter().write( "\n");
-            while (rset.next()) {
-                //https://stackoverflow.com/questions/15444982/how-to-display-or-print-the-contents-of-a-database-table-as-is
-                //print entire table
-                for(int n = 1; n <= colNum; n++)
-                {
-                    resp.getWriter().write(rset.getString(n) + "\t");
-                }
-                resp.getWriter().write( "\n");
-            }
-
-            resp.getWriter().write(" Table End ");
-
-            resp.getWriter().write("\n\nPrint Table Complete");
-
-            //close connection
-            if(rset!=null){rset.close();}
-            if(s!=null){s.close();}
-        }
-        catch(Exception e)
-        {
             resp.getWriter().write(e.getMessage());
         }
     }
@@ -803,6 +671,141 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
+
+    //Paddington--------------------------------------------------------------------------------------------------------
+    private void decreaseStockPaddington(HttpServletResponse resp) throws IOException
+    {
+        resp.getWriter().write("Decreasing Stock\n");
+
+        resp.getWriter().write(SearchManufacturer);
+        resp.getWriter().write("\n");
+        resp.getWriter().write(SearchName);
+        resp.getWriter().write("\n");
+
+
+        try {
+            resp.getWriter().write("Editing Rows Paddington\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+
+
+            ResultSet rset = s.executeQuery(strSelect);
+            String transferStr;
+            //default error value - s.execute will not be called with -1
+            int cs = -1;
+
+            while(rset.next()) {
+                resp.getWriter().write(rset.getString("CurrentStock"));
+                transferStr=rset.getString("CurrentStock");
+                cs = Integer.valueOf(transferStr);
+
+            }
+
+            //subract 1 from the current value
+            cs--;
+
+            //to prevent decrementing below zero
+            if(cs >= 0) {
+                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
+            }
+
+
+            resp.getWriter().write("\nDecrease Stock Called");
+            if(s!=null){s.close();}
+
+            //reset to null
+            SearchName = "";
+            SearchManufacturer = "";
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+
+    }
+
+    private void createPHABPaddington(HttpServletResponse resp) throws IOException
+    {
+        try{
+            resp.getWriter().write("Creating PHAB Database for Paddington\n");
+            Statement s=c.createStatement();
+
+            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
+            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+
+            ResultSet rset = s.executeQuery(strSelect);
+
+            //create test table
+            s.execute("CREATE TABLE StockDBPaddington(\n" +
+
+                    "Manufacturer varchar(50)," +
+                    "Name varchar(100)," +
+                    "Quantity varchar(50)," +
+                    "SalesPrice float NOT NULL," +
+                    "PurchasePrice float NOT NULL," +
+                    "FullStock smallint NOT NULL," +
+                    "LimitOne int," +
+                    "CurrentStock smallint NOT NULL)"
+            );
+
+
+            resp.getWriter().write("Function Call Finished");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    private void returnPHABPaddington(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("PHAB Stock Database Paddington Branch\n\n");
+
+            resp.getWriter().write("Manufacturer\t|Name\t|Quantity\t|SalesPrice|PurchasePrice|FullStock|LimitOne|CurrentStock\n");
+
+            //select Paddington database
+            String strSelect = "SELECT * FROM StockDBPaddington";
+
+            //execute selection command
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write(" Table Start ");
+
+            //get number of columns
+            ResultSetMetaData rsmd = rset.getMetaData();
+            int colNum = rsmd.getColumnCount();
+
+            resp.getWriter().write( "\n");
+            while (rset.next()) {
+                //https://stackoverflow.com/questions/15444982/how-to-display-or-print-the-contents-of-a-database-table-as-is
+                //print entire table
+                for(int n = 1; n <= colNum; n++)
+                {
+                    resp.getWriter().write(rset.getString(n) + "\t");
+                }
+                resp.getWriter().write( "\n");
+            }
+
+            resp.getWriter().write(" Table End ");
+
+            resp.getWriter().write("\n\nPrint Table Complete");
+
+            //close connection
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch(Exception e)
+        {
+            resp.getWriter().write(e.getMessage());
+        }
+    }
 
     //------------------------------------------------------------------------------------------------------------------
 
