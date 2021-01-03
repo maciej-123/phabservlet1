@@ -149,6 +149,10 @@ public class phabservlet1 extends HttpServlet {
             getLimitOnePaddington(resp);
         }
 
+        if (urlPattern.equals("/searchForDrugPaddington")) {
+            searchForDrugPaddington(resp);
+        }
+
 
         if (urlPattern.equals("/replenishStock")) {
             resp.getWriter().write("\nSetting Stock to Max\n");
@@ -377,12 +381,9 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write(name);
 
             try {
-                resp.getWriter().write("\nGlobal Variables Manufacturer and Name\n");
-
                 //put into global variables
                 SearchManufacturer = manufacturer;
                 SearchName = name;
-
             }
             catch (Exception e){
 
@@ -401,8 +402,6 @@ public class phabservlet1 extends HttpServlet {
             String branch = message.substring(0,length);
 
             try {
-                resp.getWriter().write("\nGlobal Variable Branch\n");
-
                 //put into global variables
                 SearchBranch = branch;
             }
@@ -411,10 +410,7 @@ public class phabservlet1 extends HttpServlet {
                 resp.getWriter().write(e.getMessage());
             }
             resp.getWriter().write("Input Branch ended");
-
         }
-
-
     }
 
 
@@ -862,6 +858,36 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("\n");
             while (rset.next()) {
                 resp.getWriter().write(rset.getString(7));
+            }
+
+            //close connection
+            if (rset != null) {
+                rset.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
+    }
+
+    private void searchForDrugPaddington(HttpServletResponse resp) throws IOException
+    {
+
+        try {
+            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("\n");
+            while (rset.next()) {
+                for(int n=1;n<8;n++) {
+                    resp.getWriter().write(rset.getString(n)+"\t");
+                }
             }
 
             //close connection
@@ -1395,7 +1421,9 @@ public class phabservlet1 extends HttpServlet {
 
 
     }
-    private void checkStockMileEnd(HttpServletResponse resp) throws IOException {
+
+    private void checkStockMileEnd(HttpServletResponse resp) throws IOException
+    {
 
         try {
             resp.getWriter().write("Checking Stock Paddington\n");
