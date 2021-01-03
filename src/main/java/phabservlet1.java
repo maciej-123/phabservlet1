@@ -59,7 +59,6 @@ import javax.servlet.http.*;
                 "/calculateRevenueMileEnd",
 
                 //new URL patterns for post requests
-                "/inputManufacturerName",
 
                 //not important - `this is just to create a test database
                 "/create_test_database",
