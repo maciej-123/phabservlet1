@@ -23,7 +23,7 @@ import javax.servlet.http.*;
 
                 "/_decreaseStockPaddington", //underscore important
                 "/replenishStockPaddington",
-                "/getLimitOnePaddington",
+                "/getLimitOne",
                 "/calculateProfitPaddington",
                 "/calculateRevenuePaddington",
                 "/inputManufacturerName",
@@ -145,9 +145,9 @@ public class phabservlet1 extends HttpServlet {
         }
 
 
-        if (urlPattern.equals("/getLimitOnePaddington")) {
+        if (urlPattern.equals("/getLimitOne")) {
 
-            getLimitOnePaddington(resp);
+            getLimitOne(resp);
         }
 
         if (urlPattern.equals("/searchForDrug")) {
@@ -847,11 +847,11 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void getLimitOnePaddington(HttpServletResponse resp) throws IOException
+    private void getLimitOne(HttpServletResponse resp) throws IOException
     {
 
         try {
-            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
 
             Statement s = c.createStatement();
             ResultSet rset = s.executeQuery(strSelect);
