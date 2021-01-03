@@ -40,7 +40,6 @@ import javax.servlet.http.*;
 
                 "/_decreaseStockGreenPark", //underscore important
                 "/replenishStockGreenPark",
-                "/getLimitOneGreenPark",
                 "/calculateRevenueGreenPark",
                 "/calculateProfitGreenPark",
 
@@ -55,7 +54,6 @@ import javax.servlet.http.*;
 
                 "/_decreaseStockMileEnd", //underscore important
                 "/replenishStockMileEnd",
-                "/getLimitOneMileEnd",
                 "/calculateProfitMileEnd",
                 "/calculateRevenueMileEnd",
 
@@ -139,9 +137,9 @@ public class phabservlet1 extends HttpServlet {
 
 
         //get request for decreasing stock MUST called after the post request
-        if (urlPattern.equals("/_decreaseStockPaddington")) {
+        if (urlPattern.equals("/_decreaseStock")) {
 
-            decreaseStockPaddington(resp);
+            decreaseStock(resp);
         }
 
 
@@ -221,9 +219,6 @@ public class phabservlet1 extends HttpServlet {
             decreaseStockGreenPark(resp);
         }
 
-        if (urlPattern.equals("/getLimitOneGreenPark")) {
-            getLimitOneGreenPark(resp);
-        }
 
         //I have not included the create test database here
         if(urlPattern.equals("/replenishStockGreenPark"))
@@ -286,10 +281,6 @@ public class phabservlet1 extends HttpServlet {
             decreaseStockMileEnd(resp);
         }
 
-        if (urlPattern.equals("/getLimitOneMileEnd")) {
-
-            getLimitOneMileEnd(resp);
-        }
 
         //I have not included the create test database here
         if(urlPattern.equals("/replenishStockMileEnd"))
@@ -416,7 +407,7 @@ public class phabservlet1 extends HttpServlet {
 
 
     //Paddington--------------------------------------------------------------------------------------------------------
-    private void decreaseStockPaddington(HttpServletResponse resp) throws IOException
+    private void decreaseStock(HttpServletResponse resp) throws IOException
     {
         resp.getWriter().write("Decreasing Stock\n");
 
@@ -431,7 +422,7 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
 
             //first find current stock
-            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
 
 
             ResultSet rset = s.executeQuery(strSelect);
@@ -1340,33 +1331,6 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void getLimitOneGreenPark(HttpServletResponse resp) throws IOException
-    {
-
-        try {
-            String strSelect = "SELECT * FROM StockDBGreenPark WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
-
-            Statement s = c.createStatement();
-            ResultSet rset = s.executeQuery(strSelect);
-
-            resp.getWriter().write("\n");
-            while (rset.next()) {
-                resp.getWriter().write(rset.getString(7));
-            }
-
-            //close connection
-            if (rset != null) {
-                rset.close();
-            }
-            if (s != null) {
-                s.close();
-            }
-        }
-        catch(Exception e)
-        {
-
-        }
-    }
 
 
     //Mile End--------------------------------------------------------------------------------------------------------
@@ -1796,33 +1760,7 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void getLimitOneMileEnd(HttpServletResponse resp) throws IOException
-    {
 
-        try {
-            String strSelect = "SELECT * FROM StockDBMileEnd WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
-
-            Statement s = c.createStatement();
-            ResultSet rset = s.executeQuery(strSelect);
-
-            resp.getWriter().write("\n");
-            while (rset.next()) {
-                resp.getWriter().write(rset.getString(7));
-            }
-
-            //close connection
-            if (rset != null) {
-                rset.close();
-            }
-            if (s != null) {
-                s.close();
-            }
-        }
-        catch(Exception e)
-        {
-
-        }
-    }
 
 // End of Mile End Functions
 
