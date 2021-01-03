@@ -58,7 +58,8 @@ import javax.servlet.http.*;
                 "/calculateProfitMileEnd",
                 "/calculateRevenueMileEnd",
 
-
+                //new URL patterns for post requests
+                "/inputManufacturerName",
 
                 //not important - `this is just to create a test database
                 "/create_test_database",
@@ -342,7 +343,7 @@ public class phabservlet1 extends HttpServlet {
 
     private String SearchManufacturer;
     private String SearchName;
-
+    private String SearchBranch;
 
 
     @Override
@@ -357,7 +358,7 @@ public class phabservlet1 extends HttpServlet {
 
         //one function to change the global variables
         String urlPattern = req.getServletPath();
-        if(urlPattern.equals("/_decreaseStockPaddington"))
+        if(urlPattern.equals("/inputManufacturerName"))
         {
             resp.getWriter().write("\nDecreasing stock\n");
 
