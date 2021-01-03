@@ -16,7 +16,7 @@ import javax.servlet.http.*;
                 "/testfill_phab_paddington",
                 "/fill_phab_paddington", //DO NOT CALL ALONE
                 "/testdelete_phab",
-                "/delete_phab_paddington", //DO NOT CALL ALONE
+                "/delete_phab", //DO NOT CALL ALONE
                 "/return_phab_paddington",
                 "/_checkStockPaddington",
                 "/searchForDrug",
