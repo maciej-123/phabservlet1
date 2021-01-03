@@ -15,7 +15,7 @@ import javax.servlet.http.*;
                 "/create_phab_paddington",
                 "/testfill_phab_paddington",
                 "/fill_phab_paddington", //DO NOT CALL ALONE
-                "/testdelete_phab_paddington",
+                "/testdelete_phab",
                 "/delete_phab_paddington", //DO NOT CALL ALONE
                 "/return_phab_paddington",
                 "/_checkStockPaddington",
@@ -126,8 +126,8 @@ public class phabservlet1 extends HttpServlet {
             returnPHABPaddington(resp);
         }
 
-        if (urlPattern.equals("/delete_phab_paddington")) {
-            delAllPHABPaddington(resp);
+        if (urlPattern.equals("/delete_phab")) {
+            delAllPHAB(resp);
         }
 
 
@@ -155,7 +155,7 @@ public class phabservlet1 extends HttpServlet {
 
         if (urlPattern.equals("/replenishStock")) {
             resp.getWriter().write("\nSetting Stock to Max\n");
-            delAllPHABPaddington(resp);
+            delAllPHAB(resp);
             fillPHABPaddington(resp);
 
         }
@@ -314,7 +314,7 @@ public class phabservlet1 extends HttpServlet {
             resp.getWriter().write("\nSetting Stock to Max\n");
             delAllPHABGreenPark(resp);
             fillPHABGreenPark(resp);
-            delAllPHABPaddington(resp);
+            delAllPHAB(resp);
             fillPHABPaddington(resp);
             delAllPHABMileEnd(resp);
             fillPHABMileEnd(resp);
@@ -808,7 +808,7 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
-    private void delAllPHABPaddington(HttpServletResponse resp) throws IOException
+    private void delAllPHAB(HttpServletResponse resp) throws IOException
     {
         try {
 
@@ -823,7 +823,7 @@ public class phabservlet1 extends HttpServlet {
             else {
                 Statement s = c.createStatement();
 
-                s.execute("DELETE FROM public.StockDBPaddington WHERE FullStock > 0 ");
+                s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE FullStock > 0 ");
 
                 resp.getWriter().write("\nalterTestDatabase called");
                 if (s != null) {
