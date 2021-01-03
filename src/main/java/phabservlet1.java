@@ -23,7 +23,10 @@ import javax.servlet.http.*;
                 "/getLimitOne",
                 "/calculateProfit",
                 "/calculateRevenue",
+                "/_decreaseStock", //underscore important
 
+
+                //for post requests
                 "/inputMN",
                 "/inputB",
 
@@ -31,18 +34,17 @@ import javax.servlet.http.*;
                 //paddington
                 "/create_phab_paddington",
                 "/return_phab_paddington",
-                "/_decreaseStockPaddington", //underscore important
 
 
                 //green park
                 "/create_phab_greenpark",
                 "/return_phab_greenpark",
-                "/_decreaseStockGreenPark", //underscore important
+
 
                 //mile end
                 "/create_phab_mileend",
                 "/return_phab_mileend",
-                "/_decreaseStockMileEnd", //underscore important
+
 
 
                 //new URL patterns for post requests
@@ -121,9 +123,9 @@ public class phabservlet1 extends HttpServlet {
 
 
         //get request for decreasing stock MUST called after the post request
-        if (urlPattern.equals("/_decreaseStockPaddington")) {
+        if (urlPattern.equals("/_decreaseStock")) {
 
-            decreaseStockPaddington(resp);
+            decreaseStock(resp);
         }
 
 
@@ -171,11 +173,6 @@ public class phabservlet1 extends HttpServlet {
             returnPHABGreenPark(resp);
         }
 
-        //get request for decreasing stock MUST called after the post request
-        if(urlPattern.equals("/_decreaseStockGreenPark")) {
-
-            decreaseStockGreenPark(resp);
-        }
 
 
 
@@ -195,11 +192,6 @@ public class phabservlet1 extends HttpServlet {
 
 
 
-        //get request for decreasing stock MUST called after the post request
-        if(urlPattern.equals("/_decreaseStockMileEnd")) {
-
-            decreaseStockMileEnd(resp);
-        }
 
 
 
@@ -673,7 +665,7 @@ public class phabservlet1 extends HttpServlet {
 
 
     //Paddington--------------------------------------------------------------------------------------------------------
-    private void decreaseStockPaddington(HttpServletResponse resp) throws IOException
+    private void decreaseStock(HttpServletResponse resp) throws IOException
     {
         resp.getWriter().write("Decreasing Stock\n");
 
@@ -688,7 +680,7 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
 
             //first find current stock
-            String strSelect = "SELECT * FROM StockDBPaddington WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
 
 
             ResultSet rset = s.executeQuery(strSelect);
@@ -708,7 +700,7 @@ public class phabservlet1 extends HttpServlet {
 
             //to prevent decrementing below zero
             if(cs >= 0) {
-                s.execute("UPDATE public.StockDBPaddington SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
+                s.execute("UPDATE public.StockDB"+SearchBranch+" SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
             }
 
 
@@ -811,59 +803,7 @@ public class phabservlet1 extends HttpServlet {
 
 
     //Green Park--------------------------------------------------------------------------------------------------------
-    private void decreaseStockGreenPark(HttpServletResponse resp) throws IOException
-    {
-        resp.getWriter().write("Decreasing Stock\n");
 
-        resp.getWriter().write(SearchManufacturer);
-        resp.getWriter().write("\n");
-        resp.getWriter().write(SearchName);
-        resp.getWriter().write("\n");
-
-
-        try {
-            resp.getWriter().write("Editing Rows Green Park\n");
-            Statement s=c.createStatement();
-
-            //first find current stock
-            String strSelect = "SELECT * FROM StockDBGreenPark WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
-
-
-            ResultSet rset = s.executeQuery(strSelect);
-            String transferStr;
-            //default error value - s.execute will not be called with -1
-            int cs = -1;
-
-            while(rset.next()) {
-                resp.getWriter().write(rset.getString("CurrentStock"));
-                transferStr=rset.getString("CurrentStock");
-                cs = Integer.valueOf(transferStr);
-
-            }
-
-            //subract 1 from the current value
-            cs--;
-
-            //to prevent decrementing below zero
-            if(cs >= 0) {
-                s.execute("UPDATE public.StockDBGreenPark SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
-            }
-
-
-            resp.getWriter().write("\nDecrease Stock Called");
-            if(s!=null){s.close();}
-
-            //reset to null
-            SearchName = "";
-            SearchManufacturer = "";
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-
-
-    }
 
     private void createPHABGreenPark(HttpServletResponse resp) throws IOException
     {
@@ -951,59 +891,7 @@ public class phabservlet1 extends HttpServlet {
 
 
     //Mile End--------------------------------------------------------------------------------------------------------
-    private void decreaseStockMileEnd(HttpServletResponse resp) throws IOException
-    {
-        resp.getWriter().write("Decreasing Stock\n");
 
-        resp.getWriter().write(SearchManufacturer);
-        resp.getWriter().write("\n");
-        resp.getWriter().write(SearchName);
-        resp.getWriter().write("\n");
-
-
-        try {
-            resp.getWriter().write("Editing Rows Mile End\n");
-            Statement s=c.createStatement();
-
-            //first find current stock
-            String strSelect = "SELECT * FROM StockDBMileEnd WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
-
-
-            ResultSet rset = s.executeQuery(strSelect);
-            String transferStr;
-            //default error value - s.execute will not be called with -1
-            int cs = -1;
-
-            while(rset.next()) {
-                resp.getWriter().write(rset.getString("CurrentStock"));
-                transferStr=rset.getString("CurrentStock");
-                cs = Integer.valueOf(transferStr);
-
-            }
-
-            //subract 1 from the current value
-            cs--;
-
-            //to prevent decrementing below zero
-            if(cs >= 0) {
-                s.execute("UPDATE public.StockDBMileEnd SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
-            }
-
-
-            resp.getWriter().write("\nDecrease Stock Called");
-            if(s!=null){s.close();}
-
-            //reset to null
-            SearchName = "";
-            SearchManufacturer = "";
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-
-
-    }
 
     private void createPHABMileEnd(HttpServletResponse resp) throws IOException
     {
