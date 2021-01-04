@@ -420,7 +420,7 @@ public class phabservlet1 extends HttpServlet {
             ResultSet rset = s.executeQuery(strSelect);
             ResultSet rset2 = s.executeQuery(strFullStock);
             ResultSet rset3 = s.executeQuery(strSalesPrice);
-            ResultSet rset4 = s.executeQuery(strPurchasePrice);
+
             int cq = 0;
             int fs = 0;
             double sp = 0;
@@ -432,7 +432,7 @@ public class phabservlet1 extends HttpServlet {
             String transferStr2;
 
 
-            while(rset.next() && rset2.next() && rset3.next() && rset4.next()) {
+            while(rset.next() && rset2.next() && rset3.next()) {
                 rset.getString("CurrentStock");
                 transferStr=rset.getString("CurrentStock");
                 cq = Integer.valueOf(transferStr);
