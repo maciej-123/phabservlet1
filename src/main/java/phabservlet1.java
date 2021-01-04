@@ -415,7 +415,7 @@ public class phabservlet1 extends HttpServlet {
             String strSelect = "SELECT CurrentStock FROM StockDB"+SearchBranch;
             String strFullStock = "SELECT FullStock FROM StockDB"+SearchBranch;
             String strSalesPrice = "SELECT SalesPrice FROM StockDB"+SearchBranch;
-            String strPurchasePrice = "SELECT PurchasePrice FROM StockDB"+SearchBranch;
+
 
             ResultSet rset = s.executeQuery(strSelect);
             ResultSet rset2 = s.executeQuery(strFullStock);
