@@ -151,7 +151,6 @@ public class phabservlet1 extends HttpServlet {
 
         if (urlPattern.equals("/calculateProfit"))
         {
-            resp.getWriter().write("\nCalculate profit called\n");
             calculateProfit(resp);
         }
 
@@ -354,7 +353,6 @@ public class phabservlet1 extends HttpServlet {
     private void calculateProfit(HttpServletResponse resp) throws IOException
     {
         try {
-            resp.getWriter().write("Calculating profit\n");
             Statement s=c.createStatement();
 
             //first find current stock
