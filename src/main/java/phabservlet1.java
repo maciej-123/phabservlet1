@@ -156,7 +156,6 @@ public class phabservlet1 extends HttpServlet {
 
         if (urlPattern.equals("/calculateRevenue"))
         {
-            resp.getWriter().write("\nCalculate revenue called\n");
             calculateRevenue(resp);
         }
         //End of Paddington related functions---------------------------------------------------------------------------
