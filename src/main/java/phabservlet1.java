@@ -405,7 +405,7 @@ public class phabservlet1 extends HttpServlet {
     private void calculateRevenue(HttpServletResponse resp) throws IOException
     {
         try {
-            resp.getWriter().write("Calculating Revenue\n");
+
             Statement s=c.createStatement();
 
             //first find current stock
