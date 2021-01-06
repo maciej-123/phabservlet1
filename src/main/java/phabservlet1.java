@@ -340,22 +340,18 @@ public class phabservlet1 extends HttpServlet {
                 resp.getWriter().write(email);
                 //testing blocks only -- non-important
 
-                String usrSel = "IF [NOT] EXISTS (SELECT Username FROM Users WHERE Username = "
-                                + username+")\n"+
-                                "BEGIN\n"+
-                                "\tINSERT INTO Users" + "(Username, FirstName, LastName, Email, Password) VALUES ("
-                                +"'"+username+"'"+"'"+firstname+"'"+"'"+lastname+"'"+"'"+email+"'"+"'"+password+"')\n" 
-                                +"END";
+                String checkuserexist = "IF EXISTS (SELECT TOP 1 * FROM Users WHERE Username = "+username+")\n"
+                                            +"\tBEGIN\n"
+                                                +"\t\tCAST (1 AS BIT)\n"
+                                            +"\tEND\n"
+                                        +"ELSE\n"
+                                            +"\tBEGIN\n"
+                                                +"\t\tCAST (0 AS BIT)\n"
+                                                +"\t\tINSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
+                                                +"'"+username+"'"+"'"+firstname+"'"+"'"+lastname+"'"+"'"+email+"'"+"'"+password+"')\n" 
+                                            +"\tEND\n";
 
-                ResultSet rset = s.executeQuery(usrSel);
-
-                String checkuserexist = "SELECT CASE WHEN EXISTS (SELECT TOP 1 *\n"
-                                       +"FROM Users\n"
-                                       +"WHERE Username = "+username+")\n"
-                                       +"THEN CAST (1 AS BIT)\n"
-                                       +"ELSE CAST (0 AS BIT) END";
-
-                rset = s.executeQuery(checkuserexist);
+                ResultSet rset = s.executeQuery(checkuserexist);
 
 
                 if(rset.getBoolean("Username")==true) {
