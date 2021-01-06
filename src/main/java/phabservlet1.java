@@ -55,6 +55,11 @@ import javax.servlet.http.*;
                 "/calculateProfitMileEnd",
                 "/calculateRevenueMileEnd",
 
+                //URL patterns for user database
+                "/create_user_database",
+                "/return_user_database",
+                "/add_user",
+                "/verify_user",
                 //new URL patterns for post requests
 
                 //not important - `this is just to create a test database
@@ -322,11 +327,21 @@ public class phabservlet1 extends HttpServlet {
             alterTestDatabase(resp);
         }
 
+        //User database functions
+        if(urlPattern.equals("/create_user_database")) {
+            createUserDatabase(resp);
+        }
+        if(urlPattern.equals("/return_user_database")) {
+            returnUserDatabse(resp);
+        }
+        
 
         ///NEED TO ADD
         //post request for warning - will check if blow 20% for everydrug - will be run after doing any other post requests
         //add to identical databases for 2 other branches
         //have an automatic revenue and profit function for all branches. - remember to edit selling price
+
+
 
 
     }
@@ -392,6 +407,13 @@ public class phabservlet1 extends HttpServlet {
                 resp.getWriter().write(e.getMessage());
             }
             resp.getWriter().write("Input Branch ended");
+        }
+
+        if(urlPattern.equals("/add_user")) {
+            addUser(req, resp);
+        }
+        if(urlPattern.equals("/verify_user")) {
+            verifyUser(resp);
         }
     }
 
@@ -1154,7 +1176,7 @@ public class phabservlet1 extends HttpServlet {
             Statement s=c.createStatement();
 
             boolean lockCreate = false;
-            //fill database with test row
+            //fill database with test rot
 
             if(lockCreate == true)
             {
@@ -1798,4 +1820,82 @@ public class phabservlet1 extends HttpServlet {
         }
 //
     }
+
+    private boolean createUserDatabase(HttpServletResponse resp) throws IOException {
+        try{
+            resp.getWriter().write("Creating User Database\n");
+            Statement s = this.c.createStatement();
+
+            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+
+            ResultSet rset = s.executeQuery(strSelect);
+
+            s.execute("CREATE TABLE Users(\n" +
+                "Username varchar(50) NOT NULL," +
+                "FirstName varchar(100) NOT NULL," +
+                "LastName varchar(50) NOT NULL," +
+                "Email varchar(100) NOT NULL" +
+                "Password varchar(100) NOT NULL"
+                
+            );
+
+            resp.getWriter().write("Function Call Finished");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+
+            return true;
+        } 
+        
+        
+        catch (Exception e) {
+            resp.getWriter().write(e.getMessage());
+
+            return false;
+        }  
+
+
+    }
+    private void returnUserDatabse(HttpServletResponse resp) throws IOException {
+        try{
+            resp.getWriter().write("User Database\n");
+            Statement s = this.c.createStatement();
+            String strSelect = "SELECT * FROM Users";
+            
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("Table Start");
+
+            ResultSetMetaData rsmd = rset.getMetaData();
+            int colNum = rsmd.getColumnCount();
+
+            resp.getWriter().write(("\n"));
+
+            while(rset.next()) {
+                for(int n=1; n<=colNum; n++) {
+                    resp.getWriter().write(rset.getString(n) + "\t");
+                }
+                resp.getWriter().write("\n");;
+            }
+
+            resp.getWriter().write("Table End");
+
+            resp.getWriter().write("\n\nPrint Table Complete");
+
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch (Exception e) {
+            resp.getWriter().write(e.getMessage());
+
+        }
+
+    }
+    private void addUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String reqData = req.getReader().lines().collect(Collectors.joining());
+
+    }
+    private void verifyUser(HttpServletResponse resp) throws IOException {
+
+    }
+    
 }
