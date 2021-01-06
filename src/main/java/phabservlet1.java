@@ -344,12 +344,14 @@ public class phabservlet1 extends HttpServlet {
                 String checkuserexist = "SELECT\n"
                                         +"\tCASE WHEN EXISTS(SELECT * FROM Users where Username LIKE '"+username+"')\n"
                                         +"\t\tTHEN\n"
-                                        +"\t\tBEGIN\n"
-                                        +"\t\t\tCAST(1 AS BIT)\n"
-                                        +"\t\t\tINSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
+                                        +"\t\t\tBEGIN\n"
+                                        +"\t\t\t\tCAST(1 AS BIT)\n"
+                                        +"\t\t\t\tUNION"
+                                        +"\t\t\t\tINSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
                                         +"'"+username+"'"+"'"+firstname+"'"+"'"+lastname+"'"+"'"+email+"'"+"'"+password+"')\n"
-                                        +"\t\tEND\n"
-                                        +"\t\tELSE CAST(0 AS BIT)\n"
+                                        +"\t\t\tEND\n"
+                                        +"\t\tELSE \n"
+                                        +"\t\t\tCAST(0 AS BIT)\n"
                                         +"\tEND";
 
 
