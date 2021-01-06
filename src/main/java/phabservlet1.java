@@ -1304,7 +1304,7 @@ public class phabservlet1 extends HttpServlet {
                 "Username varchar(50) NOT NULL," +
                 "FirstName varchar(100) NOT NULL," +
                 "LastName varchar(100) NOT NULL," +
-                "Email varchar(100) NOT NULL" +
+                "Email varchar(100) NOT NULL," +
                 "Password varchar(100) NOT NULL)"
                 
             );
