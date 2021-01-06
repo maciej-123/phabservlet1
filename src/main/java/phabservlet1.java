@@ -348,7 +348,7 @@ public class phabservlet1 extends HttpServlet {
                                         +"\t\t\t\tCAST(1 AS BIT)\n"
                                         +"\t\t\t\tUNION"
                                         +"\t\t\t\tINSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
-                                        +"'"+username+"'"+"'"+firstname+"'"+"'"+lastname+"'"+"'"+email+"'"+"'"+password+"')\n"
+                                        +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n"
                                         +"\t\t\tEND\n"
                                         +"\t\tELSE \n"
                                         +"\t\t\tCAST(0 AS BIT)\n"
