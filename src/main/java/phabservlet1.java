@@ -329,10 +329,36 @@ public class phabservlet1 extends HttpServlet {
                 String password = message.substring(message.indexOf('@')+1,message.indexOf('#'));
                 String email    = message.substring(message.indexOf('#')+1,length);
 
-                String usrSel = "SELECT Username from Users WHERE Username = "+username;
+                //testing blocks only
+                resp.getWriter().write("User name: ");
+                resp.getWriter().write(username);
+                resp.getWriter().write("First name: ");
+                resp.getWriter().write(firstname);
+                resp.getWriter().write("Last name: ");
+                resp.getWriter().write(lastname);
+                resp.getWriter().write("Email: ");
+                resp.getWriter().write(email);
+                //testing blocks only -- non-important
+
+                String usrSel = "IF [NOT] EXISTS (SELECT Username FROM Users WHERE Username = "
+                                + username+")\n"+
+                                "BEGIN\n"+
+                                "\tINSERT INTO Users" + "(Username, FirstName, LastName, Email, Password) VALUES ("
+                                +"'"+username+"'"+"'"+firstname+"'"+"'"+lastname+"'"+"'"+email+"'"+"'"+password+"')\n" 
+                                +"END";
+
                 ResultSet rset = s.executeQuery(usrSel);
 
-                if(rset.getString("Username").equals(username)) {
+                String checkuserexist = "SELECT CASE WHEN EXISTS (SELECT TOP 1 *\n"
+                                       +"FROM Users\n"
+                                       +"WHERE Username = "+username+")\n"
+                                       +"THEN CAST (1 AS BIT)\n"
+                                       +"ELSE CAST (0 AS BIT) END";
+
+                rset = s.executeQuery(checkuserexist);
+
+
+                if(rset.getBoolean("Username")==true) {
                     resp.getWriter().write("username unavailable");
                 }
                 else {
@@ -346,10 +372,6 @@ public class phabservlet1 extends HttpServlet {
                     resp.getWriter().write(username);
                     resp.getWriter().write("\n");
                     resp.getWriter().write(email);
-
-                    s.execute("INSERT INTO Users" + "(Username, FirstName, LastName, Email, Password) VALUES ("
-                            +"'"+username+"'"+"'"+firstname+"'"+"'"+lastname+"'"+"'"+email+"'"+"'"+password+"'");
-
                     resp.getWriter().write("Inserted user: ");
                     resp.getWriter().write(username);
                 }
