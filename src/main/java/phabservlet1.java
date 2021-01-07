@@ -1,10 +1,16 @@
-import java.io.*;
-import java.nio.file.Path;
-import java.sql.*;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
 import java.util.stream.Collectors;
-import javax.servlet.*;
+
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @WebServlet(urlPatterns=
@@ -326,84 +332,11 @@ public class phabservlet1 extends HttpServlet {
         //message in the format of firstname/lastname|username@password#email
 
         if(urlPattern.equals("/add_user")) {
-            try {
-                Statement s = c.createStatement();
-                String firstname = message.substring(0,message.indexOf('/'));
-                String lastname = message.substring(message.indexOf('/')+1,message.indexOf('|'));
-                String username = message.substring(message.indexOf('|')+1,message.indexOf('@'));
-                String password = message.substring(message.indexOf('@')+1,message.indexOf('#'));
-                String email    = message.substring(message.indexOf('#')+1,length);
-
-                //testing blocks onlyf
-                resp.getWriter().write("User name: ");
-                resp.getWriter().write(username+"\n");
-                resp.getWriter().write("First name: ");
-                resp.getWriter().write(firstname+"\n");
-                resp.getWriter().write("Last name: ");
-                resp.getWriter().write(lastname+"\n");
-                resp.getWriter().write("Email: ");
-                resp.getWriter().write(email+"\n");
-                //testing blocks only -- non-important
-
-                String checkuserexist = "SELECT * FROM Users WHERE Username= '"+username+"';";
-
-                ResultSet rset = s.executeQuery(checkuserexist);
-
-                if(rset.next()) {
-                    resp.getWriter().write("username unavailable");
-                }
-                else {
-                    resp.getWriter().write("username available");
-                    String addUser = "INSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
-                                    +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n";
-
-                    s.execute(addUser);
-                    
-                    resp.getWriter().write("Inserted user: ");
-                    resp.getWriter().write(username);
-                }
-            }
-            catch(Exception e) {
-                resp.getWriter().write(e.getMessage());
-            }
-
-
-
+            addUser(req, resp, message, length);
         }
         //parsingformat: username@password
         if(urlPattern.equals("/verify_user")) {
-            try {
-
-                Statement s = c.createStatement();
-                String username = message.substring(0,message.indexOf('@'));
-                String password = message.substring(message.indexOf('@')+1, length);
-
-                String verifyUser = "SELECT * FROM Users WHERE Username= '"+username+"';";
-
-                ResultSet rset = s.executeQuery(verifyUser);
-                if(rset.next()) {
-
-                    String usr = rset.getString("Username");
-                    String pwd = rset.getString("Password");
-                    if(usr.equals(username) && pwd.equals(password)) {
-                        resp.getWriter().write("Login successful");
-                    }
-                    else resp.getWriter().write("User does not exist or password incorrect");
-
-                }
-
-                else {
-                    resp.getWriter().write("User does not exist.");
-                }
-            
-
-
-
-            }
-
-            catch(Exception e) {
-                resp.getWriter().write(e.getMessage());
-            }
+            verifyUser(req, resp, message, length);
         }
     }
 
@@ -1393,12 +1326,94 @@ public class phabservlet1 extends HttpServlet {
 
     }
 
+    private void addUser(HttpServletRequest req, HttpServletResponse resp, String message, int length) throws IOException {
+        try {
+            
+            Statement s = c.createStatement();
+            String firstname = message.substring(0,message.indexOf('/'));
+            String lastname = message.substring(message.indexOf('/')+1,message.indexOf('|'));
+            String username = message.substring(message.indexOf('|')+1,message.indexOf('@'));
+            String password = message.substring(message.indexOf('@')+1,message.indexOf('#'));
+            String email    = message.substring(message.indexOf('#')+1,length);
+
+            //testing blocks onlyf
+            resp.getWriter().write("User name: ");
+            resp.getWriter().write(username+"\n");
+            resp.getWriter().write("First name: ");
+            resp.getWriter().write(firstname+"\n");
+            resp.getWriter().write("Last name: ");
+            resp.getWriter().write(lastname+"\n");
+            resp.getWriter().write("Email: ");
+            resp.getWriter().write(email+"\n");
+            //testing blocks only -- non-important
+
+            String checkuserexist = "SELECT * FROM Users WHERE Username= '"+username+"';";
+
+            ResultSet rset = s.executeQuery(checkuserexist);
+
+            if(rset.next()) {
+                resp.getWriter().write("username unavailable");
+            }
+            else {
+                resp.getWriter().write("username available");
+                String addUser = "INSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
+                                +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n";
+
+                s.execute(addUser);
+                
+                resp.getWriter().write("Inserted user: ");
+                resp.getWriter().write(username);
+            }
+        }
+        catch(Exception e) {
+            resp.getWriter().write(e.getMessage());
+        }
+
+
+
+    }
+
+    private void verifyUser(HttpServletRequest req, HttpServletResponse resp, String message, int length) throws IOException {
+        try {
+
+                Statement s = c.createStatement();
+                String username = message.substring(0,message.indexOf('@'));
+                String password = message.substring(message.indexOf('@')+1, length);
+
+                String verifyUser = "SELECT * FROM Users WHERE Username= '"+username+"';";
+
+                ResultSet rset = s.executeQuery(verifyUser);
+                if(rset.next()) {
+
+                    String usr = rset.getString("Username");
+                    String pwd = rset.getString("Password");
+                    if(usr.equals(username) && pwd.equals(password)) {
+                        resp.getWriter().write("Login successful");
+                    }
+                    else resp.getWriter().write("User does not exist or password incorrect");
+
+                }
+
+                else {
+                    resp.getWriter().write("User does not exist.");
+                }
+            
+
+
+
+            }
+
+            catch(Exception e) {
+                resp.getWriter().write(e.getMessage());
+            }
+    }
+
     private void deltestUserDatabase(HttpServletResponse resp) throws IOException {
         try {
             resp.getWriter().write("Deleting test database");
             Statement s = this.c.createStatement();
             String deltest = "DELETE FROM Users WHERE Username = 'test'";
-            String deltest2 = "DELETE FROM Users WHERE Username = 'test2'";
+            String deltest2 = "DELETE FROM Users WHERE Username = 'test2123";
 
             s.executeQuery(deltest);
             s.executeQuery(deltest2);
