@@ -344,7 +344,7 @@ public class phabservlet1 extends HttpServlet {
 
                 ResultSet rset = s.executeQuery(checkuserexist);
 
-                if(rset!=null) {
+                if(rset.first()) {
                     resp.getWriter().write("username unavailable");
                 }
                 else {
@@ -376,7 +376,8 @@ public class phabservlet1 extends HttpServlet {
                 String verifyUser = "SELECT * FROM Users WHERE Username= '"+username+"';";
 
                 ResultSet rset = s.executeQuery(verifyUser);
-                if(rset!=null) {
+                if(rset.first()) {
+
                     String usr = rset.getString("Username");
                     String pwd = rset.getString("Password");
                     if(usr.equals(username) && pwd.equals(password)) {
