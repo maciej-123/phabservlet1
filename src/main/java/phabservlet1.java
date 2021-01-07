@@ -340,8 +340,7 @@ public class phabservlet1 extends HttpServlet {
                 resp.getWriter().write(email+"\n");
                 //testing blocks only -- non-important
 
-                String checkuserexist = "SELECT * FROM Users WHERE Username="+username;
-
+                String checkuserexist = "SELECT * FROM Users WHERE Username= '"+username+"';";
 
                 ResultSet rset = s.executeQuery(checkuserexist);
 
