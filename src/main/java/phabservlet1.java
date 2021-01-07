@@ -1397,8 +1397,8 @@ public class phabservlet1 extends HttpServlet {
         try {
             resp.getWriter().write("Deleting test database");
             Statement s = this.c.createStatement();
-            String deltest = "DELETE * FROM Users WHERE Username = 'test'";
-            String deltest2 = "DELETE * FROM Users WHERE Username = 'test2'";
+            String deltest = "DELETE FROM Users WHERE Username = 'test'";
+            String deltest2 = "DELETE FROM Users WHERE Username = 'test2'";
 
             s.executeQuery(deltest);
             s.executeQuery(deltest2);
