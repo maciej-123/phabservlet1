@@ -379,9 +379,9 @@ public class phabservlet1 extends HttpServlet {
                 if(rset!=null) {
                     String usr = rset.getString("Username");
                     String pwd = rset.getString("Password");
-                    if(usr.equals(username) && pwd.equals(password) {
+                    if(usr.equals(username) && pwd.equals(password)) {
                         resp.getWriter().write("Login successful");
-                    })
+                    }
                     else resp.getWriter().write("User does not exist or password incorrect");
 
                 }
