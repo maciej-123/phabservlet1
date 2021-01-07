@@ -331,7 +331,7 @@ public class phabservlet1 extends HttpServlet {
 
                 //testing blocks onlyf
                 resp.getWriter().write("User name: ");
-                resp.getWriter().write(username+"\n");p
+                resp.getWriter().write(username+"\n");
                 resp.getWriter().write("First name: ");
                 resp.getWriter().write(firstname+"\n");
                 resp.getWriter().write("Last name: ");
