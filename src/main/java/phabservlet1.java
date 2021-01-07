@@ -57,7 +57,8 @@ import javax.servlet.http.*;
                 //not important - `this is just to create a test database
                 "/create_test_database",
                 "/return_test_database",
-                "/alter_test_database"
+                "/alter_test_database",
+                "/deltest_user_database"
         },loadOnStartup = 1)
 
 public class phabservlet1 extends HttpServlet {
@@ -174,6 +175,10 @@ public class phabservlet1 extends HttpServlet {
 
         if(urlPattern.equals("/return_phab_greenpark")) {
             returnPHABGreenPark(resp);
+        }
+
+        if(urlPattern.equals("/deltest_user_database")) {
+            deltestUserDatabase(resp);
         }
 
 
@@ -1386,6 +1391,24 @@ public class phabservlet1 extends HttpServlet {
 
         }
 
+    }
+
+    private void deltestUserDatabase(HttpServletResponse resp) throws IOException {
+        try {
+            resp.getWriter().write("Deleting test database");
+            Statement s = this.c.createStatement();
+            String deltest = "DELETE * FROM Users WHERE Username = 'test'";
+            String deltest2 = "DELETE * FROM Users WHERE Username = 'test2'";
+
+            s.executeQuery(deltest);
+            s.executeQuery(deltest2);
+
+            resp.getWriter().write("Test users have been deleted");
+
+        }
+        catch(Exception e) {
+            resp.getWriter().write(e.getMessage());
+        }
     }
     
     
