@@ -344,7 +344,7 @@ public class phabservlet1 extends HttpServlet {
 
                 ResultSet rset = s.executeQuery(checkuserexist);
 
-                if(rset.wasNull()) {
+                if(rset!=null) {
                     resp.getWriter().write("username unavailable");
                 }
                 else {
@@ -365,16 +365,31 @@ public class phabservlet1 extends HttpServlet {
 
 
         }
-        //same parsing format
+        //parsingformat: username@password
         if(urlPattern.equals("/verify_user")) {
             try {
+
                 Statement s = c.createStatement();
-                String firstname = message.substring(0,message.indexOf('/'));
-                String lastname = message.substring(message.indexOf('/')+1,message.indexOf('|'));
-                String username = message.substring(message.indexOf('|')+1,message.indexOf('@'));
-                String password = message.substring(message.indexOf('@')+1,message.indexOf('#'));
-                String email    = message.substring(message.indexOf('#')+1,length);
-                
+                String username = message.substring(0,message.indexOf('@'));
+                String password = message.substring(message.indexOf('@')+1, length);
+
+                String verifyUser = "SELECT * FROM Users WHERE Username= '"+username+"';";
+
+                ResultSet rset = s.executeQuery(verifyUser);
+                if(rset!=null) {
+                    String usr = rset.getString("Username");
+                    String pwd = rset.getString("Password");
+                    if(usr.equals(username) && pwd.equals(password) {
+                        resp.getWriter().write("Login successful");
+                    })
+                    else resp.getWriter().write("User does not exist or password incorrect");
+
+                }
+
+                else {
+                    resp.getWriter().write("User does not exist.");
+                }
+            
 
 
 
