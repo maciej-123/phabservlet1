@@ -331,16 +331,16 @@ public class phabservlet1 extends HttpServlet {
 
                 //testing blocks onlyf
                 resp.getWriter().write("User name: ");
-                resp.getWriter().write(username);
+                resp.getWriter().write(username+"\n");p
                 resp.getWriter().write("First name: ");
-                resp.getWriter().write(firstname);
+                resp.getWriter().write(firstname+"\n");
                 resp.getWriter().write("Last name: ");
-                resp.getWriter().write(lastname);
+                resp.getWriter().write(lastname+"\n");
                 resp.getWriter().write("Email: ");
-                resp.getWriter().write(email);
+                resp.getWriter().write(email+"\n");
                 //testing blocks only -- non-important
 
-                String checkuserexist = "SELECT EXISTS (SELECT true FROM Users WHERE Username="+username;
+                String checkuserexist = "SELECT EXISTS (SELECT true FROM Users WHERE Username="+username+");";
 
 
                 ResultSet rset = s.executeQuery(checkuserexist);
@@ -365,9 +365,17 @@ public class phabservlet1 extends HttpServlet {
 
 
         }
+        //same parsing format
         if(urlPattern.equals("/verify_user")) {
             try {
+                Statement s = c.createStatement();
+                String firstname = message.substring(0,message.indexOf('/'));
+                String lastname = message.substring(message.indexOf('/')+1,message.indexOf('|'));
+                String username = message.substring(message.indexOf('|')+1,message.indexOf('@'));
+                String password = message.substring(message.indexOf('@')+1,message.indexOf('#'));
+                String email    = message.substring(message.indexOf('#')+1,length);
                 
+
 
             }
 
