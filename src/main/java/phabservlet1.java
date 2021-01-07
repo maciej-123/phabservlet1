@@ -329,7 +329,7 @@ public class phabservlet1 extends HttpServlet {
                 String password = message.substring(message.indexOf('@')+1,message.indexOf('#'));
                 String email    = message.substring(message.indexOf('#')+1,length);
 
-                //testing blocks only
+                //testing blocks onlyf
                 resp.getWriter().write("User name: ");
                 resp.getWriter().write(username);
                 resp.getWriter().write("First name: ");
@@ -340,19 +340,7 @@ public class phabservlet1 extends HttpServlet {
                 resp.getWriter().write(email);
                 //testing blocks only -- non-important
 
-
-                String checkuserexist = "SELECT\n"
-                                        +"\tCASE WHEN EXISTS(SELECT * FROM Users where Username LIKE '"+username+"')\n"
-                                        +"\t\tTHEN\n"
-                                        +"\t\t\tBEGIN\n"
-                                        +"\t\t\t\tCAST(1 AS BIT)\n"
-                                        +"\t\t\t\tUNION"
-                                        +"\t\t\t\tINSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
-                                        +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n"
-                                        +"\t\t\tEND\n"
-                                        +"\t\tELSE \n"
-                                        +"\t\t\tCAST(0 AS BIT)\n"
-                                        +"\tEND";
+                String checkuserexist = "SELECT EXISTS (SELECT true FROM Users WHERE Username="+username;
 
 
                 ResultSet rset = s.executeQuery(checkuserexist);
@@ -363,15 +351,9 @@ public class phabservlet1 extends HttpServlet {
                 }
                 else {
                     resp.getWriter().write("username available");
+                    String addUser = "INSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
+                                    +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n";
                     
-                    resp.getWriter().write("\n");
-                    resp.getWriter().write(firstname);
-                    resp.getWriter().write("\n");
-                    resp.getWriter().write(lastname);
-                    resp.getWriter().write("\n");
-                    resp.getWriter().write(username);
-                    resp.getWriter().write("\n");
-                    resp.getWriter().write(email);
                     resp.getWriter().write("Inserted user: ");
                     resp.getWriter().write(username);
                 }
