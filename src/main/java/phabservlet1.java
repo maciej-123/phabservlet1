@@ -340,19 +340,20 @@ public class phabservlet1 extends HttpServlet {
                 resp.getWriter().write(email+"\n");
                 //testing blocks only -- non-important
 
-                String checkuserexist = "SELECT EXISTS (SELECT true FROM Users WHERE Username="+username+");";
+                String checkuserexist = "SELECT * FROM Users WHERE Username="+username;
 
 
                 ResultSet rset = s.executeQuery(checkuserexist);
 
-
-                if(rset.getBoolean("Username")==true) {
+                if(rset.wasNull()) {
                     resp.getWriter().write("username unavailable");
                 }
                 else {
                     resp.getWriter().write("username available");
                     String addUser = "INSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
                                     +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n";
+
+                    s.execute(addUser);
                     
                     resp.getWriter().write("Inserted user: ");
                     resp.getWriter().write(username);
@@ -375,6 +376,7 @@ public class phabservlet1 extends HttpServlet {
                 String password = message.substring(message.indexOf('@')+1,message.indexOf('#'));
                 String email    = message.substring(message.indexOf('#')+1,length);
                 
+
 
 
             }
