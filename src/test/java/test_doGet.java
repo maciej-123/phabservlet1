@@ -32,7 +32,19 @@ public class test_doGet {
         MockitoAnnotations.initMocks(this);
     }
 
+    @Test
+    public void testDoGet() throws IOException, ServletException {
+        StringWriter stringWriter=new StringWriter();
+        PrintWriter printWriter=new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(printWriter);
+        when(request.getServletPath()).thenReturn("/inputB");
 
+        phabservlet1 myServlet=new phabservlet1();
+        myServlet.doGet(request,response);
+        String output=stringWriter.getBuffer().toString();
+
+        Assert.assertThat(output,is(equalTo("")));
+    }
 
 
 }
