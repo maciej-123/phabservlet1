@@ -67,7 +67,7 @@ import javax.servlet.http.HttpServletResponse;
                 "/deltest_user_database"
         },loadOnStartup = 1)
 
-public class phabservlet1 extends HttpServlet {
+    public class phabservlet1 extends HttpServlet {
 
     private Connection c;
 
@@ -97,6 +97,7 @@ public class phabservlet1 extends HttpServlet {
         //return a simple text database
         if (urlPattern.equals("/text_database")) {
             textDatabase t = new textDatabase(resp);
+
         }
 
 
@@ -264,9 +265,7 @@ public class phabservlet1 extends HttpServlet {
 
     }
 
-    private String SearchManufacturer;
-    private String SearchName;
-    private String SearchBranch;
+
 
 
     @Override
@@ -340,7 +339,16 @@ public class phabservlet1 extends HttpServlet {
         }
     }
 
+    private String SearchManufacturer;
+    private String SearchName;
+    private String SearchBranch;
 
+    public void inputGlobalVars(String M, String N, String B)
+    {
+        SearchManufacturer = M;
+        SearchName = N;
+        SearchBranch = B;
+    }
 
     //Common Functions
     private void checkStock(HttpServletResponse resp) throws IOException {
