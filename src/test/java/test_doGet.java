@@ -93,7 +93,7 @@ public class test_doGet {
 
         Assert.assertThat(output, is(equalTo(
                 "The url cannot be null"
-        )));
+        )));//
     }
 
 
