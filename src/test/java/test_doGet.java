@@ -43,7 +43,7 @@ public class test_doGet {
         myServlet.doGet(request,response);
         String output=stringWriter.getBuffer().toString();
 
-        Assert.assertThat(output,is(equalTo("")));
+        Assert.assertThat(output,is(equalTo("The url cannot be null")));
     }
 
 

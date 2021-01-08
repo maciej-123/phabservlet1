@@ -71,6 +71,8 @@ import javax.servlet.http.HttpServletResponse;
 
     private Connection c;
 
+
+    private String dbUrl = "";
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -83,7 +85,7 @@ import javax.servlet.http.HttpServletResponse;
         }
         //connect to database
         try {
-            String dbUrl = System.getenv("JDBC_DATABASE_URL");
+            dbUrl = System.getenv("JDBC_DATABASE_URL");
             c = DriverManager.getConnection(dbUrl);
         } catch (Exception e) {
             resp.getWriter().write(e.getMessage());
