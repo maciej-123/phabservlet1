@@ -27,6 +27,8 @@ public class test_doGet {
     @Mock
     HttpServletResponse response;
 
+
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -44,6 +46,7 @@ public class test_doGet {
         String output=stringWriter.getBuffer().toString();
 
         Assert.assertThat(output,is(equalTo("The url cannot be null")));
+        //
     }
 
 
