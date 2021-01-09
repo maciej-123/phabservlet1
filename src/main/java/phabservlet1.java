@@ -1383,7 +1383,7 @@ import javax.servlet.http.HttpServletResponse;
 
     private void verifyUser(HttpServletRequest req, HttpServletResponse resp, String message, int length) throws IOException {
         try {
-
+                resp.reset();
                 Statement s = c.createStatement();
                 String username = message.substring(0,message.indexOf('@'));
                 String password = message.substring(message.indexOf('@')+1, length);
