@@ -158,7 +158,6 @@ import javax.servlet.http.HttpServletResponse;
 
         if (urlPattern.equals("/_checkStock"))
         {
-            resp.getWriter().write("\nChecking stock test function\n");
             checkStock(resp);
         }
 
@@ -356,7 +355,6 @@ import javax.servlet.http.HttpServletResponse;
     private void checkStock(HttpServletResponse resp) throws IOException {
 
         try {
-            resp.getWriter().write("Checking Stock \n");
             Statement s=c.createStatement();
 
             //first find current stock
@@ -386,7 +384,7 @@ import javax.servlet.http.HttpServletResponse;
                 }
 
             }
-            if (count>=1)
+            if (count>=0)
                 resp.getWriter().write("\n WARNING: "+ count +" stock(s) below 20% found");
 
         }
@@ -1385,7 +1383,7 @@ import javax.servlet.http.HttpServletResponse;
 
     private void verifyUser(HttpServletRequest req, HttpServletResponse resp, String message, int length) throws IOException {
         try {
-
+                resp.reset();
                 Statement s = c.createStatement();
                 String username = message.substring(0,message.indexOf('@'));
                 String password = message.substring(message.indexOf('@')+1, length);
