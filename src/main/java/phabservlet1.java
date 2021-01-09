@@ -384,7 +384,7 @@ import javax.servlet.http.HttpServletResponse;
                 }
 
             }
-            if (count>=1)
+            if (count>=0)
                 resp.getWriter().write("\n WARNING: "+ count +" stock(s) below 20% found");
 
         }
