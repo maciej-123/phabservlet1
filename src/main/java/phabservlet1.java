@@ -158,7 +158,6 @@ import javax.servlet.http.HttpServletResponse;
 
         if (urlPattern.equals("/_checkStock"))
         {
-            resp.getWriter().write("\nChecking stock test function\n");
             checkStock(resp);
         }
 
@@ -356,7 +355,6 @@ import javax.servlet.http.HttpServletResponse;
     private void checkStock(HttpServletResponse resp) throws IOException {
 
         try {
-            resp.getWriter().write("Checking Stock \n");
             Statement s=c.createStatement();
 
             //first find current stock
