@@ -311,7 +311,7 @@ import javax.servlet.http.HttpServletResponse;
 
         if(urlPattern.equals("/inputB"))
         {
-            resp.getWriter().write("\nInputting Branch Name\n");
+
 
             //recieves data in the form of Manufacturer@Name
             String branch = message.substring(0,length);
@@ -324,7 +324,8 @@ import javax.servlet.http.HttpServletResponse;
 
                 resp.getWriter().write(e.getMessage());
             }
-            resp.getWriter().write("Input Branch ended");
+
+            resp.getWriter().write(SearchBranch);
         }
 
         
