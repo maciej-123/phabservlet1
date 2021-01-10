@@ -803,6 +803,7 @@ import javax.servlet.http.HttpServletResponse;
             while (rset.next()) {
                 for(int n=1;n<=8;n++) {
                     resp.getWriter().write(rset.getString(n));
+                    resp.getWriter().write(",");
                     resp.getWriter().write("\t");
                 }
             }
