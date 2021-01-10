@@ -804,7 +804,7 @@ import javax.servlet.http.HttpServletResponse;
                 for(int n=1;n<=8;n++) {
                     resp.getWriter().write(rset.getString(n));
                     resp.getWriter().write(",");
-                    resp.getWriter().write("\t");
+                    resp.getWriter().write(" ");
                 }
             }
 
