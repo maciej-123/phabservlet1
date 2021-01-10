@@ -818,7 +818,7 @@ import javax.servlet.http.HttpServletResponse;
         }
         catch(Exception e)
         {
-
+            resp.getWriter().write(e.getMessage());
         }
     }
 
