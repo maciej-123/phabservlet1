@@ -121,10 +121,10 @@ import javax.servlet.http.HttpServletResponse;
         }
 
         if (urlPattern.equals("/fill_phab")) {
-            fillPHAB(resp);
+            //fillPHAB(resp);
 
-//            fillDeletePHAB fDP = new fillDeletePHAB(c);
-//            fDP.fillPHAB(resp,SearchBranch);
+            fillDeletePHAB fDP = new fillDeletePHAB(c);
+            fDP.fillPHAB(resp,SearchBranch);
         }
 
 
