@@ -368,7 +368,6 @@ import javax.servlet.http.HttpServletResponse;
                 SearchBranch = branch;
             }
             catch (Exception e){
-
                 resp.getWriter().write(e.getMessage());
             }
 

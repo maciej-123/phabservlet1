@@ -86,7 +86,7 @@ public class UserDatabase {
 
     public void addUser(HttpServletRequest req, HttpServletResponse resp, String message, int length) throws IOException {
         try {
-
+            resp.reset();
             Statement s = c.createStatement();
             String firstname = message.substring(0,message.indexOf('/'));
             String lastname = message.substring(message.indexOf('/')+1,message.indexOf('|'));
@@ -118,9 +118,6 @@ public class UserDatabase {
                         +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n";
 
                 s.execute(addUser);
-
-                resp.getWriter().write("Inserted user: ");
-                resp.getWriter().write(username);
             }
 
         }
