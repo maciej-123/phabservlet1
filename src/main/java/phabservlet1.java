@@ -197,7 +197,7 @@ import javax.servlet.http.HttpServletResponse;
             //calculateRevenue(resp);
 
             revenueProfitStock rPS =  new revenueProfitStock(c);
-            rPS.calculateProfit(resp,SearchBranch);
+            rPS.calculateRevenue(resp,SearchBranch);
         }
         //End of Paddington related functions---------------------------------------------------------------------------
 
@@ -416,5 +416,425 @@ import javax.servlet.http.HttpServletResponse;
         SearchName = N;
         SearchBranch = B;
     }
+
+
+
+    ////###
+
+
+    public void createUserDatabase(HttpServletResponse resp) throws IOException {
+        try{
+            resp.getWriter().write("Creating User Database\n");
+            Statement s = this.c.createStatement();
+
+            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+
+            ResultSet rset = s.executeQuery(strSelect);
+
+            s.execute("CREATE TABLE Users(\n" +
+                    "Username varchar(50) NOT NULL," +
+                    "FirstName varchar(100) NOT NULL," +
+                    "LastName varchar(100) NOT NULL," +
+                    "Email varchar(100) NOT NULL," +
+                    "Password varchar(100) NOT NULL)"
+
+            );
+
+            resp.getWriter().write("Function Call Finished");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+
+        }
+
+
+        catch (Exception e) {
+            resp.getWriter().write(e.getMessage());
+
+        }
+    }
+
+    public void returnUserDatabse(HttpServletResponse resp) throws IOException {
+        try{
+            resp.getWriter().write("User Database\n");
+            Statement s = this.c.createStatement();
+            String strSelect = "SELECT * FROM Users";
+
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("Table Start");
+
+            ResultSetMetaData rsmd = rset.getMetaData();
+            int colNum = rsmd.getColumnCount();
+
+            resp.getWriter().write(("\n"));
+
+            while(rset.next()) {
+                for(int n=1; n<=colNum; n++) {
+                    resp.getWriter().write(rset.getString(n) + "\t");
+                }
+                resp.getWriter().write("\n");;
+            }
+
+            resp.getWriter().write("Table End");
+
+            resp.getWriter().write("\n\nPrint Table Complete");
+
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch (Exception e) {
+            resp.getWriter().write(e.getMessage());
+
+        }
+
+    }
+
+    public void addUser(HttpServletRequest req, HttpServletResponse resp, String message, int length) throws IOException {
+        try {
+
+            Statement s = c.createStatement();
+            String firstname = message.substring(0,message.indexOf('/'));
+            String lastname = message.substring(message.indexOf('/')+1,message.indexOf('|'));
+            String username = message.substring(message.indexOf('|')+1,message.indexOf('@'));
+            String password = message.substring(message.indexOf('@')+1,message.indexOf('#'));
+            String email    = message.substring(message.indexOf('#')+1,length);
+
+            //testing blocks onlyf
+            resp.getWriter().write("User name: ");
+            resp.getWriter().write(username+"\n");
+            resp.getWriter().write("First name: ");
+            resp.getWriter().write(firstname+"\n");
+            resp.getWriter().write("Last name: ");
+            resp.getWriter().write(lastname+"\n");
+            resp.getWriter().write("Email: ");
+            resp.getWriter().write(email+"\n");
+            //testing blocks only -- non-important
+
+            String checkuserexist = "SELECT * FROM Users WHERE Username= '"+username+"';";
+
+            ResultSet rset = s.executeQuery(checkuserexist);
+
+            if(rset.next()) {
+                resp.getWriter().write("username unavailable");
+            }
+            else {
+                resp.getWriter().write("username available");
+                String addUser = "INSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
+                        +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n";
+
+                s.execute(addUser);
+
+                resp.getWriter().write("Inserted user: ");
+                resp.getWriter().write(username);
+            }
+        }
+        catch(Exception e) {
+            resp.getWriter().write(e.getMessage());
+        }
+
+
+
+    }
+
+    public void verifyUser(HttpServletRequest req, HttpServletResponse resp, String message, int length) throws IOException {
+        try {
+            resp.reset();
+            Statement s = c.createStatement();
+            String username = message.substring(0,message.indexOf('@'));
+            String password = message.substring(message.indexOf('@')+1, length);
+
+            String verifyUser = "SELECT * FROM Users WHERE Username= '"+username+"';";
+
+            ResultSet rset = s.executeQuery(verifyUser);
+            if(rset.next()) {
+
+                String usr = rset.getString("Username");
+                String pwd = rset.getString("Password");
+                if(usr.equals(username) && pwd.equals(password)) {
+                    resp.getWriter().write("Login successful");
+                }
+                else resp.getWriter().write("User does not exist or password incorrect");
+
+            }
+
+            else {
+                resp.getWriter().write("User does not exist.");
+            }
+
+
+
+
+        }
+
+        catch(Exception e) {
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    public void deltestUserDatabase(HttpServletResponse resp) throws IOException {
+        try {
+            resp.getWriter().write("Deleting test database");
+            Statement s = this.c.createStatement();
+            String deltest = "DELETE FROM Users WHERE Username = 'test'";
+            String deltest2 = "DELETE FROM Users WHERE Username = 'test2123";
+
+            s.executeQuery(deltest);
+            s.executeQuery(deltest2);
+
+            resp.getWriter().write("Test users have been deleted");
+
+        }
+        catch(Exception e) {
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    public void delTestPHAB(HttpServletResponse resp, String SearchBranch) throws IOException
+    {
+        try {
+
+            resp.getWriter().write("Deleting Test Rows Paddington\n");
+            Statement s=c.createStatement();
+
+            s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE Manufacturer='test'");
+            s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE Manufacturer='Test'");
+
+            resp.getWriter().write("\nalterTestDatabase called");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    public void testFillPHAB(HttpServletResponse resp, String SearchBranch) throws IOException
+    {
+        try {
+            resp.getWriter().write("Filling In PHAB Paddington Database\n");
+            Statement s=c.createStatement();
+
+            //fill database with test row
+            s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
+
+            resp.getWriter().write("\nalterTestDatabase called\n");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    public void createTestDatabase(HttpServletResponse resp) throws IOException
+    {
+
+        try {
+            resp.getWriter().write("CreateTestDatabase");
+            Statement s=c.createStatement();
+
+            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
+            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+
+            ResultSet rset = s.executeQuery(strSelect);
+
+            if (!rset.next()) {
+                //create test table
+                s.execute("CREATE TABLE label(\n" +
+
+                        "id int PRIMARY KEY NOT NULL," +
+                        "name varchar(45))"
+                );
+            }
+            else
+            {
+                resp.getWriter().write(" Already Created ");
+            }
+
+            resp.getWriter().write("CreateTestDatabase called");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    public void returnTestDatabase(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("ReturnTestDatabase");
+            Statement s = c.createStatement();
+            //String strSelect = "SELECT *  FROM INFORMATION_SCHEMA.TABLES";
+            String strSelect = "SELECT * FROM label";
+
+            String transfer1 = new String();
+            String transfer2 = new String();
+
+            resp.getWriter().write(" #1 ");
+            ResultSet rset = s.executeQuery(strSelect);
+            resp.getWriter().write(" #2 ");
+
+            while (rset.next()) {
+                transfer1 += String.valueOf(rset.getInt("id"));
+                transfer2 += rset.getString("name");
+            }
+//
+            resp.getWriter().write(" #3 ");
+            resp.getWriter().write(transfer1);
+            resp.getWriter().write(transfer2);
+
+            resp.getWriter().write("returnTestDatabase called");
+            if(rset!=null){rset.close();}
+            if(s!=null){s.close();}
+        }
+        catch(Exception e)
+        {
+            resp.getWriter().write(e.getMessage());
+        }
+//
+    }
+
+    public void alterTestDatabase(HttpServletResponse resp) throws IOException
+    {
+        try {
+            resp.getWriter().write("AlterTestDatabase");
+            Statement s=c.createStatement();
+
+            //ResultSet rset = s.executeQuery(strSelect);
+            resp.getWriter().write(" #2 ");
+
+            s.execute("INSERT INTO public.label (id,name) VALUES (1,'2')");
+            s.execute("INSERT INTO public.label (id,name) VALUES (3,'4')");
+
+            resp.getWriter().write("alterTestDatabase called");
+            if(s!=null){s.close();}
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+
+    }
+
+    public void getLimitOne(HttpServletResponse resp, String SearchBranch, String SearchName, String SearchManufacturer) throws IOException
+    {
+
+        try {
+            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("\n");
+            while (rset.next()) {
+                resp.getWriter().write(rset.getString(7));
+            }
+
+            //close connection
+            if (rset != null) {
+                rset.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
+    }
+
+    public void searchForDrug(HttpServletResponse resp, String SearchBranch, String SearchName, String SearchManufacturer) throws IOException
+    {
+
+        try {
+            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
+
+            Statement s = c.createStatement();
+            ResultSet rset = s.executeQuery(strSelect);
+
+            resp.getWriter().write("\n");
+            while (rset.next()) {
+                for(int n=1;n<=8;n++) {
+                    resp.getWriter().write(rset.getString(n));
+                    resp.getWriter().write(",");
+                    resp.getWriter().write(" ");
+                }
+            }
+
+            //close connection
+            if (rset != null) {
+                rset.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        }
+        catch(Exception e)
+        {
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
+    public void decreaseStock(HttpServletResponse resp, String SearchBranch, String SearchName, String SearchManufacturer) throws IOException
+    {
+        resp.getWriter().write("Decreasing Stock\n");
+
+        resp.getWriter().write(SearchManufacturer);
+        resp.getWriter().write("\n");
+        resp.getWriter().write(SearchName);
+        resp.getWriter().write("\n");
+//
+
+        try {
+            resp.getWriter().write("Editing Rows Paddington\n");
+            Statement s=c.createStatement();
+
+            //first find current stock
+            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
+
+
+            ResultSet rset = s.executeQuery(strSelect);
+            String transferStr;
+            //default error value - s.execute will not be called with -1
+            int cs = -1;
+
+            while(rset.next()) {
+                resp.getWriter().write(rset.getString("CurrentStock"));
+                transferStr=rset.getString("CurrentStock");
+                cs = Integer.valueOf(transferStr);
+
+            }
+
+            //subract 1 from the current value
+            cs--;
+
+            //to prevent decrementing below zero
+            if(cs >= 0) {
+                s.execute("UPDATE public.StockDB"+SearchBranch+" SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
+            }
+
+
+            resp.getWriter().write("\nDecrease Stock Called");
+            if(s!=null){s.close();}
+
+            //reset to null
+            SearchName = "";
+            SearchManufacturer = "";
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+
+
+    }
+    ///###
 
 }
