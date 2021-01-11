@@ -12,20 +12,47 @@ public class fillDeletePHAB {
         c = _c;
     }
 
+    public void delAllPHAB(HttpServletResponse resp, String SearchBranch) throws IOException
+    {
+        try {
+
+            boolean deleteLock = false;
+
+            resp.getWriter().write("Deleting Test Rows "+SearchBranch+"\n");
+
+            if(deleteLock == true)
+            {
+                resp.getWriter().write("Delete Function Locked, Check Code!\n");
+            }
+            else {
+                Statement s = c.createStatement();
+
+                s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE FullStock > 0 ");
+
+                resp.getWriter().write("\nalterTestDatabase called");
+                if (s != null) {
+                    s.close();
+                }
+                if (c!=null) {
+                    c.close();
+                }
+            }
+
+        }
+        catch (Exception e){
+
+            resp.getWriter().write(e.getMessage());
+        }
+    }
+
     public void fillPHAB(HttpServletResponse resp, String SearchBranch) throws IOException
     {
         try {
             resp.getWriter().write("Filling In PHAB "+SearchBranch+" Database\n");
             Statement s=c.createStatement();
 
-            boolean lockCreate = false;
-            //fill database with test row
-
-            if(lockCreate == true)
-            {
-                resp.getWriter().write("Creation Locked, Please Edit code\n");
-            }
-            else if (SearchBranch == "Paddington"){
+            if(SearchBranch.equals("Paddington")) {
+                //Cold and Flu
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',4.5,3.7,15,0,15)");
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',6.8,5,20,0,20)");
@@ -81,8 +108,7 @@ public class fillDeletePHAB {
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',4,3.2,20,0,20)");
             }
 
-            else if (SearchBranch == "GreenPark")
-            {
+            if(SearchBranch.equals("GreenPark")) {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',9,3.7,15,0,15)");
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',13.6,5,20,0,20)");
@@ -138,8 +164,7 @@ public class fillDeletePHAB {
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',8,3.2,20,0,20)");
             }
 
-            else if (SearchBranch == "MileEnd")
-            {
+            if(SearchBranch.equals("MileEnd")) {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',3.5,3.7,15,0,15)");
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',5.2,5,20,0,20)");
@@ -196,45 +221,10 @@ public class fillDeletePHAB {
             }
 
 
+
             resp.getWriter().write("\nalterTestDatabase called\n");
             if(s!=null){s.close();}
-            if (c!=null) {
-                c.close();
-            }
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    public void delAllPHAB(HttpServletResponse resp, String SearchBranch) throws IOException
-    {
-        try {
-
-            boolean deleteLock = false;
-
-            resp.getWriter().write("Deleting Test Rows "+SearchBranch+"\n");
-
-            if(deleteLock == true)
-            {
-                resp.getWriter().write("Delete Function Locked, Check Code!\n");
-            }
-            else {
-                Statement s = c.createStatement();
-
-                s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE FullStock > 0 ");
-
-                resp.getWriter().write("\nalterTestDatabase called");
-                if (s != null) {
-                    s.close();
-                }
-                if (c!=null) {
-                    c.close();
-                }
-            }
-
+            //if (c!=null){c.close();}
         }
         catch (Exception e){
 
