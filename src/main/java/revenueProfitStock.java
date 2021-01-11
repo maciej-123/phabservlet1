@@ -47,7 +47,7 @@ public class revenueProfitStock {
 
             }
             if (count>=0)
-                resp.getWriter().write("\n WARNING: "+ count +" stock(s) below 20% found");
+                resp.getWriter().write(count +" stock(s) below 20% found");
 
             if (c!=null) {
                 c.close();
