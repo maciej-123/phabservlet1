@@ -428,19 +428,19 @@ import javax.servlet.http.HttpServletResponse;
             resp.getWriter().write("Filling In PHAB "+SearchBranch+" Database\n");
             Statement s=c.createStatement();
 
-            if(SearchBranch == "Paddington") {
+            if(SearchBranch.equals("Paddington")) {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB" + SearchBranch + " (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',4.5,3.7,15,0,15)");
                 s.execute("INSERT INTO public.StockDB" + SearchBranch + " (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',6.8,5,20,0,20)");
             }
 
-            if(SearchBranch == "GreenPark") {
+            if(SearchBranch.equals("GreenPark")) {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB" + SearchBranch + " (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',4.5,3.7,15,0,15)");
                 s.execute("INSERT INTO public.StockDB" + SearchBranch + " (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',6.8,5,20,0,20)");
             }
 
-            if(SearchBranch == "MileEnd") {
+            if(SearchBranch.equals("MileEnd")) {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB" + SearchBranch + " (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',4.5,3.7,15,0,15)");
                 s.execute("INSERT INTO public.StockDB" + SearchBranch + " (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',6.8,5,20,0,20)");
