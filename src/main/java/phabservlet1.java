@@ -269,15 +269,6 @@ public class phabservlet1 extends HttpServlet {
             uDB.returnUserDatabse(resp);
         }
 
-        if (c != null)
-            try {
-                c.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-
     }
 
 
@@ -371,13 +362,6 @@ public class phabservlet1 extends HttpServlet {
             uDB.verifyUser(req,resp,message,length);
         }
 
-        if(c!=null)
-            try {
-                c.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
     }
 
     private String SearchManufacturer;
