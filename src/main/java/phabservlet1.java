@@ -1,3 +1,5 @@
+import org.graalvm.compiler.lir.LIRInstruction;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -106,16 +108,24 @@ import javax.servlet.http.HttpServletResponse;
         //Paddington Databases------------------------------------------------------------------------------------------
         //create PHAB Paddington Database
         if (urlPattern.equals("/create_phab_paddington")) {
-            createPHABPaddington(resp);
+            //createPHABPaddington(resp);
+
+            createDatabase cDB = new createDatabase(c);
+            cDB.createPHABPaddington(resp);
         }
 
         //fill with test variable
         if (urlPattern.equals("/testfill_phab")) {
-            testFillPHAB(resp);
+            //testFillPHAB(resp);
+            testFillDelete tFD = new testFillDelete(c);
+            tFD.testFillPHAB(resp,SearchBranch);
         }
 
         if (urlPattern.equals("/fill_phab")) {
-            fillPHAB(resp);
+            //fillPHAB(resp);
+
+            fillDeletePHAB fDP = new fillDeletePHAB(c);
+            fDP.fillPHAB(resp,SearchBranch);
         }
 
 
@@ -127,28 +137,38 @@ import javax.servlet.http.HttpServletResponse;
         }
 
         if (urlPattern.equals("/delete_phab")) {
-            delAllPHAB(resp);
+            //delAllPHAB(resp);
+
+            fillDeletePHAB fDP = new fillDeletePHAB(c);
+            fDP.delAllPHAB(resp, SearchBranch);
         }
 
         if (urlPattern.equals("/testdelete_phab")) {
-            delTestPHAB(resp);
+            //delTestPHAB(resp);
+            testFillDelete tFD = new testFillDelete(c);
+            tFD.delTestPHAB(resp, SearchBranch);
         }
 
 
         //get request for decreasing stock MUST called after the post request
         if (urlPattern.equals("/_decreaseStock")) {
+            //decreaseStock(resp);
 
-            decreaseStock(resp);
+            searchDecreaseLimit sDL = new searchDecreaseLimit(c);
+            sDL.decreaseStock(resp,SearchBranch, SearchName, SearchManufacturer);
         }
 
 
         if (urlPattern.equals("/getLimitOne")) {
-
-            getLimitOne(resp);
+            //getLimitOne(resp);
+            searchDecreaseLimit sDL = new searchDecreaseLimit(c);
+            sDL.getLimitOne(resp,SearchBranch, SearchName, SearchManufacturer);
         }
 
         if (urlPattern.equals("/searchForDrug")) {
-            searchForDrug(resp);
+            //searchForDrug(resp);
+            searchDecreaseLimit sDL = new searchDecreaseLimit(c);
+            sDL.searchForDrug(resp, SearchBranch, SearchName, SearchManufacturer);
         }
 
 
@@ -156,26 +176,39 @@ import javax.servlet.http.HttpServletResponse;
 
         if (urlPattern.equals("/_checkStock"))
         {
-            checkStock(resp);
+            //checkStock(resp);
+
+            revenueProfitStock rPS =  new revenueProfitStock(c);
+            rPS.checkStock(resp, SearchBranch);
         }
 
         //testing the calculate profit function
 
         if (urlPattern.equals("/calculateProfit"))
         {
-            calculateProfit(resp);
+            //calculateProfit(resp);
+
+            revenueProfitStock rPS =  new revenueProfitStock(c);
+            rPS.calculateProfit(resp,SearchBranch);
         }
 
         if (urlPattern.equals("/calculateRevenue"))
         {
-            calculateRevenue(resp);
+            //calculateRevenue(resp);
+
+            revenueProfitStock rPS =  new revenueProfitStock(c);
+            rPS.calculateProfit(resp,SearchBranch);
         }
         //End of Paddington related functions---------------------------------------------------------------------------
 
         //Green Park Database-------------------------------------------------------------------------------------------
         //create PHAB Paddington Database
         if(urlPattern.equals("/create_phab_greenpark")) {
-            createPHABGreenPark(resp);
+            //createPHABGreenPark(resp);
+
+            createDatabase cDB = new createDatabase(c);
+            cDB.createPHABGreenPark(resp);
+
         }
 
 
@@ -187,7 +220,9 @@ import javax.servlet.http.HttpServletResponse;
         }
 
         if(urlPattern.equals("/deltest_user_database")) {
-            deltestUserDatabase(resp);
+            //deltestUserDatabase(resp);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.deltestUserDatabase(resp);
         }
 
 //
@@ -200,7 +235,10 @@ import javax.servlet.http.HttpServletResponse;
         //Mileend Databases---------------------------------------------------------------------------------------------
         //create PHAB Mileend Database
         if(urlPattern.equals("/create_phab_mileend")) {
-            createPHABMileEnd(resp);
+            //createPHABMileEnd(resp);
+
+            createDatabase cDB = new createDatabase(c);
+            cDB.createPHABMileEnd(resp);
         }
 
         if(urlPattern.equals("/return_phab_mileend")) {
@@ -224,18 +262,28 @@ import javax.servlet.http.HttpServletResponse;
         {
             SearchBranch = "";
             resp.getWriter().write("\nSetting Stock to Max\n");
-            SearchBranch = "Paddington";
-            delAllPHAB(resp);
-            SearchBranch = "Paddington";
-            fillPHAB(resp);
-            SearchBranch = "GreenPark";
-            delAllPHAB(resp);
-            SearchBranch = "GreenPark";
-            fillPHAB(resp);
-            SearchBranch = "MileEnd";
-            delAllPHAB(resp);
-            SearchBranch = "MileEnd";
-            fillPHAB(resp);
+
+//            SearchBranch = "Paddington";
+//            delAllPHAB(resp);
+//            SearchBranch = "Paddington";
+//            fillPHAB(resp);
+//            SearchBranch = "GreenPark";
+//            delAllPHAB(resp);
+//            SearchBranch = "GreenPark";
+//            fillPHAB(resp);
+//            SearchBranch = "MileEnd";
+//            delAllPHAB(resp);
+//            SearchBranch = "MileEnd";
+//            fillPHAB(resp);
+
+            fillDeletePHAB fDP = new fillDeletePHAB(c);
+            fDP.delAllPHAB(resp, "Paddington");
+            fDP.fillPHAB(resp, "Paddington");
+            fDP.delAllPHAB(resp, "GreenPark");
+            fDP.fillPHAB(resp, "GreenPark");
+            fDP.delAllPHAB(resp, "MileEnd");
+            fDP.fillPHAB(resp, "MileEnd");
+
             SearchBranch = "";
         }
 
@@ -262,10 +310,14 @@ import javax.servlet.http.HttpServletResponse;
 
         //User database functions
         if(urlPattern.equals("/create_user_database")) {
-            createUserDatabase(resp);
+            //createUserDatabase(resp);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.createUserDatabase(resp);
         }
         if(urlPattern.equals("/return_user_database")) {
-            returnUserDatabse(resp);
+            //returnUserDatabse(resp);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.returnUserDatabse(resp);
         }
         
 
@@ -324,8 +376,6 @@ import javax.servlet.http.HttpServletResponse;
 
         if(urlPattern.equals("/inputB"))
         {
-
-
             //recieves data in the form of Manufacturer@Name
             String branch = message.substring(0,length);
 
@@ -340,16 +390,19 @@ import javax.servlet.http.HttpServletResponse;
 
         }
 
-        
 
         //message in the format of firstname/lastname|username@password#email
 
         if(urlPattern.equals("/add_user")) {
-            addUser(req, resp, message, length);
+            //addUser(req, resp, message, length);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.addUser(req,resp, message, length);
         }
         //parsingformat: username@password
         if(urlPattern.equals("/verify_user")) {
-            verifyUser(req, resp, message, length);
+            //verifyUser(req, resp, message, length);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.verifyUser(req,resp,message,length);
         }
     }
 
@@ -364,861 +417,4 @@ import javax.servlet.http.HttpServletResponse;
         SearchBranch = B;
     }
 
-    //Common Functions
-    private void checkStock(HttpServletResponse resp) throws IOException {
-
-        try {
-            Statement s=c.createStatement();
-
-            //first find current stock
-            String strSelect = "SELECT CurrentStock FROM StockDB"+SearchBranch;
-            String strFullStock = "SELECT FullStock FROM StockDB"+SearchBranch;
-
-
-            ResultSet rset = s.executeQuery(strSelect);
-            ResultSet rset2 = s.executeQuery(strFullStock);
-            int cq = 0;
-            int fs = 0;
-            int count = 0;
-            String transferStr;
-            String transferStr2;
-
-            while(rset.next() && rset2.next()) {
-                rset.getString("CurrentStock");
-                transferStr=rset.getString("CurrentStock");
-                cq = Integer.valueOf(transferStr);
-
-                rset2.getString("Fullstock");
-                transferStr2=rset2.getString("FullStock");
-                fs = Integer.valueOf(transferStr2);
-                if (cq <= fs*0.2 )
-                {
-                    count++;
-                }
-
-            }
-            if (count>=0)
-                resp.getWriter().write("\n WARNING: "+ count +" stock(s) below 20% found");
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-
-    }
-
-    private void calculateProfit(HttpServletResponse resp) throws IOException
-    {
-        try {
-            Statement s=c.createStatement();
-
-            //first find current stock
-            String strSelect = "SELECT CurrentStock FROM StockDB"+SearchBranch;
-            String strFullStock = "SELECT FullStock FROM StockDB"+SearchBranch;
-            String strSalesPrice = "SELECT SalesPrice FROM StockDB"+SearchBranch;
-            String strPurchasePrice = "SELECT PurchasePrice FROM StockDB"+SearchBranch;
-
-            ResultSet rset = s.executeQuery(strSelect);
-            ResultSet rset2 = s.executeQuery(strFullStock);
-            ResultSet rset3 = s.executeQuery(strSalesPrice);
-            ResultSet rset4 = s.executeQuery(strPurchasePrice);
-            int cq = 0;
-            int fs = 0;
-            double sp = 0;
-            double pp = 0;
-            double profit = 0;
-
-
-            String transferStr;
-            String transferStr2;
-
-
-            while(rset.next() && rset2.next() && rset3.next() && rset4.next()) {
-                rset.getString("CurrentStock");
-                transferStr=rset.getString("CurrentStock");
-                cq = Integer.valueOf(transferStr);
-
-                rset2.getString("Fullstock");
-                transferStr2=rset2.getString("FullStock");
-                fs = Integer.valueOf(transferStr2);
-
-                sp = rset3.getDouble("SalesPrice");
-                pp = rset4.getDouble("PurchasePrice");
-
-                profit = profit + (fs-cq)*(sp-pp);
-
-            }
-
-            resp.getWriter().write("\n Profit: "+ profit +" pounds");
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-
-    }
-
-    private void calculateRevenue(HttpServletResponse resp) throws IOException
-    {
-        try {
-
-            Statement s=c.createStatement();
-
-            //first find current stock
-            String strSelect = "SELECT CurrentStock FROM StockDB"+SearchBranch;
-            String strFullStock = "SELECT FullStock FROM StockDB"+SearchBranch;
-            String strSalesPrice = "SELECT SalesPrice FROM StockDB"+SearchBranch;
-
-
-            ResultSet rset = s.executeQuery(strSelect);
-            ResultSet rset2 = s.executeQuery(strFullStock);
-            ResultSet rset3 = s.executeQuery(strSalesPrice);
-
-            int cq = 0;
-            int fs = 0;
-            double sp = 0;
-
-            double rev = 0;
-
-
-            String transferStr;
-            String transferStr2;
-
-
-            while(rset.next() && rset2.next() && rset3.next()) {
-                rset.getString("CurrentStock");
-                transferStr=rset.getString("CurrentStock");
-                cq = Integer.valueOf(transferStr);
-
-                rset2.getString("Fullstock");
-                transferStr2=rset2.getString("FullStock");
-                fs = Integer.valueOf(transferStr2);
-
-                sp = rset3.getDouble("SalesPrice");
-
-                rev = rev + (fs-cq)*(sp);
-
-            }
-
-            resp.getWriter().write("\n Revenue: "+ rev +" pounds");
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void testFillPHAB(HttpServletResponse resp) throws IOException
-    {
-        try {
-            resp.getWriter().write("Filling In PHAB Paddington Database\n");
-            Statement s=c.createStatement();
-
-            //fill database with test row
-            s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('test','test','test',11.11,22.22,10,1,10)");
-
-            resp.getWriter().write("\nalterTestDatabase called\n");
-            if(s!=null){s.close();}
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void fillPHAB(HttpServletResponse resp) throws IOException
-    {
-        try {
-            resp.getWriter().write("Filling In PHAB Paddington Database\n");
-            Statement s=c.createStatement();
-
-            boolean lockCreate = false;
-            //fill database with test row
-
-            if(lockCreate == true)
-            {
-                resp.getWriter().write("Creation Locked, Please Edit code\n");
-            }
-            else if (SearchBranch == "Paddington"){
-                //Cold and Flu
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',4.5,3.7,15,0,15)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',6.8,5,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',8.5,7,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',9,7.5,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','max','16 caps',4.2,3.7,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','standard','10 sachets',4.5,3.5,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','day and night','16 caps',4.5,3.2,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','max','16 caps',4.2,3.2,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','mucus relief','16 caps',4.8,3.2,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','4 flu','24 caps',6,4.9,20,0,20)");
-
-                //Skincare
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('e45','psoriasis cream','50ml',20,16,15,0,15)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eurax','skin cream','100g',5.7,4.2,15,0,15)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','skin relief cream','50ml',9,7,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','face scrub','100ml',7.5,6,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','psoriasis cream','150ml',30,25,10,0,10)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','repair and Restore','100g',12,10,10,0,10)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','30g',12,9.7,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','100g',25,22.2,5,0,5)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','moisturising cream','50ml',10,7.6,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','exfoliating cleanser','180ml',12,10.1,20,0,20)");
-
-                //Headaches and Pain Relief
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','meltlets','16 caps',4,3.7,40,0,40)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','express','16 caps',4,3.5,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','max strength','32 caps',7,6.2,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','standard','16 caps',4,3.2,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cuprofen','max strength','96 caps',11,9,20,1,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('solpadeine','headache','16 caps',2,1.6,20,1,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','extra','16 caps',2.3,2,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','triple action','12 caps',2,1.9,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','original','16 caps',1.8,1.5,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cisprin','soluble','32 tablets',3.6,2.8,20,1,20)");
-
-                //Digestion
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','blackcurrant','12 sachets',8,7.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','lemon','12 sachets',8,7.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','chewable','24 tablets',4.2,3.5,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('senokot','max','10 tablets',3,2.7,10,0,10)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','advance','300ml',10,8.1,10,0,10)");
-
-                //Allergy
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benadryl','relief','24 caps',9,7.1,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('piriteze','tabs','7 tablets',3,2.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('beconase','relief','100 sprays',6,4,20,0,20)");
-
-                //First Aid
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','antiseptic','500ml',3.2,3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','hand sanitizer','500ml',7,6.3,50,0,50)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('elastoplast','plasters','20 plasters',3,2,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',4,3.2,20,0,20)");
-            }
-
-            else if (SearchBranch == "GreenPark")
-            {
-                //Cold and Flu
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',9,3.7,15,0,15)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',13.6,5,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',17,7,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',18,7.5,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','max','16 caps',8.4,3.7,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','standard','10 sachets',9,3.5,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','day and night','16 caps',9,3.2,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','max','16 caps',8.4,3.2,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','mucus relief','16 caps',9.6,3.2,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','4 flu','24 caps',12,4.9,20,0,20)");
-
-                //Skincare
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('e45','psoriasis cream','50ml',40,16,15,0,15)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eurax','skin cream','100g',11.4,4.2,15,0,15)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','skin relief cream','50ml',18,7,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','face scrub','100ml',15,6,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','psoriasis cream','150ml',60,25,10,0,10)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','repair and Restore','100g',24,10,10,0,10)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','30g',24,9.7,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','100g',50,22.2,5,0,5)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','moisturising cream','50ml',20,7.6,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','exfoliating cleanser','180ml',24,10.1,20,0,20)");
-
-                //Headaches and Pain Relief
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','meltlets','16 caps',8,3.7,40,0,40)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','express','16 caps',8,3.5,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','max strength','32 caps',14,6.2,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','standard','16 caps',8,3.2,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cuprofen','max strength','96 caps',22,9,20,1,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('solpadeine','headache','16 caps',4,1.6,20,1,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','extra','16 caps',4.6,2,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','triple action','12 caps',4,1.9,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','original','16 caps',3.6,1.5,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cisprin','soluble','32 tablets',7.2,2.8,20,1,20)");
-
-                //Digestion
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','blackcurrant','12 sachets',16,7.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','lemon','12 sachets',16,7.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','chewable','24 tablets',8.4,3.5,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('senokot','max','10 tablets',6,2.7,10,0,10)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','advance','300ml',20,8.1,10,0,10)");
-
-                //Allergy
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benadryl','relief','24 caps',18,7.1,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('piriteze','tabs','7 tablets',6,2.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('beconase','relief','100 sprays',12,4,20,0,20)");
-
-                //First Aid
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','antiseptic','500ml',6.4,3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','hand sanitizer','500ml',14,6.3,50,0,50)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('elastoplast','plasters','20 plasters',6,2,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',8,3.2,20,0,20)");
-            }
-
-            else if (SearchBranch == "MileEnd")
-            {
-                //Cold and Flu
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',3.5,3.7,15,0,15)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',5.2,5,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',6.5,7,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',6.9,7.5,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','max','16 caps',3.2,3.7,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','standard','10 sachets',3.5,3.5,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','day and night','16 caps',3.5,3.2,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','max','16 caps',3.2,3.2,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','mucus relief','16 caps',3.7,3.2,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','4 flu','24 caps',4.6,4.9,20,0,20)");
-
-                //Skincare
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('e45','psoriasis cream','50ml',15.4,16,15,0,15)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eurax','skin cream','100g',4.4,4.2,15,0,15)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','skin relief cream','50ml',6.9,7,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','face scrub','100ml',5.8,6,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','psoriasis cream','150ml',23.1,25,10,0,10)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','repair and Restore','100g',9.2,10,10,0,10)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','30g',9.2,9.7,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','100g',19.2,22.2,5,0,5)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','moisturising cream','50ml',7.7,7.6,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','exfoliating cleanser','180ml',9.2,10.1,20,0,20)");
-
-                //Headaches and Pain Relief
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','meltlets','16 caps',3.1,3.7,40,0,40)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','express','16 caps',3.1,3.5,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','max strength','32 caps',5.4,6.2,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('nurofen','standard','16 caps',3.1,3.2,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cuprofen','max strength','96 caps',8.5,9,20,1,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('solpadeine','headache','16 caps',1.5,1.6,20,1,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','extra','16 caps',1.8,2,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','triple action','12 caps',1.5,1.9,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('anadin','original','16 caps',1.4,1.5,30,1,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cisprin','soluble','32 tablets',2.8,2.8,20,1,20)");
-
-                //Digestion
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','blackcurrant','12 sachets',6.2,7.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dioralyte','lemon','12 sachets',6.2,7.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','chewable','24 tablets',3.2,3.5,25,0,25)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('senokot','max','10 tablets',2.3,2.7,10,0,10)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gaviscon','advance','300ml',7.1,8.1,10,0,10)");
-
-                //Allergy
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benadryl','relief','24 caps',6.9,7.1,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('piriteze','tabs','7 tablets',2.3,2.3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('beconase','relief','100 sprays',4.6,4,20,0,20)");
-
-                //First Aid
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','antiseptic','500ml',2.5,3,20,0,20)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dettol','hand sanitizer','500ml',5.4,6.3,50,0,50)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('elastoplast','plasters','20 plasters',2.3,2,30,0,30)");
-                s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',3.1,3.2,20,0,20)");
-            }
-
-
-            resp.getWriter().write("\nalterTestDatabase called\n");
-            if(s!=null){s.close();}
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void delTestPHAB(HttpServletResponse resp) throws IOException
-    {
-        try {
-
-            resp.getWriter().write("Deleting Test Rows Paddington\n");
-            Statement s=c.createStatement();
-
-            s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE Manufacturer='test'");
-            s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE Manufacturer='Test'");
-
-            resp.getWriter().write("\nalterTestDatabase called");
-            if(s!=null){s.close();}
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void delAllPHAB(HttpServletResponse resp) throws IOException
-    {
-        try {
-
-            boolean deleteLock = false;
-
-            resp.getWriter().write("Deleting Test Rows Paddington\n");
-
-            if(deleteLock == true)
-            {
-                resp.getWriter().write("Delete Function Locked, Check Code!\n");
-            }
-            else {
-                Statement s = c.createStatement();
-
-                s.execute("DELETE FROM public.StockDB"+SearchBranch+" WHERE FullStock > 0 ");
-
-                resp.getWriter().write("\nalterTestDatabase called");
-                if (s != null) {
-                    s.close();
-                }
-            }
-
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-    private void getLimitOne(HttpServletResponse resp) throws IOException
-    {
-
-        try {
-            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
-
-            Statement s = c.createStatement();
-            ResultSet rset = s.executeQuery(strSelect);
-
-            resp.getWriter().write("\n");
-            while (rset.next()) {
-                resp.getWriter().write(rset.getString(7));
-            }
-
-            //close connection
-            if (rset != null) {
-                rset.close();
-            }
-            if (s != null) {
-                s.close();
-            }
-        }
-        catch(Exception e)
-        {
-
-        }
-    }
-
-    private void searchForDrug(HttpServletResponse resp) throws IOException
-    {
-
-        try {
-            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';";
-
-            Statement s = c.createStatement();
-            ResultSet rset = s.executeQuery(strSelect);
-
-            resp.getWriter().write("\n");
-            while (rset.next()) {
-                for(int n=1;n<=8;n++) {
-                    resp.getWriter().write(rset.getString(n));
-                    resp.getWriter().write(",");
-                    resp.getWriter().write(" ");
-                }
-            }
-
-            //close connection
-            if (rset != null) {
-                rset.close();
-            }
-            if (s != null) {
-                s.close();
-            }
-        }
-        catch(Exception e)
-        {
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-
-    //Paddington--------------------------------------------------------------------------------------------------------
-    private void decreaseStock(HttpServletResponse resp) throws IOException
-    {
-        resp.getWriter().write("Decreasing Stock\n");
-
-        resp.getWriter().write(SearchManufacturer);
-        resp.getWriter().write("\n");
-        resp.getWriter().write(SearchName);
-        resp.getWriter().write("\n");
-//
-
-        try {
-            resp.getWriter().write("Editing Rows Paddington\n");
-            Statement s=c.createStatement();
-
-            //first find current stock
-            String strSelect = "SELECT * FROM StockDB"+SearchBranch+" WHERE Name = '"+SearchName+"' AND Manufacturer = '"+SearchManufacturer+"';";
-
-
-            ResultSet rset = s.executeQuery(strSelect);
-            String transferStr;
-            //default error value - s.execute will not be called with -1
-            int cs = -1;
-
-            while(rset.next()) {
-                resp.getWriter().write(rset.getString("CurrentStock"));
-                transferStr=rset.getString("CurrentStock");
-                cs = Integer.valueOf(transferStr);
-
-            }
-
-            //subract 1 from the current value
-            cs--;
-
-            //to prevent decrementing below zero
-            if(cs >= 0) {
-                s.execute("UPDATE public.StockDB"+SearchBranch+" SET CurrentStock = " + cs + " WHERE Name = '" + SearchName + "' AND Manufacturer = '" + SearchManufacturer + "';");
-            }
-
-
-            resp.getWriter().write("\nDecrease Stock Called");
-            if(s!=null){s.close();}
-
-            //reset to null
-            SearchName = "";
-            SearchManufacturer = "";
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-
-
-    }
-
-    private void createPHABPaddington(HttpServletResponse resp) throws IOException
-    {
-        try{
-            resp.getWriter().write("Creating PHAB Database for Paddington\n");
-            Statement s=c.createStatement();
-
-            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
-            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
-
-            ResultSet rset = s.executeQuery(strSelect);
-
-            //create test table
-            s.execute("CREATE TABLE StockDBPaddington(\n" +
-
-                    "Manufacturer varchar(50)," +
-                    "Name varchar(100)," +
-                    "Quantity varchar(50)," +
-                    "SalesPrice float NOT NULL," +
-                    "PurchasePrice float NOT NULL," +
-                    "FullStock smallint NOT NULL," +
-                    "LimitOne int," +
-                    "CurrentStock smallint NOT NULL)"
-            );
-
-
-            resp.getWriter().write("Function Call Finished");
-            if(rset!=null){rset.close();}
-            if(s!=null){s.close();}
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-
-
-    //------------------------------------------------------------------------------------------------------------------
-
-
-    //Green Park--------------------------------------------------------------------------------------------------------
-
-
-    private void createPHABGreenPark(HttpServletResponse resp) throws IOException
-    {
-        try{
-            resp.getWriter().write("Creating PHAB Database for Green Park\n");
-            Statement s=c.createStatement();
-
-            boolean lockCreate = false;
-            //fill database with test rot
-
-            if(lockCreate == true)
-            {
-                resp.getWriter().write("Creation Locked, Please Edit code\n");
-            }
-            else {
-                //Cold and Flu
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',9,3.7,15,0,15)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',13.6,5,20,0,20)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',17,7,30,0,0)");//actual 30
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('gsk','night nurse','160ml',18,7.5,30,0,30)");//actual 30
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','max','16 caps',8.4,3.7,25,0,25)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('lemsip','standard','10 sachets',9,3.5,25,0,25)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','day and night','16 caps',9,3.2,30,1,30)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('sudafed','max','16 caps',8.4,3.2,30,1,30)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','mucus relief','16 caps',9.6,3.2,20,0,20)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('benylin','4 flu','24 caps',12,4.9,20,0,20)");
-
-                //Skincare
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('e45','psoriasis cream','50ml',40,16,15,0,15)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eurax','skin cream','100g',11.4,4.2,15,0,15)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','skin relief cream','50ml',18,7,20,0,20)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('eucerin','face scrub','100ml',15,6,20,0,20)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','psoriasis cream','150ml',60,25,10,0,10)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','repair and Restore','100g',24,10,10,0,10)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','30g',24,9.7,20,0,20)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('dermalex','eczema cream','100g',50,22.2,5,0,5)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','moisturising cream','50ml',20,7.6,20,0,20)");
-                s.execute("INSERT INTO public.StockDBGreenPark (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('cetaphil','exfoliating cleanser','180ml',24,10.1,20,0,20)");
-            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
-            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
-
-            ResultSet rset = s.executeQuery(strSelect);
-
-            //create test table
-            s.execute("CREATE TABLE StockDBGreenPark(\n" +
-
-                    "Manufacturer varchar(50)," +
-                    "Name varchar(100)," +
-                    "Quantity varchar(50)," +
-                    "SalesPrice float NOT NULL," +
-                    "PurchasePrice float NOT NULL," +
-                    "FullStock smallint NOT NULL," +
-                    "LimitOne int," +
-                    "CurrentStock smallint NOT NULL)"
-            );
-
-
-            resp.getWriter().write("Function Call Finished");
-            if(rset!=null){rset.close();}
-            if(s!=null){s.close();}
-        }}
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-
-
-
-
-
-    //Mile End--------------------------------------------------------------------------------------------------------
-
-
-    private void createPHABMileEnd(HttpServletResponse resp) throws IOException
-    {
-        try{
-            resp.getWriter().write("Creating PHAB Database for Mile End\n");
-            Statement s=c.createStatement();
-
-            //select table from INFORMATION_SCHEMA.TABLES - list of all the tables
-            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
-
-            ResultSet rset = s.executeQuery(strSelect);
-
-            //create test table
-            s.execute("CREATE TABLE StockDBMileEnd(\n" +
-
-                    "Manufacturer varchar(50)," +
-                    "Name varchar(100)," +
-                    "Quantity varchar(50)," +
-                    "SalesPrice float NOT NULL," +
-                    "PurchasePrice float NOT NULL," +
-                    "FullStock smallint NOT NULL," +
-                    "LimitOne int," +
-                    "CurrentStock smallint NOT NULL)"
-            );
-
-
-            resp.getWriter().write("Function Call Finished");
-            if(rset!=null){rset.close();}
-            if(s!=null){s.close();}
-        }
-        catch (Exception e){
-
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-
-
-
-
-
-// End of Mile End Functions
-
-
-
-
-
-
-    private void createUserDatabase(HttpServletResponse resp) throws IOException {
-        try{
-            resp.getWriter().write("Creating User Database\n");
-            Statement s = this.c.createStatement();
-
-            String strSelect = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
-
-            ResultSet rset = s.executeQuery(strSelect);
-
-            s.execute("CREATE TABLE Users(\n" +
-                "Username varchar(50) NOT NULL," +
-                "FirstName varchar(100) NOT NULL," +
-                "LastName varchar(100) NOT NULL," +
-                "Email varchar(100) NOT NULL," +
-                "Password varchar(100) NOT NULL)"
-                
-            );
-
-            resp.getWriter().write("Function Call Finished");
-            if(rset!=null){rset.close();}
-            if(s!=null){s.close();}
-
-        } 
-        
-        
-        catch (Exception e) {
-            resp.getWriter().write(e.getMessage());
-
-        }  
-    }
-    
-    private void returnUserDatabse(HttpServletResponse resp) throws IOException {
-        try{
-            resp.getWriter().write("User Database\n");
-            Statement s = this.c.createStatement();
-            String strSelect = "SELECT * FROM Users";
-            
-            ResultSet rset = s.executeQuery(strSelect);
-
-            resp.getWriter().write("Table Start");
-
-            ResultSetMetaData rsmd = rset.getMetaData();
-            int colNum = rsmd.getColumnCount();
-
-            resp.getWriter().write(("\n"));
-
-            while(rset.next()) {
-                for(int n=1; n<=colNum; n++) {
-                    resp.getWriter().write(rset.getString(n) + "\t");
-                }
-                resp.getWriter().write("\n");;
-            }
-
-            resp.getWriter().write("Table End");
-
-            resp.getWriter().write("\n\nPrint Table Complete");
-
-            if(rset!=null){rset.close();}
-            if(s!=null){s.close();}
-        }
-        catch (Exception e) {
-            resp.getWriter().write(e.getMessage());
-
-        }
-
-    }
-
-    private void addUser(HttpServletRequest req, HttpServletResponse resp, String message, int length) throws IOException {
-        try {
-            
-            Statement s = c.createStatement();
-            String firstname = message.substring(0,message.indexOf('/'));
-            String lastname = message.substring(message.indexOf('/')+1,message.indexOf('|'));
-            String username = message.substring(message.indexOf('|')+1,message.indexOf('@'));
-            String password = message.substring(message.indexOf('@')+1,message.indexOf('#'));
-            String email    = message.substring(message.indexOf('#')+1,length);
-
-            //testing blocks onlyf
-            resp.getWriter().write("User name: ");
-            resp.getWriter().write(username+"\n");
-            resp.getWriter().write("First name: ");
-            resp.getWriter().write(firstname+"\n");
-            resp.getWriter().write("Last name: ");
-            resp.getWriter().write(lastname+"\n");
-            resp.getWriter().write("Email: ");
-            resp.getWriter().write(email+"\n");
-            //testing blocks only -- non-important
-
-            String checkuserexist = "SELECT * FROM Users WHERE Username= '"+username+"';";
-
-            ResultSet rset = s.executeQuery(checkuserexist);
-
-            if(rset.next()) {
-                resp.getWriter().write("username unavailable");
-            }
-            else {
-                resp.getWriter().write("username available");
-                String addUser = "INSERT INTO Users (Username, FirstName, LastName, Email, Password) VALUES ("
-                                +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n";
-
-                s.execute(addUser);
-                
-                resp.getWriter().write("Inserted user: ");
-                resp.getWriter().write(username);
-            }
-        }
-        catch(Exception e) {
-            resp.getWriter().write(e.getMessage());
-        }
-
-
-
-    }
-
-    private void verifyUser(HttpServletRequest req, HttpServletResponse resp, String message, int length) throws IOException {
-        try {
-                resp.reset();
-                Statement s = c.createStatement();
-                String username = message.substring(0,message.indexOf('@'));
-                String password = message.substring(message.indexOf('@')+1, length);
-
-                String verifyUser = "SELECT * FROM Users WHERE Username= '"+username+"';";
-
-                ResultSet rset = s.executeQuery(verifyUser);
-                if(rset.next()) {
-
-                    String usr = rset.getString("Username");
-                    String pwd = rset.getString("Password");
-                    if(usr.equals(username) && pwd.equals(password)) {
-                        resp.getWriter().write("Login successful");
-                    }
-                    else resp.getWriter().write("User does not exist or password incorrect");
-
-                }
-
-                else {
-                    resp.getWriter().write("User does not exist.");
-                }
-            
-
-
-
-            }
-
-            catch(Exception e) {
-                resp.getWriter().write(e.getMessage());
-            }
-    }
-
-    private void deltestUserDatabase(HttpServletResponse resp) throws IOException {
-        try {
-            resp.getWriter().write("Deleting test database");
-            Statement s = this.c.createStatement();
-            String deltest = "DELETE FROM Users WHERE Username = 'test'";
-            String deltest2 = "DELETE FROM Users WHERE Username = 'test2123";
-
-            s.executeQuery(deltest);
-            s.executeQuery(deltest2);
-
-            resp.getWriter().write("Test users have been deleted");
-
-        }
-        catch(Exception e) {
-            resp.getWriter().write(e.getMessage());
-        }
-    }
-    
-    
 }
