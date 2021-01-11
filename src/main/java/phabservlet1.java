@@ -278,13 +278,14 @@ import javax.servlet.http.HttpServletResponse;
             fillDeletePHAB fDP1 = new fillDeletePHAB(c);
             fDP1.delAllPHAB(resp, "Paddington");
             fillDeletePHAB fDP2 = new fillDeletePHAB(c);
-            fDP2.fillPHAB(resp, "Paddington");
+            fDP2.delAllPHAB(resp, "GreenPark");
             fillDeletePHAB fDP3 = new fillDeletePHAB(c);
-            fDP3.delAllPHAB(resp, "GreenPark");
+            fDP3.delAllPHAB(resp, "MileEnd");
+
             fillDeletePHAB fDP4 = new fillDeletePHAB(c);
             fDP4.fillPHAB(resp, "GreenPark");
             fillDeletePHAB fDP5 = new fillDeletePHAB(c);
-            fDP5.delAllPHAB(resp, "MileEnd");
+            fDP5.fillPHAB(resp, "Paddington");
             fillDeletePHAB fDP6 = new fillDeletePHAB(c);
             fDP6.fillPHAB(resp, "MileEnd");
 
@@ -426,6 +427,7 @@ import javax.servlet.http.HttpServletResponse;
         try {
             resp.getWriter().write("Filling In PHAB "+SearchBranch+" Database\n");
             Statement s=c.createStatement();
+
 
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',4.5,3.7,15,0,15)");
