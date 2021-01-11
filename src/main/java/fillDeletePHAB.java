@@ -198,6 +198,9 @@ public class fillDeletePHAB {
 
             resp.getWriter().write("\nalterTestDatabase called\n");
             if(s!=null){s.close();}
+            if (c!=null) {
+                c.close();
+            }
 
         }
         catch (Exception e){
@@ -226,6 +229,9 @@ public class fillDeletePHAB {
                 resp.getWriter().write("\nalterTestDatabase called");
                 if (s != null) {
                     s.close();
+                }
+                if (c!=null) {
+                    c.close();
                 }
             }
 

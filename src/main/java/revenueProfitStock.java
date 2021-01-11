@@ -49,6 +49,10 @@ public class revenueProfitStock {
             if (count>=0)
                 resp.getWriter().write("\n WARNING: "+ count +" stock(s) below 20% found");
 
+            if (c!=null) {
+                c.close();
+            }
+
         }
         catch (Exception e){
 
@@ -100,6 +104,9 @@ public class revenueProfitStock {
             }
 
             resp.getWriter().write("\n Profit: "+ profit +" pounds");
+            if (c!=null) {
+                c.close();
+            }
 
         }
         catch (Exception e){
@@ -152,6 +159,10 @@ public class revenueProfitStock {
             }
 
             resp.getWriter().write("\n Revenue: "+ rev +" pounds");
+
+            if (c!=null) {
+                c.close();
+            }
 
         }
         catch (Exception e){

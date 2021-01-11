@@ -33,6 +33,9 @@ public class searchDecreaseLimit {
             if (s != null) {
                 s.close();
             }
+            if (c!=null) {
+                c.close();
+            }
         }
         catch(Exception e)
         {
@@ -64,6 +67,9 @@ public class searchDecreaseLimit {
             }
             if (s != null) {
                 s.close();
+            }
+            if (c!=null) {
+                c.close();
             }
         }
         catch(Exception e)
@@ -113,6 +119,9 @@ public class searchDecreaseLimit {
 
             resp.getWriter().write("\nDecrease Stock Called");
             if(s!=null){s.close();}
+            if (c!=null) {
+                c.close();
+            }
 
             //reset to null
             SearchName = "";

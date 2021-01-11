@@ -52,6 +52,9 @@ public class returnDatabase {
             //close connection
             if(rset!=null){rset.close();}
             if(s!=null){s.close();}
+            if (c!=null) {
+                c.close();
+            }
         }
         catch(Exception e)
         {
@@ -97,6 +100,9 @@ public class returnDatabase {
             //close connection
             if(rset!=null){rset.close();}
             if(s!=null){s.close();}
+            if (c!=null) {
+                c.close();
+            }
         }
         catch(Exception e)
         {
@@ -142,6 +148,9 @@ public class returnDatabase {
             //close connection
             if(rset!=null){rset.close();}
             if(s!=null){s.close();}
+            if (c!=null) {
+                c.close();
+            }
         }
         catch(Exception e)
         {

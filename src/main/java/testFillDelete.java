@@ -23,6 +23,9 @@ public class testFillDelete {
 
             resp.getWriter().write("\nalterTestDatabase called");
             if(s!=null){s.close();}
+            if (c!=null) {
+                c.close();
+            }
 
         }
         catch (Exception e){
@@ -42,6 +45,9 @@ public class testFillDelete {
 
             resp.getWriter().write("\nalterTestDatabase called\n");
             if(s!=null){s.close();}
+            if (c!=null) {
+                c.close();
+            }
 
         }
         catch (Exception e){
