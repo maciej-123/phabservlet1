@@ -118,7 +118,12 @@ public class UserDatabase {
                         +"'"+username+"',"+"'"+firstname+"',"+"'"+lastname+"',"+"'"+email+"',"+"'"+password+"')\n";
 
                 s.execute(addUser);
+
             }
+
+            if(rset!=null) rset.close();
+            if(s!=null) rset.close();
+            if(c!=null) c.close();
 
         }
         catch(Exception e) {
@@ -154,8 +159,9 @@ public class UserDatabase {
                 resp.getWriter().write("User does not exist.");
             }
 
-
-
+            if(rset!=null) rset.close();
+            if(s!=null) rset.close();
+            if(c!=null) c.close();
 
         }
 
