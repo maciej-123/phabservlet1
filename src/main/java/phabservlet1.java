@@ -129,10 +129,10 @@ import javax.servlet.http.HttpServletResponse;
 
 
         if (urlPattern.equals("/return_phab_paddington")) {
-            returnPHABPaddington(resp);
+            //returnPHABPaddington(resp);
 
-//            returnDatabase rDB = new returnDatabase(c);
-//            rDB.returnPHABPaddington(resp);
+            returnDatabase rDB = new returnDatabase(c);
+            rDB.returnPHABPaddington(resp);
         }
 
         if (urlPattern.equals("/delete_phab")) {
@@ -212,10 +212,10 @@ import javax.servlet.http.HttpServletResponse;
 
 
         if(urlPattern.equals("/return_phab_greenpark")) {
-            returnPHABGreenPark(resp);
+            //returnPHABGreenPark(resp);
 
-//            returnDatabase rDB = new returnDatabase(c);
-//            rDB.returnPHABGreenPark(resp);
+            returnDatabase rDB = new returnDatabase(c);
+            rDB.returnPHABGreenPark(resp);
         }
 
         if(urlPattern.equals("/deltest_user_database")) {
@@ -241,10 +241,10 @@ import javax.servlet.http.HttpServletResponse;
         }
 
         if(urlPattern.equals("/return_phab_mileend")) {
-            returnPHABMileEnd(resp);
+//            returnPHABMileEnd(resp);
 
-//            returnDatabase rDB = new returnDatabase(c);
-//            rDB.returnPHABMileEnd(resp);
+            returnDatabase rDB = new returnDatabase(c);
+            rDB.returnPHABMileEnd(resp);
         }
 
 
@@ -289,22 +289,22 @@ import javax.servlet.http.HttpServletResponse;
 
         //Test database functions
         if(urlPattern.equals("/create_test_database")) {
-            createTestDatabase(resp);
+            //createTestDatabase(resp);
 
-//            testDatabase testDB = new testDatabase(c);
-//            testDB.createTestDatabase(resp);
+            testDatabase testDB = new testDatabase(c);
+            testDB.createTestDatabase(resp);
         }
         if(urlPattern.equals("/return_test_database")) {
-            returnTestDatabase(resp);
+            //returnTestDatabase(resp);
 
-//            testDatabase testDB = new testDatabase(c);
-//            testDB.returnTestDatabase(resp);
+            testDatabase testDB = new testDatabase(c);
+            testDB.returnTestDatabase(resp);
         }
         if(urlPattern.equals("/alter_test_database")) {
-           alterTestDatabase(resp);
+           //alterTestDatabase(resp);
 
-//            testDatabase testDB = new testDatabase(c);
-//            testDB.alterTestDatabase(resp);
+           testDatabase testDB = new testDatabase(c);
+           testDB.alterTestDatabase(resp);
         }
 
         //User database functions
