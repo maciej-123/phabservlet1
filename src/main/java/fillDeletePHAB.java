@@ -18,14 +18,8 @@ public class fillDeletePHAB {
             resp.getWriter().write("Filling In PHAB "+SearchBranch+" Database\n");
             Statement s=c.createStatement();
 
-            boolean lockCreate = false;
-            //fill database with test row
 
-            if(lockCreate == true)
-            {
-                resp.getWriter().write("Creation Locked, Please Edit code\n");
-            }
-            else if (SearchBranch == "Paddington"){
+            if (SearchBranch == "Paddington"){
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',4.5,3.7,15,0,15)");
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',6.8,5,20,0,20)");
