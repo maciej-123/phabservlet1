@@ -36,9 +36,7 @@ public class UserDatabase {
             resp.getWriter().write("Function Call Finished");
             if(rset!=null){rset.close();}
             if(s!=null){s.close();}
-            if (c!=null) {
-                c.close();
-            }
+
 
         }
 
@@ -77,9 +75,7 @@ public class UserDatabase {
 
             if(rset!=null){rset.close();}
             if(s!=null){s.close();}
-            if (c!=null) {
-                c.close();
-            }
+
         }
         catch (Exception e) {
             resp.getWriter().write(e.getMessage());
@@ -126,9 +122,7 @@ public class UserDatabase {
                 resp.getWriter().write("Inserted user: ");
                 resp.getWriter().write(username);
             }
-            if (c!=null) {
-                c.close();
-            }
+
         }
         catch(Exception e) {
             resp.getWriter().write(e.getMessage());
@@ -163,9 +157,7 @@ public class UserDatabase {
                 resp.getWriter().write("User does not exist.");
             }
 
-            if (c!=null) {
-                c.close();
-            }
+
 
 
         }
@@ -186,9 +178,7 @@ public class UserDatabase {
             s.executeQuery(deltest2);
 
             resp.getWriter().write("Test users have been deleted");
-            if (c!=null) {
-                c.close();
-            }
+
         }
         catch(Exception e) {
             resp.getWriter().write(e.getMessage());
