@@ -151,23 +151,23 @@ import javax.servlet.http.HttpServletResponse;
 
         //get request for decreasing stock MUST called after the post request
         if (urlPattern.equals("/_decreaseStock")) {
-            decreaseStock(resp);
+            //decreaseStock(resp);
 
-//            searchDecreaseLimit sDL = new searchDecreaseLimit(c);
-//            sDL.decreaseStock(resp,SearchBranch, SearchName, SearchManufacturer);
+            searchDecreaseLimit sDL = new searchDecreaseLimit(c);
+            sDL.decreaseStock(resp,SearchBranch, SearchName, SearchManufacturer);
         }
 
 
         if (urlPattern.equals("/getLimitOne")) {
-            getLimitOne(resp);
-//            searchDecreaseLimit sDL = new searchDecreaseLimit(c);
-//            sDL.getLimitOne(resp,SearchBranch, SearchName, SearchManufacturer);
+            //getLimitOne(resp);
+            searchDecreaseLimit sDL = new searchDecreaseLimit(c);
+            sDL.getLimitOne(resp,SearchBranch, SearchName, SearchManufacturer);
         }
 
         if (urlPattern.equals("/searchForDrug")) {
-            searchForDrug(resp);
-//            searchDecreaseLimit sDL = new searchDecreaseLimit(c);
-//            sDL.searchForDrug(resp, SearchBranch, SearchName, SearchManufacturer);
+            //searchForDrug(resp);
+            searchDecreaseLimit sDL = new searchDecreaseLimit(c);
+            sDL.searchForDrug(resp, SearchBranch, SearchName, SearchManufacturer);
         }
 
 
@@ -175,28 +175,28 @@ import javax.servlet.http.HttpServletResponse;
 
         if (urlPattern.equals("/_checkStock"))
         {
-            checkStock(resp);
+            //checkStock(resp);
 
-//            revenueProfitStock rPS =  new revenueProfitStock(c);
-//            rPS.checkStock(resp, SearchBranch);
+            revenueProfitStock rPS =  new revenueProfitStock(c);
+            rPS.checkStock(resp, SearchBranch);
         }
 
         //testing the calculate profit function
 
         if (urlPattern.equals("/calculateProfit"))
         {
-            calculateProfit(resp);
+            //calculateProfit(resp);
 
-//            revenueProfitStock rPS =  new revenueProfitStock(c);
-//            rPS.calculateProfit(resp,SearchBranch);
+            revenueProfitStock rPS =  new revenueProfitStock(c);
+            rPS.calculateProfit(resp,SearchBranch);
         }
 
         if (urlPattern.equals("/calculateRevenue"))
         {
-            calculateRevenue(resp);
+            //calculateRevenue(resp);
 
-//            revenueProfitStock rPS =  new revenueProfitStock(c);
-//            rPS.calculateRevenue(resp,SearchBranch);
+            revenueProfitStock rPS =  new revenueProfitStock(c);
+            rPS.calculateRevenue(resp,SearchBranch);
         }
         //End of Paddington related functions---------------------------------------------------------------------------
 
