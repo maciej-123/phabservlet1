@@ -219,9 +219,9 @@ import javax.servlet.http.HttpServletResponse;
         }
 
         if(urlPattern.equals("/deltest_user_database")) {
-            deltestUserDatabase(resp);
-//            UserDatabase uDB = new UserDatabase(c);
-//            uDB.deltestUserDatabase(resp);
+            //deltestUserDatabase(resp);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.deltestUserDatabase(resp);
         }
 
 //
@@ -309,14 +309,14 @@ import javax.servlet.http.HttpServletResponse;
 
         //User database functions
         if(urlPattern.equals("/create_user_database")) {
-            createUserDatabase(resp);
-//            UserDatabase uDB = new UserDatabase(c);
-//            uDB.createUserDatabase(resp);
+            //createUserDatabase(resp);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.createUserDatabase(resp);
         }
         if(urlPattern.equals("/return_user_database")) {
-            returnUserDatabse(resp);
-//            UserDatabase uDB = new UserDatabase(c);
-//            uDB.returnUserDatabse(resp);
+            //returnUserDatabse(resp);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.returnUserDatabse(resp);
         }
         //
 
@@ -393,15 +393,15 @@ import javax.servlet.http.HttpServletResponse;
         //message in the format of firstname/lastname|username@password#email
 
         if(urlPattern.equals("/add_user")) {
-            addUser(req, resp, message, length);
-//            UserDatabase uDB = new UserDatabase(c);
-//            uDB.addUser(req,resp, message, length);
+            //addUser(req, resp, message, length);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.addUser(req,resp, message, length);
         }
         //parsingformat: username@password
         if(urlPattern.equals("/verify_user")) {
-            verifyUser(req, resp, message, length);
-//            UserDatabase uDB = new UserDatabase(c);
-//            uDB.verifyUser(req,resp,message,length);
+            //verifyUser(req, resp, message, length);
+            UserDatabase uDB = new UserDatabase(c);
+            uDB.verifyUser(req,resp,message,length);
         }
     }
 
