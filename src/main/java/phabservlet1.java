@@ -275,13 +275,18 @@ import javax.servlet.http.HttpServletResponse;
 //            SearchBranch = "MileEnd";
 //            fillPHAB(resp);
 
-            fillDeletePHAB fDP = new fillDeletePHAB(c);
-            fDP.delAllPHAB(resp, "Paddington");
-            fDP.fillPHAB(resp, "Paddington");
-            fDP.delAllPHAB(resp, "GreenPark");
-            fDP.fillPHAB(resp, "GreenPark");
-            fDP.delAllPHAB(resp, "MileEnd");
-            fDP.fillPHAB(resp, "MileEnd");
+            fillDeletePHAB fDP1 = new fillDeletePHAB(c);
+            fDP1.delAllPHAB(resp, "Paddington");
+            fillDeletePHAB fDP2 = new fillDeletePHAB(c);
+            fDP2.fillPHAB(resp, "Paddington");
+            fillDeletePHAB fDP3 = new fillDeletePHAB(c);
+            fDP3.delAllPHAB(resp, "GreenPark");
+            fillDeletePHAB fDP4 = new fillDeletePHAB(c);
+            fDP4.fillPHAB(resp, "GreenPark");
+            fillDeletePHAB fDP5 = new fillDeletePHAB(c);
+            fDP5.delAllPHAB(resp, "MileEnd");
+            fillDeletePHAB fDP6 = new fillDeletePHAB(c);
+            fDP6.fillPHAB(resp, "MileEnd");
 
             SearchBranch = "";
         }
