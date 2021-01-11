@@ -15,7 +15,7 @@ public class fillDeletePHAB {
     public void fillPHAB(HttpServletResponse resp, String SearchBranch) throws IOException
     {
         try {
-            resp.getWriter().write("Filling In PHAB Paddington Database\n");
+            resp.getWriter().write("Filling In PHAB "+SearchBranch+" Database\n");
             Statement s=c.createStatement();
 
             boolean lockCreate = false;
@@ -215,7 +215,7 @@ public class fillDeletePHAB {
 
             boolean deleteLock = false;
 
-            resp.getWriter().write("Deleting Test Rows Paddington\n");
+            resp.getWriter().write("Deleting Test Rows "+SearchBranch+"\n");
 
             if(deleteLock == true)
             {
