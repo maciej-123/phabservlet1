@@ -19,7 +19,8 @@ public class fillDeletePHAB {
             Statement s=c.createStatement();
 
 
-            if (SearchBranch == "Paddington"){
+            if (SearchBranch == "Paddington")
+            {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',4.5,3.7,15,0,15)");
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','first defence','15ml',6.8,5,20,0,20)");
@@ -75,7 +76,7 @@ public class fillDeletePHAB {
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',4,3.2,20,0,20)");
             }
 
-            else if (SearchBranch == "GreenPark")
+            if (SearchBranch == "GreenPark")
             {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',9,3.7,15,0,15)");
@@ -132,7 +133,7 @@ public class fillDeletePHAB {
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',8,3.2,20,0,20)");
             }
 
-            else if (SearchBranch == "MileEnd")
+            if (SearchBranch == "MileEnd")
             {
                 //Cold and Flu
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('vicks','vaporub','100g',3.5,3.7,15,0,15)");
@@ -189,13 +190,9 @@ public class fillDeletePHAB {
                 s.execute("INSERT INTO public.StockDB"+SearchBranch+" (Manufacturer,Name,Quantity,SalesPrice,PurchasePrice,FullStock,LimitOne,CurrentStock) VALUES ('tcp','liquid','200ml',3.1,3.2,20,0,20)");
             }
 
-
             resp.getWriter().write("\nalterTestDatabase called\n");
             if(s!=null){s.close();}
-            if (c!=null) {
-                c.close();
-            }
-
+            if (c!=null){c.close();}
         }
         catch (Exception e){
 
