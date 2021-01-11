@@ -89,10 +89,8 @@ public class testDatabase {
             resp.getWriter().write("AlterTestDatabase");
             Statement s=c.createStatement();
 
-
             //ResultSet rset = s.executeQuery(strSelect);
             resp.getWriter().write(" #2 ");
-
 
             s.execute("INSERT INTO public.label (id,name) VALUES (1,'2')");
             s.execute("INSERT INTO public.label (id,name) VALUES (3,'4')");
