@@ -107,10 +107,10 @@ import javax.servlet.http.HttpServletResponse;
         //Paddington Databases------------------------------------------------------------------------------------------
         //create PHAB Paddington Database
         if (urlPattern.equals("/create_phab_paddington")) {
-            createPHABPaddington(resp);
+            //createPHABPaddington(resp);
 
-//            createDatabase cDB = new createDatabase(c);
-//            cDB.createPHABPaddington(resp);
+            createDatabase cDB = new createDatabase(c);
+            cDB.createPHABPaddington(resp);
         }
 
         //fill with test variable
@@ -203,10 +203,10 @@ import javax.servlet.http.HttpServletResponse;
         //Green Park Database-------------------------------------------------------------------------------------------
         //create PHAB Paddington Database
         if(urlPattern.equals("/create_phab_greenpark")) {
-            createPHABGreenPark(resp);
+            //createPHABGreenPark(resp);
 
-//            createDatabase cDB = new createDatabase(c);
-//            cDB.createPHABGreenPark(resp);
+            createDatabase cDB = new createDatabase(c);
+            cDB.createPHABGreenPark(resp);
 
         }
 
@@ -234,10 +234,10 @@ import javax.servlet.http.HttpServletResponse;
         //Mileend Databases---------------------------------------------------------------------------------------------
         //create PHAB Mileend Database
         if(urlPattern.equals("/create_phab_mileend")) {
-            createPHABMileEnd(resp);
+            //createPHABMileEnd(resp);
 
-//            createDatabase cDB = new createDatabase(c);
-//            cDB.createPHABMileEnd(resp);
+            createDatabase cDB = new createDatabase(c);
+            cDB.createPHABMileEnd(resp);
         }
 
         if(urlPattern.equals("/return_phab_mileend")) {
