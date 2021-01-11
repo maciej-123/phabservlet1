@@ -328,9 +328,7 @@ import javax.servlet.http.HttpServletResponse;
 
                 resp.getWriter().write(e.getMessage());
             }
-            //write branch name to check if SearchBranch is correct
-            resp.getWriter().write(", ");
-            resp.getWriter().write(SearchBranch);
+
         }
 
         
