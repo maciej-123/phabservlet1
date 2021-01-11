@@ -115,9 +115,9 @@ import javax.servlet.http.HttpServletResponse;
 
         //fill with test variable
         if (urlPattern.equals("/testfill_phab")) {
-            testFillPHAB(resp);
-//            testFillDelete tFD = new testFillDelete(c);
-//            tFD.testFillPHAB(resp,SearchBranch);
+            ///testFillPHAB(resp);
+            testFillDelete tFD = new testFillDelete(c);
+            tFD.testFillPHAB(resp,SearchBranch);
         }
 
         if (urlPattern.equals("/fill_phab")) {
@@ -143,9 +143,9 @@ import javax.servlet.http.HttpServletResponse;
         }
 
         if (urlPattern.equals("/testdelete_phab")) {
-            delTestPHAB(resp);
-//            testFillDelete tFD = new testFillDelete(c);
-//            tFD.delTestPHAB(resp, SearchBranch);
+            //delTestPHAB(resp);
+            testFillDelete tFD = new testFillDelete(c);
+            tFD.delTestPHAB(resp, SearchBranch);
         }
 
 
