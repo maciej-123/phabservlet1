@@ -121,10 +121,10 @@ import javax.servlet.http.HttpServletResponse;
         }
 
         if (urlPattern.equals("/fill_phab")) {
-            fillPHAB(resp);
+            //fillPHAB(resp);
 
-//            fillDeletePHAB fDP = new fillDeletePHAB(c);
-//            fDP.fillPHAB(resp,SearchBranch);
+            fillDeletePHAB fDP = new fillDeletePHAB(c);
+            fDP.fillPHAB(resp,SearchBranch);
         }
 
 
@@ -136,10 +136,10 @@ import javax.servlet.http.HttpServletResponse;
         }
 
         if (urlPattern.equals("/delete_phab")) {
-            delAllPHAB(resp);
+            //delAllPHAB(resp);
 
-//            fillDeletePHAB fDP = new fillDeletePHAB(c);
-//            fDP.delAllPHAB(resp, SearchBranch);
+            fillDeletePHAB fDP = new fillDeletePHAB(c);
+            fDP.delAllPHAB(resp, SearchBranch);
         }
 
         if (urlPattern.equals("/testdelete_phab")) {
@@ -262,26 +262,26 @@ import javax.servlet.http.HttpServletResponse;
             SearchBranch = "";
             resp.getWriter().write("\nSetting Stock to Max\n");
 
-            SearchBranch = "Paddington";
-            delAllPHAB(resp);
-            SearchBranch = "Paddington";
-            fillPHAB(resp);
-            SearchBranch = "GreenPark";
-            delAllPHAB(resp);
-            SearchBranch = "GreenPark";
-            fillPHAB(resp);
-            SearchBranch = "MileEnd";
-            delAllPHAB(resp);
-            SearchBranch = "MileEnd";
-            fillPHAB(resp);
+//            SearchBranch = "Paddington";
+//            delAllPHAB(resp);
+//            SearchBranch = "Paddington";
+//            fillPHAB(resp);
+//            SearchBranch = "GreenPark";
+//            delAllPHAB(resp);
+//            SearchBranch = "GreenPark";
+//            fillPHAB(resp);
+//            SearchBranch = "MileEnd";
+//            delAllPHAB(resp);
+//            SearchBranch = "MileEnd";
+//            fillPHAB(resp);
 
-//            fillDeletePHAB fDP = new fillDeletePHAB(c);
-//            fDP.delAllPHAB(resp, "Paddington");
-//            fDP.fillPHAB(resp, "Paddington");
-//            fDP.delAllPHAB(resp, "GreenPark");
-//            fDP.fillPHAB(resp, "GreenPark");
-//            fDP.delAllPHAB(resp, "MileEnd");
-//            fDP.fillPHAB(resp, "MileEnd");
+            fillDeletePHAB fDP = new fillDeletePHAB(c);
+            fDP.delAllPHAB(resp, "Paddington");
+            fDP.fillPHAB(resp, "Paddington");
+            fDP.delAllPHAB(resp, "GreenPark");
+            fDP.fillPHAB(resp, "GreenPark");
+            fDP.delAllPHAB(resp, "MileEnd");
+            fDP.fillPHAB(resp, "MileEnd");
 
             SearchBranch = "";
         }
