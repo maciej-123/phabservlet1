@@ -290,22 +290,22 @@ import javax.servlet.http.HttpServletResponse;
 
         //Test database functions
         if(urlPattern.equals("/create_test_database")) {
-            //createTestDatabase(resp);
+            createTestDatabase(resp);
 
-            testDatabase testDB = new testDatabase(c);
-            testDB.createTestDatabase(resp);
+//            testDatabase testDB = new testDatabase(c);
+//            testDB.createTestDatabase(resp);
         }
         if(urlPattern.equals("/return_test_database")) {
-            //returnTestDatabase(resp);
+            returnTestDatabase(resp);
 
-            testDatabase testDB = new testDatabase(c);
-            testDB.returnTestDatabase(resp);
+//            testDatabase testDB = new testDatabase(c);
+//            testDB.returnTestDatabase(resp);
         }
         if(urlPattern.equals("/alter_test_database")) {
-           // alterTestDatabase(resp);
+           alterTestDatabase(resp);
 
-            testDatabase testDB = new testDatabase(c);
-            testDB.alterTestDatabase(resp);
+//            testDatabase testDB = new testDatabase(c);
+//            testDB.alterTestDatabase(resp);
         }
 
         //User database functions
