@@ -2,6 +2,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
@@ -12,8 +13,7 @@ public class UserDatabase {
 
     UserDatabase(Connection _c) throws IOException
     {
-        c = _c;
-    }
+        c = _c;    }
 
     public void createUserDatabase(HttpServletResponse resp) throws IOException {
         try{

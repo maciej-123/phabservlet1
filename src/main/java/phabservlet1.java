@@ -77,7 +77,6 @@ import javax.servlet.http.HttpServletResponse;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-
         //select driver
         try {
             Class.forName("org.postgresql.Driver");
@@ -320,6 +319,24 @@ import javax.servlet.http.HttpServletResponse;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+         //select driver
+        try {
+            Class.forName("org.postgresql.Driver");
+        } 
+        catch (Exception e) {
+            resp.getWriter().write(e.getMessage());
+        }
+        //connect to database
+        try {
+            dbUrl = System.getenv("JDBC_DATABASE_URL");
+            c = DriverManager.getConnection(dbUrl);
+        } 
+        catch (Exception e) {
+            resp.getWriter().write(e.getMessage());
+        }
+
+
         String reqBody=req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
         resp.setContentType("text/html");
